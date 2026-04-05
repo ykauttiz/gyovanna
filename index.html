@@ -23,19 +23,11 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;font-size:16px;}
-body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;cursor:none;}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;}
 ::-webkit-scrollbar{width:8px;}
 ::-webkit-scrollbar-track{background:var(--bg2);}
 ::-webkit-scrollbar-thumb{background:var(--rose);border-radius:4px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--rose-s);}
-
-/* CUSTOM CURSOR - CORRIGIDO */
-.cursor{pointer-events:none !important;position:fixed;width:10px;height:10px;background:var(--rose);border-radius:50%;z-index:9999;transform:translate(-50%,-50%);transition:width .1s,height .1s,background .1s;box-shadow:0 0 8px rgba(232,100,122,0.6);}
-.cursor.active{width:14px;height:14px;background:var(--rose-s);box-shadow:0 0 16px rgba(240,160,176,0.8);}
-.cursor-ring{pointer-events:none !important;position:fixed;width:36px;height:36px;border:2px solid rgba(232,100,122,.5);border-radius:50%;z-index:9998;transform:translate(-50%,-50%);transition:all .15s ease;mix-blend-mode:lighten;}
-.cursor-ring.active{border-color:var(--rose-s);box-shadow:0 0 12px rgba(240,160,176,0.4);}
-.sparkle{pointer-events:none;position:fixed;width:6px;height:6px;border-radius:50%;z-index:9998;animation:sparkle-fade .6s ease forwards;}
-@keyframes sparkle-fade{0%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(0);}}
 
 /* LOADING */
 #loading{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity .8s .2s,visibility .8s .2s;}
@@ -383,10 +375,6 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 </style>
 </head>
 <body>
-
-<!-- CURSOR -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursor-ring"></div>
 
 <!-- LOADING -->
 <div id="loading">
@@ -934,50 +922,7 @@ window.addEventListener('load', () => {
   setTimeout(() => document.getElementById('loading').classList.add('done'), 2000);
 });
 
-// === CURSOR - CORRIGIDO ===
-const cur = document.getElementById('cursor');
-const curR = document.getElementById('cursor-ring');
-let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-let sparkleActive = false;
-let isOnLink = false;
-
-document.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  cur.style.left = mouseX + 'px';
-  cur.style.top = mouseY + 'px';
-
-  const el = e.target;
-  isOnLink = el.tagName === 'A' || el.tagName === 'BUTTON' || el.classList.contains('clickable');
-
-  if (isOnLink) {
-    cur.classList.add('active');
-    curR.classList.add('active');
-  } else {
-    cur.classList.remove('active');
-    curR.classList.remove('active');
-  }
-
-  if (sparkleActive && Math.random() > 0.5) spawnSparkle(mouseX, mouseY);
-});
-
-function animRing() {
-  ringX += (mouseX - ringX) * 0.12;
-  ringY += (mouseY - ringY) * 0.12;
-  curR.style.left = ringX + 'px';
-  curR.style.top = ringY + 'px';
-  requestAnimationFrame(animRing);
-}
-animRing();
-
-function spawnSparkle(x, y) {
-  const s = document.createElement('div');
-  s.className = 'sparkle';
-  const colors = ['#e8647a', '#c9956e', '#9b7ccd', '#7ab3e8', '#f09aaa'];
-  s.style.cssText = `left:${x}px;top:${y}px;background:${colors[Math.floor(Math.random() * colors.length)]};--dx:${(Math.random() - 0.5) * 40}px;--dy:${(Math.random() - 0.5) * 40 - 20}px;`;
-  document.body.appendChild(s);
-  setTimeout(() => s.remove(), 800);
-}
+// Cursor nativo do navegador
 
 // === NAV ===
 window.addEventListener('scroll', () => {
@@ -1536,7 +1481,6 @@ window.rollDice=function(){
     document.getElementById('dice-last').textContent=result;
     document.getElementById('dice-best').textContent=diceStats.best;
     document.getElementById('dice-total').textContent=diceStats.total;
-    if(result===6){sparkleActive=true;setTimeout(()=>sparkleActive=false,1500);}
   },50);
 };
 
@@ -1598,8 +1542,6 @@ function showSecret(type) {
   document.body.style.overflow='hidden';
   spawnSecretHearts();
   launchConfetti();
-  sparkleActive = true;
-  setTimeout(()=>sparkleActive=false, 3000);
 }
 
 function spawnSecretHearts() {
