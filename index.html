@@ -1278,8 +1278,10 @@ function switchGame(idx, btn) {
   document.querySelectorAll('.gpanel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('gp-'+idx).classList.add('active');
+  if(idx===0 && typeof window.resetWordle === 'function') { window.resetWordle(); }
   if(idx===1 && !memInitialized) { initMemory(); }
   if(idx===2 && !quizInitialized) { initQuiz(); }
+  if(idx===3) { resetTTT(); }
 }
 
 // === MEMORY GAME ===
