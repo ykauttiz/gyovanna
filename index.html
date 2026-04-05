@@ -484,7 +484,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   <canvas id="star-canvas"></canvas>
   <div class="hero-inner">
     <div class="hero-ring">
-      <img class="hero-photo" id="hero-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%23333' width='200' height='200'/%3E%3C/svg%3E" alt="Kauê e Gyovanna">
+      <img class="hero-photo" id="hero-photo" src="./images/hero-photo.jpg" alt="Kauê &amp; Gyovanna">
     </div>
     <div class="hero-badge">Uma surpresa pra você</div>
     <h1 class="hero-title">Onde você está,<br><em>estou</em> 🌍</h1>
@@ -559,7 +559,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   <div class="music-card reveal">
     <div class="music-top">
       <div class="music-art">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23444' width='100' height='100'/%3E%3C/svg%3E" alt="Album">
+        <img src="./images/album-cover.jpg" alt="Album">
       </div>
       <div class="music-info">
         <div class="music-label">Canção Especial</div>
@@ -568,7 +568,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
       </div>
     </div>
     <div class="music-embed">
-      <iframe width="100%" height="80" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com&color=%23e8647a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=false" style="border-radius:0 0 28px 28px;"></iframe>
+      <iframe width="100%" height="80" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com&color=%23e8647a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=true"></iframe>
     </div>
   </div>
 </section>
@@ -582,7 +582,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
       <div class="msg-eyebrow">Dedicado a você</div>
       <div class="msg-text">Onde você está, estou. Porque estar com você é estar em casa.</div>
       <div class="msg-more" id="msg-more">
-        <p>Cada momento ao seu lado é um tesouro. Desde o primeiro dia, soubemos que era especial. Você é meu norte, minha inspiração, meu amor. Não importa onde nos leve a vida, enquanto estamos juntos, estamos em casa.</p>
+        <p>Cada momento ao seu lado é um tesouro. Desde o primeiro dia, soubemos que era especial. Você é meu norte, minha inspiração, meu amor. Não importa onde nos leve a vida, enquanto estamos juntos, tudo faz sentido. Esta página é um reflexo do nosso amor, uma memória digital dos dias mais especiais da minha vida. Obrigado por estar aqui, por ser você, por ser meu. Te amo infinitamente. 💕</p>
       </div>
       <button class="msg-btn" onclick="toggleMsg()">Ler mais</button>
     </div>
@@ -621,7 +621,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
     <div class="game-hint-row">
       <span class="game-hint-text">Dica:</span>
       <span class="g-letter-badge">❤️</span>
-      <span class="game-hint-text">palavra com 5 letras relacionada ao nosso amor</span>
+      <span class="game-hint-text">palavra com 4 letras relacionada ao nosso amor</span>
     </div>
     <div class="game-board" id="game-board"></div>
     <div class="game-status" id="game-status"></div>
@@ -640,19 +640,19 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   <div class="gallery-track-wrap reveal">
     <div class="gallery-track" id="gallery-track">
       <div class="g-slide">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23333' width='300' height='400'/%3E%3C/svg%3E" alt="Foto 1">
+        <img src="./images/gallery-1.jpg" alt="Foto 1">
         <div class="g-slide-overlay">
           <div class="g-slide-label">Foto 1</div>
         </div>
       </div>
       <div class="g-slide">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23444' width='300' height='400'/%3E%3C/svg%3E" alt="Foto 2">
+        <img src="./images/gallery-2.jpg" alt="Foto 2">
         <div class="g-slide-overlay">
           <div class="g-slide-label">Foto 2</div>
         </div>
       </div>
       <div class="g-slide">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400'%3E%3Crect fill='%23555' width='300' height='400'/%3E%3C/svg%3E" alt="Foto 3">
+        <img src="./images/gallery-3.jpg" alt="Foto 3">
         <div class="g-slide-overlay">
           <div class="g-slide-label">Foto 3</div>
         </div>
@@ -999,30 +999,19 @@ const submitGuess = () => {
   attempts++;
   if (attempts >= MAX_ATTEMPTS) {
     gameOver = true;
-    document.getElementById('game-status').textContent = `Fim do jogo! A palavra era: ${WORD}`;
+    document.getElementById('game-status').textContent = `Game Over! A palavra era: ${WORD}`;
   }
-
   currentGuess = '';
-  updateBoard();
 };
 
-// Add Enter button to submit
-const keyboard = document.getElementById('game-keyboard');
-const enterBtn = document.createElement('button');
-enterBtn.className = 'k-btn wide';
-enterBtn.textContent = 'ENVIAR';
-enterBtn.style.marginTop = '.4rem';
-enterBtn.onclick = submitGuess;
-
-// Initialize game after DOM loads
-setTimeout(initGame, 100);
-
-// Scroll to game when clicking Enter
+// Add ENTER key listener for submit
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !gameOver && currentGuess.length === WORD.length) {
+  if (e.key === 'Enter' && currentGuess.length === WORD.length) {
     submitGuess();
   }
 });
+
+initGame();
 </script>
 
 </body>
