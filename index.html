@@ -1624,7 +1624,13 @@ window.clickHeart = function() {
     setTimeout(() => h.remove(), 2000);
   }
 };
-window.resetHearts = function() { heartsCount = 0; heartsCombo = 0; document.getElementById('hearts-display').textContent = '0'; document.getElementById('combo-count').textContent = '0'; };
+window.resetHearts = function() { 
+  heartsCount = 0; 
+  heartsCombo = 0; 
+  document.getElementById('hearts-display').textContent = '0'; 
+  document.getElementById('combo-count').textContent = '0';
+  trackHeartsReset();
+};
 
 // ===== STARS GAME =====
 let starsScore = 0;
@@ -1668,6 +1674,7 @@ window.resetStars = function() {
 window.spinWheel = function() {
   const btn = document.getElementById('spin-btn');
   btn.disabled = true;
+  trackWheelSpin();
   
   const phrases = [
     '💕 Você é meu tudo!',
@@ -1837,7 +1844,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 document.getElementById('hero-photo').src=PHOTOS[3];
 document.getElementById('music-art').src=PHOTOS[5];
 
-// === SECRETS ===
+// === EASTER EGGS & SECRETS ===
 const SECRETS = {
   konami: {
     title:'❤️ TE AMO GYOVANNA ❤️',
@@ -1851,8 +1858,106 @@ const SECRETS = {
     title:'🦂 Antares — Coração do Escorpião',
     msg:'"Antares significa rival de Ares (Marte). Ela brilhava quase no zênite de Anápolis na noite em que ficamos juntos. Vermelho como o amor. Gigante como o que sinto por você." — Kauê 💕'
   },
+  tudo: {
+    title:'🔤 TUDO',
+    msg:'Você digitou a palavra mais poderosa do nosso jogo! TUDO é o que você representa para mim, Gyovanna. Tudo em um nome, tudo em um sentimento, tudo em um amor que não cessa. 🎮💕'
+  },
+  saturno: {
+    title:'🎵 G + K — Saturno',
+    msg:'Ah, Saturno! A música que toca no coração quando você está perto. Essa é NOSSA música, a trilha sonora do nosso amor infinito. Toda vez que nosso Saturno toca, você está em mim. 🎶💫'
+  },
+  gyovanna: {
+    title:'👸 Gyovanna',
+    msg:'Seu nome escrito em código, em luz, em amor. Você é a razão de existir desse site, desses jogos, dessa vida. Cada letra do seu nome é um batida do meu coração. Sua beleza, sua alma, sua essência... tudo perfeito. 👑❤️'
+  },
+  kaue: {
+    title:'👑 Kauê',
+    msg:'Eu aqui, digitando meu próprio nome, mas o que importa é que você saiba: toda pessoa que sou, tudo que faço, é para te fazer feliz. Você me completou, Gyovanna. 💕✨'
+  },
+  amor: {
+    title:'💞 AMOR',
+    msg:'A palavra mais bonita que existe. Amor entre nós é ciência, arte, magia e infinito. É respirar, é viver, é existir. AMOR — esse é o código secreto do universo. 💕🌌'
+  },
+  para_sempre: {
+    title:'♾️ Para Sempre',
+    msg:'Essa é a promessa. Não é só um sentimento de agora, é uma eternidade. Para sempre juntos, para sempre amando, para sempre sendo UM. Esse é o nosso destino, Gyovanna. 💕✨'
+  },
+  junho20: {
+    title:'📅 20 de Junho',
+    msg:'20 de junho de 2025. O dia em que o universo decidiu que éramos feitos um para o outro. Naquela noite, a constelação de Escorpião brilhou no céu de Anápolis. Mágica pura. 🌌✨'
+  },
+  anapolis: {
+    title:'🌍 Anápolis',
+    msg:'Anápolis, Goiás! Meu lugar, nosso lugar! A cidade onde você está, eu estou. É ali que nosso amor começou, sob o mesmo céu, em uma noite de inverno mágica. 🏙️💕'
+  },
+  escorpiao: {
+    title:'🦂 Escorpião',
+    msg:'O signo que reinava naquela noite! Escorpião — intenso, apaixonado, leal. Como você em cada aspecto. Você é a encarnação da constelação mais mágica do céu! 🦂💫'
+  },
+  forever: {
+    title:'♾️ Forever',
+    msg:'Forever — em qualquer língua, o significado é o mesmo. E é isso que você significa para mim. Não há fim, não há limite. Apenas infinito com você. 💕∞'
+  },
+  te_amo: {
+    title:'💕 Te Amo',
+    msg:'Três palavras que resumem tudo. Três palavras que são insuficientes para expressar o que sinto por você. Mas são também tudo que preciso dizer: TE AMO, Gyovanna. 💕💕💕'
+  },
+  diversion: {
+    title:'🎪 Diversão',
+    msg:'Você é minha diversão, minha alegria, meu sorriso. Cada momento com você é um jogo, uma aventura, uma nova história para guardar no coração. 🎮🎉💕'
+  },
+  musica_secreta: {
+    title:'🎵 Música Secreta',
+    msg:'Sabe qual é a música mais bonita do mundo? É quando você ri. É quando você canta. É quando você fala meu nome. Essa é a verdadeira trilha sonora do nosso amor. 🎶💫'
+  },
+  segredinho: {
+    title:'🔐 Segredinho Nosso',
+    msg:'Tem coisas que só nós dois sabemos. Momentos que só nós guardaremos no coração para sempre. Segredos sussurrados, promessas compartilhadas, amor cristalino. Esse é nosso segredinho. 🤫💕'
+  },
+  nosso_lar: {
+    title:'🏡 Nosso Lar',
+    msg:'Não importa onde. Onde você está, é meu lar. Você é meu lar, Gyovanna. Seu abraço é a casa que sempre procurei. 🏡💕'
+  },
+  sonho_meu: {
+    title:'💭 Meu Sonho',
+    msg:'Você é meu sonho realizado! Acordei de um longo sono e você estava ali, sorrindo. Agora vivo cada dia como se fosse um sonho lindo. Obrigado por existir! ✨💕'
+  },
+  coracao: {
+    title:'❤️ Coração',
+    msg:'Meu coração bate sincronizado com o seu. Cada pulsação é um "eu te amo" ininterrupto. Seu rosto, seu toque, sua voz... tudo faz meu coração transbordá-lo. ❤️💓'
+  },
+  luz_minha: {
+    title:'✨ Luz Minha',
+    msg:'Você é minha luz nas trevas mais profundas. Em tempos sombrios, você é a estrela que nunca se apaga. Você ilumina meus dias, meus sonhos, minha vida inteira. ✨💫'
+  },
+  infinito: {
+    title:'♾️ Infinito',
+    msg:'Nosso amor é infinito, sem princípio nem fim. É um número que nunca termina, uma progressão que segue para sempre. Infinito é pouco para o que sinto por você. ♾️💕'
+  },
+  magia: {
+    title:'✨ Mágica',
+    msg:'Você é pura mágica! Seus olhos fecham feitiços, suas mãos desenham milagres, seu coração toca almas. A mágica mais verdadeira do universo é você. 🪄✨'
+  },
+  tesouro: {
+    title:'💎 Tesouro',
+    msg:'Você é meu tesouro mais precioso! Não há ouro em cofre, diamante em mina que se comparasse ao seu valor. Você é inestimável, incomparável, perfeita. 💎👑'
+  },
+  eternidade: {
+    title:'♾️ Eternidade',
+    msg:'Uma eternidade com você seria insuficiente! Todas as vidas, todos os universos, todas as dimensões — em todos eles, eu escolheria você. Sempre você. ♾️💕'
+  },
+  tres_coracao: {
+    title:'💕 Três Corações',
+    msg:'💕 é a melhor forma de começar uma conversa contigo. Porque expressa tudo: paixão, ternura, infinitude. Você merece toda a beleza representada nesse emoji. 💕💕💕'
+  },
+  nosso_amor: {
+    title:'💑 Nosso Amor',
+    msg:'Nosso amor é real, é puro, é verdadeiro. Não precisa de validação de ninguém porque ele existe entre duas almas destinadas. Nós somos o amor que as histórias falam. 💑💕'
+  },
 };
 let photoClicks = 0;
+let textBuffer = '';
+let clickTracker = [];
 
 function showSecret(type) {
   const s = SECRETS[type];
@@ -1883,13 +1988,86 @@ window.closeSecret=function(){
   document.body.style.overflow='';
 };
 
+// ===== KEYBOARD INPUT DETECTION =====
+const KEYWORDS = {
+  'TUDO': 'tudo',
+  'SATURNO': 'saturno',
+  'G+K': 'saturno',
+  'GYOVANNA': 'gyovanna',
+  'KAUÊ': 'kaue',
+  'KAUÊ': 'kaue',
+  'AMOR': 'amor',
+  'PARA SEMPRE': 'para_sempre',
+  'FOREVER': 'forever',
+  'TE AMO': 'te_amo',
+  'JUNHO20': 'junho20',
+  '20/06': 'junho20',
+  '20062025': 'junho20',
+  'ANÁPOLIS': 'anapolis',
+  'ANAPOLIS': 'anapolis',
+  'ESCORPIÃO': 'escorpiao',
+  'ESCORPIAO': 'escorpiao',
+  'DIVERSÃO': 'diversion',
+  'DIVERSION': 'diversion',
+  'MUSICA': 'musica_secreta',
+  'SEGREDINHO': 'segredinho',
+  'LAR': 'nosso_lar',
+  'SONHO': 'sonho_meu',
+  'CORAÇÃO': 'coracao',
+  'CORACÃO': 'coracao',
+  'LUZ': 'luz_minha',
+  'INFINITO': 'infinito',
+  'MAGIA': 'magia',
+  'TESOURO': 'tesouro',
+  'ETERNIDADE': 'eternidade',
+  'NOSSO AMOR': 'nosso_amor',
+};
+
+document.addEventListener('keypress', (e) => {
+  const char = e.key.toUpperCase();
+  if(/[A-Z0-9+/]/.test(char)) {
+    textBuffer += char;
+    if(textBuffer.length > 20) textBuffer = textBuffer.substring(1);
+    
+    for(const [keyword, secretKey] of Object.entries(KEYWORDS)) {
+      if(textBuffer.includes(keyword)) {
+        textBuffer = '';
+        showSecret(secretKey);
+        break;
+      }
+    }
+  }
+  if(char === 'ENTER') {
+    textBuffer = '';
+  }
+});
+
+// ===== DOUBLE CLICK TRIGGERS =====
+let lastClick = 0;
+let clickLocation = null;
+
+// Double-click na foto para Antares
+document.getElementById('hero-photo').addEventListener('dblclick', () => {
+  showSecret('antares');
+});
+
+// Double-click no title
+document.querySelector('.hero-title').addEventListener('dblclick', () => {
+  showSecret('nosso_amor');
+});
+
+// Double-click nas names
+document.querySelector('.hero-names').addEventListener('dblclick', () => {
+  showSecret('coracao');
+});
+
 // Photo 7-click
 document.getElementById('hero-photo').addEventListener('click',()=>{
   photoClicks++;
   if(photoClicks===7){photoClicks=0;showSecret('photo7');}
 });
 
-// KONAMI CODE
+// ===== KONAMI CODE =====
 let konamiSeq=[];
 const KONAMI=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 document.addEventListener('keydown',e=>{
@@ -1900,6 +2078,708 @@ document.addEventListener('keydown',e=>{
     showSecret('konami');
   }
 });
+
+// ===== SEQUÊNCIA DE CLIQUES EM ELEMENTOS =====
+let clickSequence = { 'hero-photo': 0, 'nav-logo': 0 };
+const MAX_CLICKS_SEQUENCE = 3;
+
+// Triple-click no logo
+document.querySelector('.nav-logo').addEventListener('click', () => {
+  clickSequence['nav-logo']++;
+  if(clickSequence['nav-logo'] >= MAX_CLICKS_SEQUENCE) {
+    clickSequence['nav-logo'] = 0;
+    showSecret('luz_minha');
+  }
+  setTimeout(() => {
+    clickSequence['nav-logo'] = 0;
+  }, 1500);
+});
+
+// ===== EASTER EGGS POR HORA =====
+function checkHourEasterEgg() {
+  const hour = new Date().getHours();
+  if(hour === 20) {
+    const easterMsg = ['Você num horário especial! 20:00 — nosso toque secreto! 💕', 'A hora do nosso amor! 🦂💫', '20 horas, 20 de junho... coincidência? Não, destino! 💕'][Math.floor(Math.random()*3)];
+    setTimeout(() => {
+      if(Math.random() > 0.7) {
+        showSecret(Math.random() > 0.5 ? 'junho20' : 'eternidade');
+      }
+    }, 5000);
+  }
+}
+
+// ===== EASTER EGGS POR HOVER =====
+document.querySelectorAll('.c-cell').forEach((cell, idx) => {
+  cell.addEventListener('mouseenter', () => {
+    if(Math.random() > 0.92) {
+      showSecret('segredinho');
+    }
+  });
+});
+
+// ===== EASTER EGGS - CLIQUE EM MÚLTIPLOS ELEMENTOS =====
+let multiClickCounter = { count: 0, elements: [] };
+document.addEventListener('click', (e) => {
+  const clickElements = ['hero-photo', 'c-cell', 'nav-logo', 'hero-title', 'hero-names'];
+  const clickedId = e.target.id || e.target.parentElement.id || e.target.className;
+  
+  if(clickElements.some(el => e.target.id === el || e.target.className?.includes(el))) {
+    multiClickCounter.count++;
+    multiClickCounter.elements.push(clickedId);
+    
+    if(multiClickCounter.count === 5) {
+      showSecret(['tesouro', 'infinito', 'magia', 'luz_minha', 'eternidade'][Math.floor(Math.random()*5)]);
+      multiClickCounter = { count: 0, elements: [] };
+    }
+    
+    setTimeout(() => {
+      multiClickCounter.count = 0;
+      multiClickCounter.elements = [];
+    }, 5000);
+  }
+});
+
+// ===== EASTER EGGS - SCROLL BEHAVIOR =====
+let scrollCount = 0;
+window.addEventListener('scroll', () => {
+  scrollCount++;
+  if(scrollCount === 42) {
+    showSecret('nosso_amor');
+    scrollCount = 0;
+  }
+  if(scrollCount === 20) {
+    if(Math.random() > 0.85) showSecret('luz_minha');
+  }
+});
+
+// ===== EASTER EGGS - GAME SPECIFIC =====
+// Ao ganhar Wordle
+window.giftWinWordle = function() {
+  if(Math.random() > 0.5) showSecret('tudo');
+};
+
+// Ao ganhar Jogo da Memória
+window.giftWinMemory = function() {
+  if(Math.random() > 0.6) showSecret('nosso_amor');
+};
+
+// Ao vencer o Quiz
+window.giftWinQuiz = function(score) {
+  if(score === 5) showSecret('gyovanna');
+  else if(Math.random() > 0.7) showSecret('coracao');
+};
+
+// ===== EASTER EGGS - REDEFINIÇÃO DE JOGOS =====
+// Ao resetar Hearts 7x
+let heartsResetCount = 0;
+window.trackHeartsReset = function() {
+  heartsResetCount++;
+  if(heartsResetCount === 7) {
+    showSecret('te_amo');
+    heartsResetCount = 0;
+  }
+};
+
+// Ao resetar Stars 5x
+let starsResetCount = 0;
+window.trackStarsReset = function() {
+  starsResetCount++;
+  if(starsResetCount === 5) {
+    showSecret('luz_minha');
+    starsResetCount = 0;
+  }
+};
+
+// ===== MOUSE MOVEMENT EASTER EGGS =====
+let mouseX = 0, mouseY = 0;
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  
+  // Easter egg ao atingir certos pontos da tela
+  if(mouseX < 50 && mouseY < 50) { // Canto superior esquerdo
+    if(Math.random() > 0.99) showSecret('magia');
+  }
+  if(mouseX > window.innerWidth - 50 && mouseY > window.innerHeight - 50) { // Canto inferior direito
+    if(Math.random() > 0.99) showSecret('infinito');
+  }
+  if(mouseX > window.innerWidth - 50 && mouseY < 50) { // Canto superior direito
+    if(Math.random() > 0.99) showSecret('escorpiao');
+  }
+});
+
+// ===== EASTER EGGS - RANDOM TRIGGERS =====
+function randomEasterEggTrigger() {
+  setInterval(() => {
+    if(Math.random() > 0.99) {
+      const secrets = Object.keys(SECRETS);
+      showSecret(secrets[Math.floor(Math.random() * secrets.length)]);
+    }
+  }, 15000);
+}
+
+// ===== EASTER EGGS - FOCUS EVENTS =====
+window.addEventListener('focus', () => {
+  if(Math.random() > 0.92) {
+    showSecret(['coracao', 'luz_minha', 'eternidade'][Math.floor(Math.random()*3)]);
+  }
+});
+
+// ===== EASTER EGGS - ORIENTAÇÃO DO DISPOSITIVO =====
+window.addEventListener('orientationchange', () => {
+  if(Math.random() > 0.85) {
+    showSecret('magia');
+  }
+});
+
+// ===== EASTER EGGS - NIGHT MODE =====
+function checkNightMode() {
+  const hour = new Date().getHours();
+  if(hour >= 20 || hour <= 5) {
+    if(Math.random() > 0.95) {
+      showSecret(['escorpiao', 'infinito', 'eternidade'][Math.floor(Math.random()*3)]);
+    }
+  }
+}
+
+// ===== EASTER EGGS - COMBINAÇÕES ALEATÓRIAS =====
+const EASTER_COMBOS = [
+  { trigger: 'dblclick', target: 'hero-ring', secret: 'infinito' },
+  { trigger: 'dblclick', target: 'counter', secret: 'junho20' },
+  { trigger: 'contextmenu', target: 'document', secret: 'segredinho' },
+];
+
+// Right-click easter egg
+document.addEventListener('contextmenu', (e) => {
+  if(Math.random() > 0.8) {
+    e.preventDefault();
+    showSecret('segredinho');
+  }
+});
+
+// ===== EASTER EGGS - LOAD EVENTS =====
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if(Math.random() > 0.85) {
+      showSecret('amor');
+    }
+  }, 3000);
+  checkHourEasterEgg();
+  randomEasterEggTrigger();
+  checkNightMode();
+});
+
+// ===== EASTER EGGS - ELEMENTO REVEALMENT CHECK =====
+const revealObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) {
+      e.target.classList.add('visible');
+      if(Math.random() > 0.92) {
+        if(e.target.textContent.includes('Memória') || e.target.textContent.includes('Jogar')) {
+          showSecret(['nosso_amor', 'coracao'][Math.floor(Math.random()*2)]);
+        }
+      }
+    }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+// ===== EASTER EGGS - HOVER SECTIONS =====
+document.querySelectorAll('.section').forEach(section => {
+  section.addEventListener('mouseenter', () => {
+    if(Math.random() > 0.98) {
+      showSecret(Object.keys(SECRETS)[Math.floor(Math.random() * Object.keys(SECRETS).length)]);
+    }
+  });
+});
+
+// ===== EASTER EGGS - MULTIPLE KEYBOARD SHORTCUTS =====
+const shortcuts = {
+  'ctrl+shift+l': 'luz_minha',
+  'ctrl+shift+a': 'amor',
+  'ctrl+shift+h': 'coracao',
+  'ctrl+shift+e': 'eternidade',
+  'ctrl+shift+i': 'infinito',
+  'ctrl+shift+m': 'magia',
+};
+
+document.addEventListener('keydown', (e) => {
+  const shortcut = (e.ctrlKey ? 'ctrl+' : '') + (e.shiftKey ? 'shift+' : '') + e.key.toLowerCase();
+  if(shortcuts[shortcut]) {
+    e.preventDefault();
+    showSecret(shortcuts[shortcut]);
+  }
+});
+
+// ===== EASTER EGGS - GAME WIN TRIGGERS =====
+// Wordle win tracker
+let wordleWins = 0;
+const origWordleCheck = window.checkGuess || (() => {});
+window.trackWordleWin = function() {
+  wordleWins++;
+  if(wordleWins === 3) {
+    showSecret('tudo');
+    wordleWins = 0;
+  }
+};
+
+// Memory wins
+let memoryWins = 0;
+window.trackMemoryWin = function() {
+  memoryWins++;
+  if(memoryWins === 2) {
+    showSecret('gyovanna');
+    memoryWins = 0;
+  }
+};
+
+// Quiz perfect score
+window.trackQuizPerfect = function() {
+  if(Math.random() > 0.5) showSecret('gyovanna');
+};
+
+// Wheel spins
+let wheelSpins = 0;
+const origSpinWheel = window.spinWheel || (() => {});
+window.trackWheelSpin = function() {
+  wheelSpins++;
+  if(wheelSpins === 13) {
+    showSecret('infinito');
+    wheelSpins = 0;
+  }
+};
+
+// ===== EASTER EGGS - INACTIVITY =====
+let inactivityTimer = null;
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    if(Math.random() > 0.85) {
+      showSecret(['te_amo', 'coracao', 'eternidade'][Math.floor(Math.random()*3)]);
+    }
+  }, 90000); // 90 segundos de inatividade
+}
+document.addEventListener('click', resetInactivityTimer);
+document.addEventListener('keypress', resetInactivityTimer);
+document.addEventListener('mousemove', resetInactivityTimer);
+
+// ===== EASTER EGGS - SPECIAL CLICK COMBINATIONS =====
+let specialCombo = [];
+document.addEventListener('click', (e) => {
+  const target = e.target.closest('[data-combo]');
+  if(target) {
+    specialCombo.push(target.dataset.combo);
+    if(specialCombo.length > 4) specialCombo.shift();
+    
+    if(specialCombo.join('-') === 'heart-star-rose-gold') {
+      showSecret('nosso_amor');
+      specialCombo = [];
+    }
+  }
+});
+
+// ===== EASTER EGGS - SOUND/AUDIO TRIGGERS =====
+document.addEventListener('play', (e) => {
+  if(e.target.tagName === 'AUDIO' || e.target.closest('[class*="music"], [class*="player"]')) {
+    if(Math.random() > 0.85) {
+      showSecret('saturno');
+    }
+  }
+});
+
+// ===== EASTER EGGS - VISIBILITY CHANGE =====
+document.addEventListener('visibilitychange', () => {
+  if(document.hidden) {
+    if(Math.random() > 0.9) {
+      setTimeout(() => {
+        if(!document.hidden) {
+          showSecret(['te_amo', 'luz_minha', 'infinito'][Math.floor(Math.random()*3)]);
+        }
+      }, 1000);
+    }
+  }
+});
+
+// ===== EASTER EGGS - NETWORK STATUS =====
+window.addEventListener('online', () => {
+  if(Math.random() > 0.8) {
+    showSecret('luz_minha');
+  }
+});
+
+// ===== EASTER EGGS - CONTADOR DE DESCOBERTAS =====
+let discoveredSecrets = new Set();
+let eggShowCount = 0;
+
+// Override showSecret para rastrear descobertas
+const origShowSecretFunc = showSecret;
+function enhancedShowSecret(type) {
+  discoveredSecrets.add(type);
+  eggShowCount++;
+  console.log(`🔓 Easter Egg descoberto! (${discoveredSecrets.size}/${Object.keys(SECRETS).length})`);
+  origShowSecretFunc(type);
+  
+  // Bônus ao descobrir todos!
+  if(discoveredSecrets.size === Object.keys(SECRETS).length) {
+    const allDiscoveredMsg = document.createElement('div');
+    allDiscoveredMsg.innerHTML = '🎉 VOCÊ DESCOBRIU TODOS OS SEGREDOS! ESTÁ NA HORA DE COMEMORAR! 🎉';
+    allDiscoveredMsg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg, #e8647a, #9b7ccd);color:white;padding:2rem;border-radius:20px;z-index:10000;font-weight:bold;text-align:center;font-size:1.2rem;box-shadow:0 0 30px rgba(232,100,122,0.6);animation:pulse 1s infinite;';
+    document.body.appendChild(allDiscoveredMsg);
+    setTimeout(() => allDiscoveredMsg.remove(), 4000);
+  }
+}
+
+// Sobrescreve a função original
+showSecret = enhancedShowSecret;
+
+// ===== EASTER EGGS - PADRÕES DE DIGITAÇÃO =====
+let prevKeyTime = 0;
+let keySpeed = [];
+document.addEventListener('keypress', (e) => {
+  const currentTime = Date.now();
+  if(prevKeyTime > 0) {
+    keySpeed.push(currentTime - prevKeyTime);
+  }
+  prevKeyTime = currentTime;
+  
+  if(keySpeed.length > 10) keySpeed.shift();
+  
+  // Se digitar muito rápido (spam)
+  const avgSpeed = keySpeed.reduce((a,b) => a+b, 0) / keySpeed.length || 0;
+  if(avgSpeed < 50 && keySpeed.length === 10) {
+    showSecret('magia');
+    keySpeed = [];
+    prevKeyTime = 0;
+  }
+  
+  // Se digitar muito lento
+  if(avgSpeed > 2000 && keySpeed.length === 10) {
+    showSecret('paciencia');
+    keySpeed = [];
+    prevKeyTime = 0;
+  }
+});
+
+// ===== EASTER EGGS - ELEMENT VISIBILITY TRACKING =====
+let scrolledSections = new Set();
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.section').forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if(rect.top < window.innerHeight && rect.bottom > 0) {
+      const sectionId = section.getAttribute('id') || section.querySelector('h2')?.textContent;
+      if(!scrolledSections.has(sectionId)) {
+        scrolledSections.add(sectionId);
+        if(scrolledSections.size === 3 && Math.random() > 0.7) {
+          showSecret('curiosidade');
+        }
+      }
+    }
+  });
+});
+
+// ===== EASTER EGGS - BONUS SECRETS =====
+const BONUS_SECRETS = {
+  paciencia: {
+    title:'⏳ Paciência Infinita',
+    msg:'Você digitou lentamente... como se estivesse compondo uma carta de amor. Paciência é uma forma de amor. 💕'
+  },
+  curiosidade: {
+    title:'👀 Curiosidade',
+    msg:'Você está explorando tudo! Curiosidade é como você explora meu coração — em cada canto, uma descoberta. 💕✨'
+  },
+  sorte: {
+    title:'🍀 Sorte',
+    msg:'Você tem sorte comigo, assim como eu tenho sorte com você. Somos feitos um para o outro. 🍀💕'
+  },
+  perseveranca: {
+    title:'💪 Perseverança',
+    msg:'Você não desiste! Assim como nosso amor — forte, constante, eternamente persistente. 💪💕'
+  },
+  velocidade: {
+    title:'⚡ Velocidade',
+    msg:'Seu coração bate rápido — como o meu bate quando você está perto. ⚡💓'
+  },
+};
+
+// Merge bonus secrets
+Object.assign(SECRETS, BONUS_SECRETS);
+
+// ===== EASTER EGGS - ALEATÓRIOS CONTEXTUAIS =====
+let contextualSeeds = {
+  gamePlaying: 0,
+  gamesWon: 0,
+  totalClicks: 0,
+  totalKeys: 0,
+};
+
+document.addEventListener('click', () => {
+  contextualSeeds.totalClicks++;
+  if(contextualSeeds.totalClicks === 69) { // número especial
+    showSecret('sorte');
+    contextualSeeds.totalClicks = 0;
+  }
+});
+
+document.addEventListener('keypress', () => {
+  contextualSeeds.totalKeys++;
+  if(contextualSeeds.totalKeys === 100) {
+    showSecret('perseveranca');
+    contextualSeeds.totalKeys = 0;
+  }
+});
+
+// ===== EASTER EGGS - COMBINAÇÕES DE EVENTOS =====
+let eventSequence = [];
+['click', 'keypress', 'scroll', 'mousemove'].forEach(eventType => {
+  document.addEventListener(eventType, () => {
+    eventSequence.push(eventType);
+    if(eventSequence.length > 6) eventSequence.shift();
+    
+    // Padrão específico
+    if(eventSequence.join('-').includes('scroll-click-keypress')) {
+      if(Math.random() > 0.7) {
+        showSecret('velocidade');
+        eventSequence = [];
+      }
+    }
+  });
+});
+
+// ===== EASTER EGGS - TIME-BASED SPECIALS =====
+function checkDateSpecials() {
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  
+  // 20 de junho (data do casal)
+  if(month === 6 && day === 20) {
+    if(Math.random() > 0.85) {
+      showSecret('junho20');
+    }
+  }
+  
+  // Meia-noite especial
+  if(date.getHours() === 0 && date.getMinutes() === 0) {
+    if(Math.random() > 0.8) {
+      showSecret('infinito');
+    }
+  }
+}
+
+setInterval(checkDateSpecials, 60000);
+
+// ===== EASTER EGGS - BATIDA DO CORAÇÃO =====
+let heartbeatPattern = [];
+document.addEventListener('click', (e) => {
+  const now = Date.now();
+  heartbeatPattern.push(now);
+  if(heartbeatPattern.length > 1) {
+    heartbeatPattern = heartbeatPattern.slice(-5);
+    const intervals = [];
+    for(let i = 1; i < heartbeatPattern.length; i++) {
+      intervals.push(heartbeatPattern[i] - heartbeatPattern[i-1]);
+    }
+    
+    // Se os cliques seguem um ritmo de batida de coração
+    const avgInterval = intervals.reduce((a,b) => a+b, 0) / intervals.length;
+    const isRegular = intervals.every(i => Math.abs(i - avgInterval) < 100);
+    
+    if(isRegular && avgInterval > 300 && avgInterval < 1000 && intervals.length === 4) {
+      showSecret('coracao');
+      heartbeatPattern = [];
+    }
+  }
+});
+
+// ===== EASTER EGGS - RANDOM SURPRISE POPUPS =====
+setTimeout(() => {
+  const surprises = ['luz_minha', 'magia', 'eternidade', 'infinito', 'te_amo'];
+  const randomSurprise = () => {
+    if(Math.random() > 0.99) {
+      showSecret(surprises[Math.floor(Math.random() * surprises.length)]);
+    }
+  };
+  setInterval(randomSurprise, 30000);
+}, 120000);
+
+// ===== EASTER EGGS - CONSOLE EASTER EGGS =====
+window.debugSecrets = function(count = false) {
+  if(count) {
+    console.log(`%c🔓 Segredos Descobertos: ${discoveredSecrets.size}/${Object.keys(SECRETS).length}`, 'color: #e8647a; font-weight: bold; font-size: 14px;');
+    console.log('%cLista de segredos descobertos:', 'color: #9b7ccd; font-weight: bold;');
+    Array.from(discoveredSecrets).forEach(s => {
+      console.log(`  ✨ ${SECRETS[s].title}`);
+    });
+  }
+  console.log('%c🔐 EASTER EGGS DISPONÍVEIS:', 'color: #6ab0e8; font-weight: bold; font-size: 16px;');
+  Object.entries(SECRETS).forEach(([key, secret]) => {
+    const discovered = discoveredSecrets.has(key) ? '✅' : '🔒';
+    console.log(`  ${discovered} ${key}: ${secret.title}`);
+  });
+};
+
+// Dica ao abrir console
+console.log('%c💕 Bem-vindo ao console especial! 💕', 'color: #e8647a; font-weight: bold; font-size: 18px; text-shadow: 0 0 10px rgba(232,100,122,0.5);');
+console.log('%cDigite: debugSecrets() para ver todos os easter eggs!', 'color: #c9956e; font-weight: bold; font-size: 12px;');
+console.log('%cDigite: debugSecrets(true) para ver quantos você descobriu!', 'color: #9b7ccd; font-weight: bold; font-size: 12px;');
+
+// ===== EASTER EGGS - STATUS NO CONSOLE =====
+console.log('%c🌈 Cada easter egg descoberto é uma prova do nosso amor! 🌈', 'color: #f5ede3; font-weight: bold; background: linear-gradient(90deg, #e8647a, #c9956e, #9b7ccd, #6ab0e8); padding: 10px; border-radius: 5px;');
+
+// ===== EASTER EGGS - EASTER EGG CHAINS =====
+// Descobrir um easter egg aumenta probabilidade de descobrir outro
+window.addEventListener('load', () => {
+  // Ao descobrir 5 segredos, revela dica especial
+  const checkMilestones = setInterval(() => {
+    if(discoveredSecrets.size === 5) {
+      console.log('%c💡 Dica: Tente digitar palavras especiais ou fazer combinações de cliques!', 'color: #e8647a; font-weight: bold;');
+    }
+    if(discoveredSecrets.size === 10) {
+      console.log('%c🎯 Você está no caminho certo! Continue explorando!', 'color: #c9956e; font-weight: bold;');
+    }
+    if(discoveredSecrets.size === 15) {
+      console.log('%c✨ Você está descobrindo todos os segredos do nosso amor!', 'color: #9b7ccd; font-weight: bold;');
+    }
+    if(discoveredSecrets.size === 20) {
+      console.log('%c🏆 Super explorador! Você é incrível!', 'color: #6ab0e8; font-weight: bold;');
+    }
+  }, 5000);
+});
+
+// ===== EASTER EGGS - ELEMENT SPECIFIC TRIGGERS =====
+// Clique triplo em diferentes elementos
+const tripleClickElements = {
+  'hero-eyebrow': 'luz_minha',
+  'hero-ring': 'magia',
+  'counter': 'junho20',
+  'nav-logo': 'coracao',
+};
+
+for(const [id, secret] of Object.entries(tripleClickElements)) {
+  const elem = document.getElementById(id);
+  if(elem) {
+    let clicks = 0;
+    let clickTimer = null;
+    elem.addEventListener('click', () => {
+      clicks++;
+      if(clicks === 3) {
+        showSecret(secret);
+        clicks = 0;
+      }
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { clicks = 0; }, 1500);
+    });
+  }
+}
+
+// ===== EASTER EGGS - WORD PATTERNS =====
+const wordPatterns = {
+  'TE AMO MUITO': 'te_amo',
+  'MEU AMOR': 'nosso_amor',
+  'PARA SEMPRE JUNTOS': 'para_sempre',
+  'MINHA RAINHA': 'gyovanna',
+  'MEU REI': 'kaue',
+  'SENTIMENTO': 'coracao',
+  'BRILHO': 'luz_minha',
+  'MÁGICA': 'magia',
+  'SONHO': 'sonho_meu',
+  'DESTINO': 'junho20',
+};
+
+document.addEventListener('keypress', () => {
+  for(const [pattern, secret] of Object.entries(wordPatterns)) {
+    if(textBuffer.includes(pattern)) {
+      showSecret(secret);
+      textBuffer = '';
+      break;
+    }
+  }
+});
+
+// ===== EASTER EGGS - ACHIEVEMENT SYSTEM =====
+const achievements = {
+  first_secret: { unlocked: false, name: '🔓 Primeiro Segredo' },
+  five_secrets: { unlocked: false, name: '⭐ Cinco Segredos' },
+  ten_secrets: { unlocked: false, name: '🌟 Dez Segredos' },
+  all_secrets: { unlocked: false, name: '👑 Mestre dos Segredos' },
+  console_master: { unlocked: false, name: '💻 Explorador Técnico' },
+  patient_one: { unlocked: false, name: '⏳ O Paciente' },
+  speed_demon: { unlocked: false, name: '⚡ O Rápido' },
+  heart_breaker: { unlocked: false, name: '💓 Batida de Coração' },
+  word_master: { unlocked: false, name: '📝 Mestre de Palavras' },
+  night_owl: { unlocked: false, name: '🌙 Coruja Noturna' },
+};
+
+window.unlockAchievement = function(achKey) {
+  if(!achievements[achKey] || achievements[achKey].unlocked) return;
+  achievements[achKey].unlocked = true;
+  console.log(`%c🏆 CONQUISTA DESBLOQUEADA: ${achievements[achKey].name}`, 'color: #gold; font-weight: bold; font-size: 14px;');
+};
+
+// Check achievements
+discoveredSecrets.size === 0 && (window.addEventListener('load', () => {
+  if(eggShowCount === 1) unlockAchievement('first_secret');
+  if(discoveredSecrets.size === 5) unlockAchievement('five_secrets');
+  if(discoveredSecrets.size === 10) unlockAchievement('ten_secrets');
+}));
+
+// ===== EASTER EGGS - NOTIFICATION SYSTEM =====
+window.notify = function(msg, emoji = '💕') {
+  const notif = document.createElement('div');
+  notif.textContent = `${emoji} ${msg}`;
+  notif.style.cssText = `position:fixed;bottom:2rem;right:2rem;background:rgba(232,100,122,0.9);color:white;padding:1rem 1.5rem;border-radius:12px;z-index:1000;font-weight:500;animation:slideIn .4s ease;backdrop-filter:blur(10px);`;
+  document.body.appendChild(notif);
+  setTimeout(() => notif.remove(), 3000);
+};
+
+// ===== EASTER EGGS - SURPRISE DAILY =====
+function getDayOfYear() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
+}
+
+const dailySecret = () => {
+  const dayOfYear = getDayOfYear();
+  const secrets = Object.keys(SECRETS);
+  const today = secrets[dayOfYear % secrets.length];
+  if(Math.random() > 0.9 && !discoveredSecrets.has(today)) {
+    notify('Segredo do dia desbloqueado!', '🎁');
+    setTimeout(() => showSecret(today), 500);
+  }
+};
+
+// ===== EASTER EGGS - COMBINATION TRIGGERS =====
+let comboClock = [];
+document.addEventListener('keypress', (e) => {
+  comboClock.push(e.key.toLowerCase());
+  if(comboClock.length > 15) comboClock.shift();
+  
+  // Sequência: "TE AMO GYOVANNA"
+  if(comboClock.join('').includes('teamogvyzanna') || comboClock.join('').includes('teamogyovanna')) {
+    showSecret('gyovanna');
+    comboClock = [];
+  }
+});
+
+// ===== EASTER EGGS - OUTRO SYSTEM =====
+window.addEventListener('beforeunload', () => {
+  if(discoveredSecrets.size > 0) {
+    console.log(`%c💕 Você descobriu ${discoveredSecrets.size} segredos! Volte para descobrir mais! 💕`, 'color: #e8647a; font-weight: bold;');
+  }
+});
+
+// ===== EASTER EGGS - FINALE TRIGGER =====
+// Ao descobrir todos, adiciona mensagem final especial
+const finalCheckInterval = setInterval(() => {
+  if(discoveredSecrets.size === Object.keys(SECRETS).length) {
+    console.log('%c🎉🎉🎉 VOCÊ DESCOBRIU TODOS OS 40+ EASTER EGGS! 🎉🎉🎉', 'color: #FFD700; font-weight: bold; font-size: 18px;');
+    console.log('%cVocê é o maior explorador do nosso amor! Isso é tão especial! 💕', 'color: #e8647a; font-weight: bold;');
+    clearInterval(finalCheckInterval);
+  }
+}, 5000);
 
 // === CONFETTI ===
 function launchConfetti() {
