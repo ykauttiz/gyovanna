@@ -335,6 +335,58 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 .dice-stat-label{color:var(--muted);font-size:.7rem;text-transform:uppercase;}
 .dice-stat-val{color:var(--rose-s);font-weight:700;font-size:1.2rem;}
 
+/* HEARTS GAME */
+.hearts-container{display:flex;flex-direction:column;align-items:center;gap:2rem;margin:2rem 0;}
+.hearts-display{font-size:4rem;font-weight:700;color:var(--rose-s);animation:pulse 1s ease infinite;min-height:80px;}
+.heart-btn{font-size:5rem;background:none;border:none;cursor:pointer;transition:all .1s;filter:drop-shadow(0 0 8px rgba(232,100,122,0.5));}
+.heart-btn:hover{transform:scale(1.2);}
+.heart-btn:active{transform:scale(.8);}
+.hearts-combo{font-size:1.2rem;color:var(--gold-s);font-weight:700;animation:bounce 1s ease infinite;}
+#combo-count{color:var(--rose-s);font-size:1.5rem;}
+
+/* STARS GAME */
+.stars-field{position:relative;width:100%;max-width:400px;height:400px;background:linear-gradient(135deg,rgba(107,80,154,.2),rgba(106,176,232,.2));border:2px solid var(--brd);border-radius:20px;margin:0 auto 1.5rem;overflow:hidden;}
+.star-item{position:absolute;font-size:2.5rem;cursor:pointer;animation:star-pulse 1.5s ease-in-out infinite;transition:all .2s;}
+.star-item:hover{transform:scale(1.3);}
+@keyframes star-pulse{0%,100%{transform:scale(1);opacity:.8;}50%{transform:scale(1.2);opacity:1;}}
+.stars-score{display:flex;gap:2rem;justify-content:center;font-size:1.1rem;color:var(--muted);}
+
+/* WHEEL GAME */
+.wheel-wrapper{position:relative;display:flex;align-items:center;justify-content:center;margin:2rem 0;}
+.wheel-btn{position:absolute;width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--rose-s));border:none;color:white;font-weight:700;font-size:1rem;cursor:pointer;z-index:10;box-shadow:0 0 20px rgba(232,100,122,0.5);transition:all .3s;animation:glow-pulse 2s ease infinite;}
+.wheel-btn:hover{transform:scale(1.1);}
+.wheel-btn:disabled{opacity:.5;cursor:not-allowed;}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 20px rgba(232,100,122,0.5);}50%{box-shadow:0 0 40px rgba(232,100,122,0.8);}}
+#wheel-canvas{max-width:100%;filter:drop-shadow(0 0 20px rgba(232,100,122,0.3));}
+.wheel-result{margin-top:1.5rem;font-size:1.3rem;color:var(--rose-s);font-weight:700;min-height:40px;animation:fade-in .5s ease;}
+
+/* LOVE PAIRS */
+.love-pairs-board{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:300px;margin:1.5rem auto;padding:1rem;background:var(--card);border-radius:15px;border:1px solid var(--brd2);}
+.love-pair-card{width:70px;height:70px;background:var(--bg3);border:2px solid var(--brd2);border-radius:10px;font-size:2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;animation:flip-in .6s ease;}
+.love-pair-card:hover{border-color:var(--rose-s);transform:scale(1.1);}
+.love-pair-card.matched{background:rgba(232,100,122,.2);border-color:var(--rose-s);}
+@keyframes flip-in{from{transform:rotateY(90deg);opacity:0;}to{transform:rotateY(0);opacity:1;}}
+
+/* LOVE CHALLENGE */
+.challenge-wrap{max-width:600px;margin:1.5rem auto;}
+.challenge-q{font-size:1.2rem;font-weight:600;margin:1.5rem 0;color:var(--cream);animation:fade-in .5s ease;}
+.challenge-opts{display:flex;flex-direction:column;gap:.8rem;}
+.challenge-opt{background:var(--card);border:2px solid var(--brd2);padding:1rem;border-radius:12px;cursor:pointer;transition:all .3s;animation:slide-in-left .5s ease forwards;opacity:0;}
+.challenge-opt:nth-child(1){animation-delay:0.1s;}
+.challenge-opt:nth-child(2){animation-delay:0.2s;}
+.challenge-opt:nth-child(3){animation-delay:0.3s;}
+.challenge-opt:nth-child(4){animation-delay:0.4s;}
+.challenge-opt:hover{border-color:var(--rose-s);background:rgba(232,100,122,.1);}
+.challenge-opt.correct{border-color:#50b450;background:rgba(80,180,80,.15);}
+.challenge-opt.wrong{border-color:#d44;background:rgba(220,68,68,.15);}
+
+/* EXTRA ANIMATIONS */
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(232,100,122,.3);}50%{box-shadow:0 0 16px rgba(232,100,122,.6);}}
+@keyframes slide-in-left{from{opacity:0;transform:translateX(-30px);}to{opacity:1;transform:translateX(0);}}
+@keyframes flip{0%{transform:rotateY(0);}100%{transform:rotateY(360deg);}}
+@keyframes wiggle{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}}
+
 /* KONAMI HINT */
 #konami-hint{position:fixed;bottom:1rem;right:1rem;font-size:.6rem;letter-spacing:.1em;color:rgba(255,255,255,.1);z-index:100;transition:opacity .5s;}
 #konami-hint:hover{color:rgba(255,255,255,.3);}
@@ -733,6 +785,11 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
       <button class="gtab" onclick="switchGame(2,this)">📝 Quiz</button>
       <button class="gtab" onclick="switchGame(3,this)">❌⭕ Velha</button>
       <button class="gtab" onclick="switchGame(4,this)">🎲 Dado</button>
+      <button class="gtab" onclick="switchGame(5,this)">💕 Corações</button>
+      <button class="gtab" onclick="switchGame(6,this)">⭐ Estrelas</button>
+      <button class="gtab" onclick="switchGame(7,this)">🎡 Roda</button>
+      <button class="gtab" onclick="switchGame(8,this)">💑 Pares</button>
+      <button class="gtab" onclick="switchGame(9,this)">💘 Desafio</button>
     </div>
 
     <!-- WORDLE -->
@@ -825,6 +882,62 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
             <div class="dice-stat-val" id="dice-total">-</div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- HEARTS GAME -->
+    <div class="gpanel" id="gp-5">
+      <div style="text-align:center;">
+        <p style="color:var(--muted);margin-bottom:1rem;">💕 Clique nos corações! Quanto mais, mais amor! 💕</p>
+        <div class="hearts-container" id="hearts-container">
+          <div class="hearts-display" id="hearts-display">0</div>
+          <button class="heart-btn" id="heart-btn" onclick="clickHeart()">💕</button>
+          <div class="hearts-combo" id="hearts-combo">Combo: <span id="combo-count">0</span></div>
+        </div>
+        <button onclick="resetHearts()" style="margin-top:1rem;">Resetar ↺</button>
+      </div>
+    </div>
+
+    <!-- STARS GAME -->
+    <div class="gpanel" id="gp-6">
+      <div style="text-align:center;">
+        <p style="color:var(--muted);margin-bottom:1rem;">⭐ Toque nas estrelas que brilham! ⭐</p>
+        <div class="stars-field" id="stars-field"></div>
+        <div class="stars-score">
+          <div>Score: <span id="stars-score">0</span></div>
+          <div>Tempo: <span id="stars-time">30</span>s</div>
+        </div>
+        <button onclick="resetStars()" style="margin-top:1rem;">Novo jogo ↺</button>
+      </div>
+    </div>
+
+    <!-- FORTUNE WHEEL -->
+    <div class="gpanel" id="gp-7">
+      <div style="text-align:center;">
+        <p style="color:var(--muted);margin-bottom:1rem;">🎡 Gire a roda do destino! 🎡</p>
+        <div class="wheel-wrapper">
+          <canvas id="wheel-canvas" width="300" height="300"></canvas>
+          <button class="wheel-btn" onclick="spinWheel()" id="spin-btn">GIRAR</button>
+        </div>
+        <div class="wheel-result" id="wheel-result"></div>
+      </div>
+    </div>
+
+    <!-- LOVE PAIRS -->
+    <div class="gpanel" id="gp-8">
+      <div style="text-align:center;">
+        <p style="color:var(--muted);margin-bottom:1rem;">💑 Encontre os pares de amor! 💑</p>
+        <div class="love-pairs-board" id="love-pairs-board"></div>
+        <div style="margin-top:1rem;color:var(--muted);">Pares: <span id="love-pairs-found">0</span>/6</div>
+        <button onclick="resetLovePairs()" style="margin-top:1rem;">Novo jogo ↺</button>
+      </div>
+    </div>
+
+    <!-- LOVE CHALLENGE -->
+    <div class="gpanel" id="gp-9">
+      <div style="text-align:center;">
+        <p style="color:var(--muted);margin-bottom:1rem;">💘 Desafio do amor - responda sobre nosso amor! 💘</p>
+        <div class="challenge-wrap" id="challenge-wrap"></div>
       </div>
     </div>
   </div>
@@ -1227,6 +1340,11 @@ function switchGame(idx, btn) {
   if(idx===1 && !memInitialized) { initMemory(); }
   if(idx===2 && !quizInitialized) { initQuiz(); }
   if(idx===3) { resetTTT(); }
+  if(idx===5) { document.getElementById('hearts-display').textContent = heartsCount; }
+  if(idx===6) { resetStars(); }
+  if(idx===7) { drawWheel(document.getElementById('wheel-canvas').getContext('2d'), 0); }
+  if(idx===8) { resetLovePairs(); }
+  if(idx===9) { loadChallenge(); }
 }
 
 // === MEMORY GAME ===
@@ -1483,6 +1601,210 @@ window.rollDice=function(){
     document.getElementById('dice-total').textContent=diceStats.total;
   },50);
 };
+
+// ===== HEARTS GAME =====
+let heartsCount = 0;
+let heartsCombo = 0;
+window.clickHeart = function() {
+  heartsCount++;
+  heartsCombo++;
+  document.getElementById('hearts-display').textContent = heartsCount;
+  document.getElementById('combo-count').textContent = heartsCombo;
+  
+  const btn = document.getElementById('heart-btn');
+  btn.style.animation = 'none';
+  setTimeout(() => { btn.style.animation = ''; }, 10);
+  
+  // Criar corações flutuantes
+  for(let i = 0; i < 3; i++) {
+    const h = document.createElement('div');
+    h.textContent = '💕';
+    h.style.cssText = `position:fixed;left:${Math.random()*100}vw;top:${Math.random()*100}vh;font-size:2rem;opacity:1;z-index:9;pointer-events:none;animation:float-away 2s ease-out forwards;`;
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 2000);
+  }
+};
+window.resetHearts = function() { heartsCount = 0; heartsCombo = 0; document.getElementById('hearts-display').textContent = '0'; document.getElementById('combo-count').textContent = '0'; };
+
+// ===== STARS GAME =====
+let starsScore = 0;
+let starsTime = 30;
+let starsActive = false;
+window.resetStars = function() {
+  starsScore = 0;
+  starsTime = 30;
+  starsActive = true;
+  document.getElementById('stars-score').textContent = '0';
+  document.getElementById('stars-time').textContent = '30';
+  document.getElementById('stars-field').innerHTML = '';
+  
+  const timer = setInterval(() => {
+    starsTime--;
+    document.getElementById('stars-time').textContent = starsTime;
+    if(starsTime <= 0) { clearInterval(timer); starsActive = false; }
+  }, 1000);
+  
+  // Criar estrelas
+  for(let i = 0; i < 15; i++) {
+    setTimeout(() => {
+      if(!starsActive) return;
+      const star = document.createElement('div');
+      star.textContent = '⭐';
+      star.className = 'star-item';
+      star.style.left = Math.random() * 90 + '%';
+      star.style.top = Math.random() * 90 + '%';
+      star.onclick = (e) => {
+        e.stopPropagation();
+        starsScore++;
+        document.getElementById('stars-score').textContent = starsScore;
+        star.remove();
+      };
+      document.getElementById('stars-field').appendChild(star);
+    }, i * 300);
+  }
+};
+
+// ===== FORTUNE WHEEL =====
+window.spinWheel = function() {
+  const btn = document.getElementById('spin-btn');
+  btn.disabled = true;
+  
+  const phrases = [
+    '💕 Você é meu tudo!',
+    '🌹 Te amo infinitamente',
+    '⭐ Você é minha estrela',
+    '🌙 Nosso amor brilha',
+    '🎁 Você é meu presente',
+    '👑 Rainha do meu coração',
+    '🌍 Meu mundo é você',
+    '💫 Eternidade juntos'
+  ];
+  
+  let spins = 0;
+  const spin = setInterval(() => {
+    spins++;
+    const canvas = document.getElementById('wheel-canvas');
+    const ctx = canvas.getContext('2d');
+    drawWheel(ctx, Math.random() * 360);
+    if(spins > 20) {
+      clearInterval(spin);
+      const result = phrases[Math.floor(Math.random() * phrases.length)];
+      document.getElementById('wheel-result').textContent = result;
+      btn.disabled = false;
+    }
+  }, 30);
+};
+function drawWheel(ctx, rotation) {
+  const colors = ['#e8647a', '#c9956e', '#9b7ccd', '#6ab0e8', '#f0a0b0', '#e8c4a0', '#c4a8f0', '#7ab3e8'];
+  ctx.clearRect(0, 0, 300, 300);
+  ctx.save();
+  ctx.translate(150, 150);
+  ctx.rotate(rotation * Math.PI / 180);
+  for(let i = 0; i < 8; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, 140, i * Math.PI / 4, (i + 1) * Math.PI / 4);
+    ctx.closePath();
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+    ctx.strokeStyle = '#030209';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// ===== LOVE PAIRS =====
+let lovePairsCards = [];
+let lovePairsFlipped = 0;
+let lovePairsMatched = 0;
+window.resetLovePairs = function() {
+  const pairs = ['💕', '💑', '👫', '🌹', '⭐', '💫'];
+  const cards = [...pairs, ...pairs].sort(() => Math.random() - 0.5);
+  lovePairsCards = cards;
+  lovePairsFlipped = 0;
+  lovePairsMatched = 0;
+  document.getElementById('love-pairs-found').textContent = '0';
+  
+  const board = document.getElementById('love-pairs-board');
+  board.innerHTML = '';
+  cards.forEach((card, idx) => {
+    const el = document.createElement('div');
+    el.className = 'love-pair-card';
+    el.textContent = '?';
+    el.onclick = () => flipLovePair(idx, el);
+    board.appendChild(el);
+  });
+};
+function flipLovePair(idx, el) {
+  if(lovePairsFlipped >= 2 || el.classList.contains('matched')) return;
+  el.textContent = lovePairsCards[idx];
+  lovePairsFlipped++;
+  
+  const flipped = document.querySelectorAll('.love-pair-card:not(.matched)');
+  if(flipped.length >= 4) {
+    const f = Array.from(flipped).filter(e => e.textContent !== '?');
+    if(f.length === 2 && f[0].textContent === f[1].textContent) {
+      f.forEach(e => e.classList.add('matched'));
+      lovePairsMatched++;
+      document.getElementById('love-pairs-found').textContent = lovePairsMatched;
+      lovePairsFlipped = 0;
+      if(lovePairsMatched === 6) {
+        setTimeout(() => alert('🎉 Parabéns! Encontrou todos os pares de amor!'), 500);
+      }
+    } else {
+      setTimeout(() => {
+        f.forEach(e => e.textContent = '?');
+        lovePairsFlipped = 0;
+      }, 1500);
+    }
+  } else {
+    lovePairsFlipped = 0;
+  }
+}
+
+// ===== LOVE CHALLENGE =====
+const challenges = [
+  { q: 'O que mais te apaixonou em mim?', opts: ['Seu sorriso', 'Seu jeito', 'Tudo', 'Seu coração'] },
+  { q: 'Quantos dias de relacionamento temos?', opts: ['Desde 20 de junho', 'Infinitos', 'Todos importam', 'Para sempre'] },
+  { q: 'Qual é nossa música?', opts: ['G + K Saturno', 'Música do coração', 'Som do amor', 'Nossas risadas'] },
+  { q: 'Qual constelação marcou nosso amor?', opts: ['Escorpião', 'Coração', 'Infinito', 'Antares'] },
+  { q: 'Como você me vê?', opts: ['Tudo que quero', 'Meu tesouro', 'Minha eternidade', 'Tudo'] }
+];
+let challengeIdx = 0;
+window.loadChallenge = function() {
+  if(challengeIdx < challenges.length) {
+    const c = challenges[challengeIdx];
+    let html = `<div class="challenge-q">${c.q}</div><div class="challenge-opts">`;
+    c.opts.forEach(opt => {
+      html += `<div class="challenge-opt" onclick="answerChallenge(this)">${opt}</div>`;
+    });
+    html += '</div>';
+    document.getElementById('challenge-wrap').innerHTML = html;
+    
+    document.querySelectorAll('.challenge-opt').forEach(el => {
+      el.onclick = function() {
+        this.classList.add('correct');
+        setTimeout(() => {
+          challengeIdx++;
+          loadChallenge();
+        }, 1500);
+      };
+    });
+  } else {
+    document.getElementById('challenge-wrap').innerHTML = '<div class="challenge-q">🎉 Você completou o desafio do amor!</div>';
+    challengeIdx = 0;
+  }
+};
+window.answerChallenge = loadChallenge;
+
+// Add float-away animation
+const style = document.createElement('style');
+style.textContent = `@keyframes float-away{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-100px)}}`;
+document.head.appendChild(style);
+
+// Initialize challenges on first load
+loadChallenge();
 
 // === ACHIEVEMENTS ===
 const ACHS=[
