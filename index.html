@@ -1962,8 +1962,14 @@ const discoveredSecrets = new Set();
 let eggShowCount = 0;
 
 function showSecret(type) {
+  console.log('🔍 showSecret chamado com:', type);
   const s = SECRETS[type];
-  if (!s) return;
+  if (!s) {
+    console.log('❌ Secret não encontrado:', type);
+    return;
+  }
+  
+  console.log('✅ Secret encontrado:', s.title);
   
   // Track discovered secrets
   if (!discoveredSecrets.has(type)) {
@@ -1982,6 +1988,7 @@ function showSecret(type) {
   document.body.style.overflow='hidden';
   spawnSecretHearts();
   launchConfetti();
+  console.log('🎉 Secret exibido com sucesso!');
 }
 
 function spawnSecretHearts() {
@@ -2036,21 +2043,25 @@ const KEYWORDS = {
   'NOSSO AMOR': 'nosso_amor',
 };
 
-document.addEventListener('keypress', (e) => {
-  const char = e.key.toUpperCase();
-  if(/[A-Z0-9+\/\s]/.test(char)) {
+document.addEventListener('keydown', (e) => {
+  // Suporte para letras, números, espaço e caracteres acentuados
+  if(e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+    const char = e.key.toUpperCase();
     textBuffer += char;
-    if(textBuffer.length > 30) textBuffer = textBuffer.substring(1);
+    if(textBuffer.length > 35) textBuffer = textBuffer.substring(1);
+    
+    console.log('⌨️ Buffer atual:', textBuffer);
     
     for(const [keyword, secretKey] of Object.entries(KEYWORDS)) {
       if(textBuffer.includes(keyword)) {
+        console.log('🎯 Palavra-chave encontrada:', keyword, '→', secretKey);
         textBuffer = '';
         showSecret(secretKey);
         break;
       }
     }
   }
-  if(char === 'ENTER') {
+  if(e.key === 'Enter') {
     textBuffer = '';
   }
 });
@@ -2064,20 +2075,51 @@ document.getElementById('hero-photo').addEventListener('dblclick', () => {
   showSecret('antares');
 });
 
-// Double-click no title
-document.querySelector('.hero-title').addEventListener('dblclick', () => {
-  showSecret('nosso_amor');
+// Double-click no title + mobile touch
+const heroTitle = document.querySelector('.hero-title');
+heroTitle.addEventListener('dblclick', () => showSecret('nosso_amor'));
+let titleTapCount = 0, titleLastTap = 0;
+heroTitle.addEventListener('touchstart', (e) => {
+  const now = Date.now();
+  if(now - titleLastTap < 300) {
+    showSecret('nosso_amor');
+    titleTapCount = 0;
+  }
+  titleLastTap = now;
+  titleTapCount++;
 });
 
-// Double-click nas names
-document.querySelector('.hero-names').addEventListener('dblclick', () => {
-  showSecret('coracao');
+// Double-click nas names + mobile touch
+const heroNames = document.querySelector('.hero-names');
+heroNames.addEventListener('dblclick', () => showSecret('coracao'));
+let namesTapCount = 0, namesLastTap = 0;
+heroNames.addEventListener('touchstart', (e) => {
+  const now = Date.now();
+  if(now - namesLastTap < 300) {
+    showSecret('coracao');
+    namesTapCount = 0;
+  }
+  namesLastTap = now;
+  namesTapCount++;
 });
 
-// Photo 7-click
-document.getElementById('hero-photo').addEventListener('click',()=>{
-  photoClicks++;
-  if(photoClicks===7){photoClicks=0;showSecret('photo7');}
+// Mobile: touch support for double/triple click
+let touchStartTime = 0;
+let touchCount = 0;
+const photo = document.getElementById('hero-photo');
+photo.addEventListener('touchstart', (e) => {
+  touchCount++;
+  const now = Date.now();
+  if(touchCount === 7) {
+    touchCount = 0;
+    showSecret('photo7');
+  }
+  if(now - touchStartTime < 300 && touchCount % 2 === 0) {
+    // Double tap detected
+    showSecret('antares');
+  }
+  touchStartTime = now;
+  setTimeout(() => { if(touchCount > 0) touchCount--; }, 1000);
 });
 
 // ===== KONAMI CODE =====
@@ -2096,16 +2138,28 @@ document.addEventListener('keydown',e=>{
 let clickSequence = { 'hero-photo': 0, 'nav-logo': 0 };
 const MAX_CLICKS_SEQUENCE = 3;
 
-// Triple-click no logo
-document.querySelector('.nav-logo').addEventListener('click', () => {
-  clickSequence['nav-logo']++;
-  if(clickSequence['nav-logo'] >= MAX_CLICKS_SEQUENCE) {
-    clickSequence['nav-logo'] = 0;
+// Triple-click no logo + mobile touch support
+const navLogo = document.querySelector('.nav-logo');
+let logoClicks = 0, logoTapCount = 0, logoLastTap = 0;
+
+navLogo.addEventListener('click', () => {
+  logoClicks++;
+  if(logoClicks >= 3) {
+    logoClicks = 0;
     showSecret('luz_minha');
   }
-  setTimeout(() => {
-    clickSequence['nav-logo'] = 0;
-  }, 1500);
+  setTimeout(() => { logoClicks = 0; }, 1500);
+});
+
+navLogo.addEventListener('touchstart', (e) => {
+  const now = Date.now();
+  logoTapCount++;
+  if(logoTapCount >= 3) {
+    showSecret('luz_minha');
+    logoTapCount = 0;
+  }
+  logoLastTap = now;
+  setTimeout(() => { if(logoTapCount > 0) logoTapCount--; }, 1500);
 });
 
 // ===== EASTER EGGS POR HORA =====
@@ -2373,8 +2427,9 @@ function resetInactivityTimer() {
   }, 90000); // 90 segundos de inatividade
 }
 document.addEventListener('click', resetInactivityTimer);
-document.addEventListener('keypress', resetInactivityTimer);
+document.addEventListener('keydown', resetInactivityTimer);
 document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('touchstart', resetInactivityTimer);
 
 // ===== EASTER EGGS - SPECIAL CLICK COMBINATIONS =====
 let specialCombo = [];
@@ -2532,7 +2587,7 @@ document.addEventListener('click', () => {
   }
 });
 
-document.addEventListener('keypress', () => {
+document.addEventListener('keydown', () => {
   contextualSeeds.totalKeys++;
   if(contextualSeeds.totalKeys === 100) {
     showSecret('perseveranca');
@@ -2542,13 +2597,13 @@ document.addEventListener('keypress', () => {
 
 // ===== EASTER EGGS - COMBINAÇÕES DE EVENTOS =====
 let eventSequence = [];
-['click', 'keypress', 'scroll', 'mousemove'].forEach(eventType => {
+['click', 'keydown', 'scroll', 'mousemove', 'touchstart'].forEach(eventType => {
   document.addEventListener(eventType, () => {
-    eventSequence.push(eventType);
+    eventSequence.push(eventType.replace('key', '').replace('touch', 'click'));
     if(eventSequence.length > 6) eventSequence.shift();
     
     // Padrão específico
-    if(eventSequence.join('-').includes('scroll-click-keypress')) {
+    if(eventSequence.join('-').includes('scroll-click-down')) {
       if(Math.random() > 0.7) {
         showSecret('velocidade');
         eventSequence = [];
