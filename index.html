@@ -2329,36 +2329,40 @@ document.addEventListener('mousemove', (e) => {
 
 // ===== EASTER EGGS - RANDOM TRIGGERS =====
 function randomEasterEggTrigger() {
-  setInterval(() => {
-    if(Math.random() > 0.99) {
-      const secrets = Object.keys(SECRETS);
-      showSecret(secrets[Math.floor(Math.random() * secrets.length)]);
-    }
-  }, 15000);
+  // REMOVIDO: Não deve mostrar segredos automaticamente
+  // setInterval(() => {
+  //   if(Math.random() > 0.99) {
+  //     const secrets = Object.keys(SECRETS);
+  //     showSecret(secrets[Math.floor(Math.random() * secrets.length)]);
+  //   }
+  // }, 15000);
 }
 
 // ===== EASTER EGGS - FOCUS EVENTS =====
-window.addEventListener('focus', () => {
-  if(Math.random() > 0.92) {
-    showSecret(['coracao', 'luz_minha', 'eternidade'][Math.floor(Math.random()*3)]);
-  }
-});
+// REMOVIDO: Não deve mostrar segredos automaticamente no focus
+// window.addEventListener('focus', () => {
+//   if(Math.random() > 0.92) {
+//     showSecret(['coracao', 'luz_minha', 'eternidade'][Math.floor(Math.random()*3)]);
+//   }
+// });
 
 // ===== EASTER EGGS - ORIENTAÇÃO DO DISPOSITIVO =====
-window.addEventListener('orientationchange', () => {
-  if(Math.random() > 0.85) {
-    showSecret('magia');
-  }
-});
+// REMOVIDO: Não deve mostrar segredos automaticamente na mudança de orientação
+// window.addEventListener('orientationchange', () => {
+//   if(Math.random() > 0.85) {
+//     showSecret('magia');
+//   }
+// });
 
 // ===== EASTER EGGS - NIGHT MODE =====
 function checkNightMode() {
-  const hour = new Date().getHours();
-  if(hour >= 20 || hour <= 5) {
-    if(Math.random() > 0.95) {
-      showSecret(['escorpiao', 'infinito', 'eternidade'][Math.floor(Math.random()*3)]);
-    }
-  }
+  // REMOVIDO: Não deve mostrar segredos automaticamente
+  // const hour = new Date().getHours();
+  // if(hour >= 20 || hour <= 5) {
+  //   if(Math.random() > 0.95) {
+  //     showSecret(['escorpiao', 'infinito', 'eternidade'][Math.floor(Math.random()*3)]);
+  //   }
+  // }
 }
 
 // ===== EASTER EGGS - COMBINAÇÕES ALEATÓRIAS =====
@@ -2378,14 +2382,16 @@ document.addEventListener('contextmenu', (e) => {
 
 // ===== EASTER EGGS - LOAD EVENTS =====
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    if(Math.random() > 0.85) {
-      showSecret('amor');
-    }
-  }, 3000);
+  // REMOVIDO: Não deve mostrar segredos automaticamente ao carregar
+  // setTimeout(() => {
+  //   if(Math.random() > 0.85) {
+  //     showSecret('amor');
+  //   }
+  // }, 3000);
   checkHourEasterEgg();
-  randomEasterEggTrigger();
-  checkNightMode();
+  // REMOVIDO: randomEasterEggTrigger desativado
+  // randomEasterEggTrigger();
+  // checkNightMode(); // Também desativado
 });
 
 // ===== EASTER EGGS - ELEMENTO REVEALMENT CHECK =====
@@ -2393,11 +2399,12 @@ const revealObs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting) {
       e.target.classList.add('visible');
-      if(Math.random() > 0.92) {
-        if(e.target.textContent.includes('Memória') || e.target.textContent.includes('Jogar')) {
-          showSecret(['nosso_amor', 'coracao'][Math.floor(Math.random()*2)]);
-        }
-      }
+      // REMOVIDO: Não deve mostrar segredos automaticamente no scroll
+      // if(Math.random() > 0.92) {
+      //   if(e.target.textContent.includes('Memória') || e.target.textContent.includes('Jogar')) {
+      //     showSecret(['nosso_amor', 'coracao'][Math.floor(Math.random()*2)]);
+      //   }
+      // }
     }
   });
 },{threshold:0.08});
@@ -2406,9 +2413,10 @@ document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 // ===== EASTER EGGS - HOVER SECTIONS =====
 document.querySelectorAll('.section').forEach(section => {
   section.addEventListener('mouseenter', () => {
-    if(Math.random() > 0.98) {
-      showSecret(Object.keys(SECRETS)[Math.floor(Math.random() * Object.keys(SECRETS).length)]);
-    }
+    // REMOVIDO: Não deve mostrar segredos automaticamente no hover
+    // if(Math.random() > 0.98) {
+    //   showSecret(Object.keys(SECRETS)[Math.floor(Math.random() * Object.keys(SECRETS).length)]);
+    // }
   });
 });
 
