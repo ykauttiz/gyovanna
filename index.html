@@ -2409,16 +2409,16 @@ document.querySelectorAll('.section').forEach(section => {
 
 // ===== EASTER EGGS - MULTIPLE KEYBOARD SHORTCUTS =====
 const shortcuts = {
-  'ctrl+shift+l': 'luz_minha',
-  'ctrl+shift+a': 'amor',
-  'ctrl+shift+h': 'coracao',
-  'ctrl+shift+e': 'eternidade',
-  'ctrl+shift+i': 'infinito',
-  'ctrl+shift+m': 'magia',
+  'alt+shift+l': 'luz_minha',
+  'alt+shift+a': 'amor',
+  'alt+shift+h': 'coracao',
+  'alt+shift+e': 'eternidade',
+  'alt+shift+i': 'infinito',
+  'alt+shift+m': 'magia',
 };
 
 document.addEventListener('keydown', (e) => {
-  const shortcut = (e.ctrlKey ? 'ctrl+' : '') + (e.shiftKey ? 'shift+' : '') + e.key.toLowerCase();
+  const shortcut = (e.altKey ? 'alt+' : '') + (e.shiftKey ? 'shift+' : '') + e.key.toLowerCase();
   if(shortcuts[shortcut]) {
     e.preventDefault();
     showSecret(shortcuts[shortcut]);
