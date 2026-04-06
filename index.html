@@ -2216,25 +2216,26 @@ navLogo.addEventListener('touchstart', (e) => {
 
 // ===== EASTER EGGS POR HORA =====
 function checkHourEasterEgg() {
-  const hour = new Date().getHours();
-  if(hour === 20) {
-    const easterMsg = ['Você num horário especial! 20:00 — nosso toque secreto! 💕', 'A hora do nosso amor! 🦂💫', '20 horas, 20 de junho... coincidência? Não, destino! 💕'][Math.floor(Math.random()*3)];
-    setTimeout(() => {
-      if(Math.random() > 0.7) {
-        showSecret(Math.random() > 0.5 ? 'junho20' : 'eternidade');
-      }
-    }, 5000);
-  }
+  // REMOVIDO: Não deve mostrar segredos automaticamente por hora
+  // const hour = new Date().getHours();
+  // if(hour === 20) {
+  //   setTimeout(() => {
+  //     if(Math.random() > 0.7) {
+  //       showSecret(Math.random() > 0.5 ? 'junho20' : 'eternidade');
+  //     }
+  //   }, 5000);
+  // }
 }
 
 // ===== EASTER EGGS POR HOVER =====
-document.querySelectorAll('.c-cell').forEach((cell, idx) => {
-  cell.addEventListener('mouseenter', () => {
-    if(Math.random() > 0.92) {
-      showSecret('segredinho');
-    }
-  });
-});
+// REMOVIDO: Não deve mostrar segredos automaticamente no hover
+// document.querySelectorAll('.c-cell').forEach((cell, idx) => {
+//   cell.addEventListener('mouseenter', () => {
+//     if(Math.random() > 0.92) {
+//       showSecret('segredinho');
+//     }
+//   });
+// });
 
 // ===== EASTER EGGS - CLIQUE EM MÚLTIPLOS ELEMENTOS =====
 let multiClickCounter = { count: 0, elements: [] };
@@ -2259,72 +2260,65 @@ document.addEventListener('click', (e) => {
 });
 
 // ===== EASTER EGGS - SCROLL BEHAVIOR =====
-let scrollCount = 0;
-window.addEventListener('scroll', () => {
-  scrollCount++;
-  if(scrollCount === 42) {
-    showSecret('nosso_amor');
-    scrollCount = 0;
-  }
-  if(scrollCount === 20) {
-    if(Math.random() > 0.85) showSecret('luz_minha');
-  }
-});
+// REMOVIDO: Não deve mostrar segredos automaticamente no scroll
+// let scrollCount = 0;
+// window.addEventListener('scroll', () => {
+//   scrollCount++;
+//   if(scrollCount === 42) {
+//     showSecret('nosso_amor');
+//     scrollCount = 0;
+//   }
+//   if(scrollCount === 20) {
+//     if(Math.random() > 0.85) showSecret('luz_minha');
+//   }
+// });
 
 // ===== EASTER EGGS - GAME SPECIFIC =====
+// REMOVIDO: Não deve mostrar segredos automaticamente nos jogos
 // Ao ganhar Wordle
-window.giftWinWordle = function() {
-  if(Math.random() > 0.5) showSecret('tudo');
-};
+// window.giftWinWordle = function() {
+//   if(Math.random() > 0.5) showSecret('tudo');
+// };
 
 // Ao ganhar Jogo da Memória
-window.giftWinMemory = function() {
-  if(Math.random() > 0.6) showSecret('nosso_amor');
-};
+// window.giftWinMemory = function() {
+//   if(Math.random() > 0.6) showSecret('nosso_amor');
+// };
 
 // Ao vencer o Quiz
-window.giftWinQuiz = function(score) {
-  if(score === 5) showSecret('gyovanna');
-  else if(Math.random() > 0.7) showSecret('coracao');
-};
+// window.giftWinQuiz = function(score) {
+//   if(score === 5) showSecret('gyovanna');
+//   else if(Math.random() > 0.7) showSecret('coracao');
+// };
 
 // ===== EASTER EGGS - REDEFINIÇÃO DE JOGOS =====
+// REMOVIDO: Não deve mostrar segredos automaticamente ao resetar jogos
 // Ao resetar Hearts 7x
-let heartsResetCount = 0;
-window.trackHeartsReset = function() {
-  heartsResetCount++;
-  if(heartsResetCount === 7) {
-    showSecret('te_amo');
-    heartsResetCount = 0;
-  }
-};
+// let heartsResetCount = 0;
+// window.trackHeartsReset = function() {
+//   heartsResetCount++;
+//   if(heartsResetCount === 7) {
+//     showSecret('te_amo');
+//     heartsResetCount = 0;
+//   }
+// };
 
 // Ao resetar Stars 5x
-let starsResetCount = 0;
-window.trackStarsReset = function() {
-  starsResetCount++;
-  if(starsResetCount === 5) {
-    showSecret('luz_minha');
-    starsResetCount = 0;
-  }
-};
+// let starsResetCount = 0;
+// window.trackStarsReset = function() {
+//   starsResetCount++;
+//   if(starsResetCount === 5) {
+//     showSecret('luz_minha');
+//     starsResetCount = 0;
+//   }
+// };
 
-// ===== MOUSE MOVEMENT EASTER EGGS =====
+// ===== MOUSE MOVEMENT TRACKING (apenas para tracking, sem segredos automáticos) =====
 let mouseX = 0, mouseY = 0;
 document.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  
-  // Easter egg ao atingir certos pontos da tela
-  if(mouseX < 50 && mouseY < 50) { // Canto superior esquerdo
-    if(Math.random() > 0.99) showSecret('magia');
-  }
-  if(mouseX > window.innerWidth - 50 && mouseY > window.innerHeight - 50) { // Canto inferior direito
-    if(Math.random() > 0.99) showSecret('infinito');
-  }
-  if(mouseX > window.innerWidth - 50 && mouseY < 50) { // Canto superior direito
-    if(Math.random() > 0.99) showSecret('escorpiao');
-  }
+  // REMOVIDO: Não deve mostrar segredos automaticamente no movimento do mouse
 });
 
 // ===== EASTER EGGS - RANDOM TRIGGERS =====
@@ -2373,13 +2367,6 @@ const EASTER_COMBOS = [
 ];
 
 // Right-click easter egg
-document.addEventListener('contextmenu', (e) => {
-  if(Math.random() > 0.8) {
-    e.preventDefault();
-    showSecret('segredinho');
-  }
-});
-
 // ===== EASTER EGGS - LOAD EVENTS =====
 window.addEventListener('load', () => {
   // REMOVIDO: Não deve mostrar segredos automaticamente ao carregar
@@ -2439,57 +2426,57 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ===== EASTER EGGS - GAME WIN TRIGGERS =====
-// Wordle win tracker
-let wordleWins = 0;
-const origWordleCheck = window.checkGuess || (() => {});
-window.trackWordleWin = function() {
-  wordleWins++;
-  if(wordleWins === 3) {
-    showSecret('tudo');
-    wordleWins = 0;
-  }
-};
+// REMOVIDO: Não deve mostrar segredos automaticamente nos jogos
+// Wordle win tracker - desativado
+// let wordleWins = 0;
+// window.trackWordleWin = function() {
+//   wordleWins++;
+//   if(wordleWins === 3) {
+//     showSecret('tudo');
+//     wordleWins = 0;
+//   }
+// };
 
-// Memory wins
-let memoryWins = 0;
-window.trackMemoryWin = function() {
-  memoryWins++;
-  if(memoryWins === 2) {
-    showSecret('gyovanna');
-    memoryWins = 0;
-  }
-};
+// Memory wins - desativado
+// let memoryWins = 0;
+// window.trackMemoryWin = function() {
+//   memoryWins++;
+//   if(memoryWins === 2) {
+//     showSecret('gyovanna');
+//     memoryWins = 0;
+//   }
+// };
 
-// Quiz perfect score
-window.trackQuizPerfect = function() {
-  if(Math.random() > 0.5) showSecret('gyovanna');
-};
+// Quiz perfect score - desativado
+// window.trackQuizPerfect = function() {
+//   if(Math.random() > 0.5) showSecret('gyovanna');
+// };
 
-// Wheel spins
-let wheelSpins = 0;
-const origSpinWheel = window.spinWheel || (() => {});
-window.trackWheelSpin = function() {
-  wheelSpins++;
-  if(wheelSpins === 13) {
-    showSecret('infinito');
-    wheelSpins = 0;
-  }
-};
+// Wheel spins - desativado
+// let wheelSpins = 0;
+// window.trackWheelSpin = function() {
+//   wheelSpins++;
+//   if(wheelSpins === 13) {
+//     showSecret('infinito');
+//     wheelSpins = 0;
+//   }
+// };
 
 // ===== EASTER EGGS - INACTIVITY =====
-let inactivityTimer = null;
-function resetInactivityTimer() {
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-    if(Math.random() > 0.85) {
-      showSecret(['te_amo', 'coracao', 'eternidade'][Math.floor(Math.random()*3)]);
-    }
-  }, 90000); // 90 segundos de inatividade
-}
-document.addEventListener('click', resetInactivityTimer);
-document.addEventListener('keydown', resetInactivityTimer);
-document.addEventListener('mousemove', resetInactivityTimer);
-document.addEventListener('touchstart', resetInactivityTimer);
+// REMOVIDO: Não deve mostrar segredos automaticamente na inatividade
+// let inactivityTimer = null;
+// function resetInactivityTimer() {
+//   clearTimeout(inactivityTimer);
+//   inactivityTimer = setTimeout(() => {
+//     if(Math.random() > 0.85) {
+//       showSecret(['te_amo', 'coracao', 'eternidade'][Math.floor(Math.random()*3)]);
+//     }
+//   }, 90000);
+// }
+// document.addEventListener('click', resetInactivityTimer);
+// document.addEventListener('keydown', resetInactivityTimer);
+// document.addEventListener('mousemove', resetInactivityTimer);
+// document.addEventListener('touchstart', resetInactivityTimer);
 
 // ===== EASTER EGGS - SPECIAL CLICK COMBINATIONS =====
 let specialCombo = [];
@@ -2507,33 +2494,36 @@ document.addEventListener('click', (e) => {
 });
 
 // ===== EASTER EGGS - SOUND/AUDIO TRIGGERS =====
-document.addEventListener('play', (e) => {
-  if(e.target.tagName === 'AUDIO' || e.target.closest('[class*="music"], [class*="player"]')) {
-    if(Math.random() > 0.85) {
-      showSecret('saturno');
-    }
-  }
-});
+// REMOVIDO: Não deve mostrar segredos automaticamente no play de áudio
+// document.addEventListener('play', (e) => {
+//   if(e.target.tagName === 'AUDIO' || e.target.closest('[class*="music"], [class*="player"]')) {
+//     if(Math.random() > 0.85) {
+//       showSecret('saturno');
+//     }
+//   }
+// });
 
 // ===== EASTER EGGS - VISIBILITY CHANGE =====
-document.addEventListener('visibilitychange', () => {
-  if(document.hidden) {
-    if(Math.random() > 0.9) {
-      setTimeout(() => {
-        if(!document.hidden) {
-          showSecret(['te_amo', 'luz_minha', 'infinito'][Math.floor(Math.random()*3)]);
-        }
-      }, 1000);
-    }
-  }
-});
+// REMOVIDO: Não deve mostrar segredos automaticamente na mudança de visibilidade
+// document.addEventListener('visibilitychange', () => {
+//   if(document.hidden) {
+//     if(Math.random() > 0.9) {
+//       setTimeout(() => {
+//         if(!document.hidden) {
+//           showSecret(['te_amo', 'luz_minha', 'infinito'][Math.floor(Math.random()*3)]);
+//         }
+//       }, 1000);
+//     }
+//   }
+// });
 
 // ===== EASTER EGGS - NETWORK STATUS =====
-window.addEventListener('online', () => {
-  if(Math.random() > 0.8) {
-    showSecret('luz_minha');
-  }
-});
+// REMOVIDO: Não deve mostrar segredos automaticamente na mudança de rede
+// window.addEventListener('online', () => {
+//   if(Math.random() > 0.8) {
+//     showSecret('luz_minha');
+//   }
+// });
 
 // ===== EASTER EGGS - CONTADOR DE DESCOBERTAS (usa variáveis declaradas acima) =====
 // discoveredSecrets e eggShowCount já declarados na linha 1961-1962
