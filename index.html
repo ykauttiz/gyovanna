@@ -1958,10 +1958,23 @@ const SECRETS = {
 let photoClicks = 0;
 let textBuffer = '';
 let clickTracker = [];
+const discoveredSecrets = new Set();
+let eggShowCount = 0;
 
 function showSecret(type) {
   const s = SECRETS[type];
   if (!s) return;
+  
+  // Track discovered secrets
+  if (!discoveredSecrets.has(type)) {
+    discoveredSecrets.add(type);
+    eggShowCount++;
+    unlockAchievement('first_secret');
+    if (discoveredSecrets.size === 5) unlockAchievement('five_secrets');
+    if (discoveredSecrets.size === 10) unlockAchievement('ten_secrets');
+    if (discoveredSecrets.size === Object.keys(SECRETS).length) unlockAchievement('all_secrets');
+  }
+  
   document.getElementById('secret-title').textContent = s.title;
   document.getElementById('secret-msg').textContent = s.msg;
   const overlay = document.getElementById('secret-overlay');
@@ -2025,9 +2038,9 @@ const KEYWORDS = {
 
 document.addEventListener('keypress', (e) => {
   const char = e.key.toUpperCase();
-  if(/[A-Z0-9+/]/.test(char)) {
+  if(/[A-Z0-9+\/\s]/.test(char)) {
     textBuffer += char;
-    if(textBuffer.length > 20) textBuffer = textBuffer.substring(1);
+    if(textBuffer.length > 30) textBuffer = textBuffer.substring(1);
     
     for(const [keyword, secretKey] of Object.entries(KEYWORDS)) {
       if(textBuffer.includes(keyword)) {
@@ -2407,9 +2420,8 @@ window.addEventListener('online', () => {
   }
 });
 
-// ===== EASTER EGGS - CONTADOR DE DESCOBERTAS =====
-let discoveredSecrets = new Set();
-let eggShowCount = 0;
+// ===== EASTER EGGS - CONTADOR DE DESCOBERTAS (usa variáveis declaradas acima) =====
+// discoveredSecrets e eggShowCount já declarados na linha 1961-1962
 
 // Override showSecret para rastrear descobertas
 const origShowSecretFunc = showSecret;
@@ -2780,7 +2792,7 @@ const finalCheckInterval = setInterval(() => {
     clearInterval(finalCheckInterval);
   }
 }, 5000);
-
+I
 // === CONFETTI ===
 function launchConfetti() {
   const colors=['#e8647a','#c9956e','#9b7ccd','#7ab3e8','#f09aaa','#e8c4a0','#c4a8f0'];
