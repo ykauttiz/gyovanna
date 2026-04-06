@@ -148,12 +148,12 @@ Clique em elementos especiais na ordem: `heart → star → rose → gold`
 
 ### ⌨️ Segredo #6 — Atalhos de Teclado
 Pressione:
-- `Ctrl + Shift + L` → Segredo "Luz Minha"
-- `Ctrl + Shift + A` → Segredo "Amor"
-- `Ctrl + Shift + H` → Segredo "Coração"
-- `Ctrl + Shift + E` → Segredo "Eternidade"
-- `Ctrl + Shift + I` → Segredo "Infinito"
-- `Ctrl + Shift + M` → Segredo "Magia"
+- `Alt + Shift + L` → Segredo "Luz Minha"
+- `Alt + Shift + A` → Segredo "Amor"
+- `Alt + Shift + H` → Segredo "Coração"
+- `Alt + Shift + E` → Segredo "Eternidade"
+- `Alt + Shift + I` → Segredo "Infinito"
+- `Alt + Shift + M` → Segredo "Magia"
 
 ### 📝 Segredo #7 — Palavras Secretas
 Digite estas palavras em qualquer lugar do site:
