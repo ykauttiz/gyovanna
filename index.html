@@ -1267,6 +1267,7 @@ function toggleMsg() {
         setStatus('');
         launchConfetti();
         done = true;
+        trackWordleWin();
       } else if (lose) {
         document.getElementById('w-lose').style.display='block';
         document.getElementById('w-again').style.display='inline-block';
@@ -1402,6 +1403,7 @@ function flipMemCard(card, idx) {
         memFlipped=[]; memCanFlip=true;
         if(memMatched===8) {
           clearInterval(memTimer);
+          trackMemoryWin();
           setTimeout(()=>{
             const el=document.getElementById('mem-win');
             const m=Math.floor(memSecs/60), s=memSecs%60;
@@ -1488,7 +1490,10 @@ window.answerQuiz = function(chosen, correct, btn) {
       const msgs=['Quase! Estude mais sobre nós 😄','Não foi dessa vez, tente novamente! 💕','Bom! Você nos conhece bem 😊','Muito bem! Você é incrível 💕','PERFEITO! Você me conhece de verdade! ❤️'];
       document.getElementById('q-msg').textContent=msgs[qScore]||msgs[4];
       document.getElementById('quiz-result').style.display='block';
-      if(qScore===5) { setTimeout(launchConfetti,300); }
+      if(qScore===5) { 
+        trackQuizPerfect();
+        setTimeout(launchConfetti,300); 
+      }
     }
   }, 1200);
 };
@@ -1523,9 +1528,11 @@ window.answerQuiz = function(chosen, correct, btn) {
 
 // Lightbox
 function openLb(src) {
-  document.getElementById('lb-img').src=src;
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow='hidden';
+  const lbImg = document.getElementById('lb-img');
+  const lightbox = document.getElementById('lightbox');
+  if (lbImg) lbImg.src = src;
+  if (lightbox) lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 function closeLb() {
   document.getElementById('lightbox').classList.remove('open');
@@ -1629,14 +1636,26 @@ window.resetHearts = function() {
   heartsCombo = 0; 
   document.getElementById('hearts-display').textContent = '0'; 
   document.getElementById('combo-count').textContent = '0';
-  trackHeartsReset();
 };
 
 // ===== STARS GAME =====
 let starsScore = 0;
 let starsTime = 30;
 let starsActive = false;
+let starsTimerInterval = null;
+let starsSpawnTimeout = null;
+
 window.resetStars = function() {
+  // Limpar timer anterior se existir
+  if (starsTimerInterval) {
+    clearInterval(starsTimerInterval);
+    starsTimerInterval = null;
+  }
+  if (starsSpawnTimeout) {
+    clearTimeout(starsSpawnTimeout);
+    starsSpawnTimeout = null;
+  }
+  
   starsScore = 0;
   starsTime = 30;
   starsActive = true;
@@ -1644,15 +1663,22 @@ window.resetStars = function() {
   document.getElementById('stars-time').textContent = '30';
   document.getElementById('stars-field').innerHTML = '';
   
-  const timer = setInterval(() => {
+  starsTimerInterval = setInterval(() => {
+    if (!starsActive) {
+      clearInterval(starsTimerInterval);
+      return;
+    }
     starsTime--;
     document.getElementById('stars-time').textContent = starsTime;
-    if(starsTime <= 0) { clearInterval(timer); starsActive = false; }
+    if(starsTime <= 0) { 
+      clearInterval(starsTimerInterval);
+      starsActive = false; 
+    }
   }, 1000);
   
   // Criar estrelas
   for(let i = 0; i < 15; i++) {
-    setTimeout(() => {
+    starsSpawnTimeout = setTimeout(() => {
       if(!starsActive) return;
       const star = document.createElement('div');
       star.textContent = '⭐';
@@ -1665,7 +1691,8 @@ window.resetStars = function() {
         document.getElementById('stars-score').textContent = starsScore;
         star.remove();
       };
-      document.getElementById('stars-field').appendChild(star);
+      const field = document.getElementById('stars-field');
+      if (field) field.appendChild(star);
     }, i * 300);
   }
 };
@@ -1673,8 +1700,10 @@ window.resetStars = function() {
 // ===== FORTUNE WHEEL =====
 window.spinWheel = function() {
   const btn = document.getElementById('spin-btn');
+  const canvas = document.getElementById('wheel-canvas');
+  if (!btn || !canvas) return;
+  
   btn.disabled = true;
-  trackWheelSpin();
   
   const phrases = [
     '💕 Você é meu tudo!',
@@ -1688,18 +1717,21 @@ window.spinWheel = function() {
   ];
   
   let spins = 0;
+  const finalAngle = 360 + Math.random() * 360; // Gira pelo menos 1 volta completa
+  
   const spin = setInterval(() => {
     spins++;
-    const canvas = document.getElementById('wheel-canvas');
     const ctx = canvas.getContext('2d');
-    drawWheel(ctx, Math.random() * 360);
-    if(spins > 20) {
+    const currentAngle = (spins / 20) * finalAngle;
+    drawWheel(ctx, currentAngle);
+    
+    if(spins >= 20) {
       clearInterval(spin);
       const result = phrases[Math.floor(Math.random() * phrases.length)];
       document.getElementById('wheel-result').textContent = result;
       btn.disabled = false;
     }
-  }, 30);
+  }, 50);
 };
 function drawWheel(ctx, rotation) {
   const colors = ['#e8647a', '#c9956e', '#9b7ccd', '#6ab0e8', '#f0a0b0', '#e8c4a0', '#c4a8f0', '#7ab3e8'];
@@ -1723,14 +1755,17 @@ function drawWheel(ctx, rotation) {
 
 // ===== LOVE PAIRS =====
 let lovePairsCards = [];
-let lovePairsFlipped = 0;
+let lovePairsFlipped = [];
 let lovePairsMatched = 0;
+let lovePairsCanFlip = true;
+
 window.resetLovePairs = function() {
   const pairs = ['💕', '💑', '👫', '🌹', '⭐', '💫'];
   const cards = [...pairs, ...pairs].sort(() => Math.random() - 0.5);
   lovePairsCards = cards;
-  lovePairsFlipped = 0;
+  lovePairsFlipped = [];
   lovePairsMatched = 0;
+  lovePairsCanFlip = true;
   document.getElementById('love-pairs-found').textContent = '0';
   
   const board = document.getElementById('love-pairs-board');
@@ -1739,34 +1774,49 @@ window.resetLovePairs = function() {
     const el = document.createElement('div');
     el.className = 'love-pair-card';
     el.textContent = '?';
+    el.dataset.idx = idx;
     el.onclick = () => flipLovePair(idx, el);
     board.appendChild(el);
   });
 };
+
 function flipLovePair(idx, el) {
-  if(lovePairsFlipped >= 2 || el.classList.contains('matched')) return;
-  el.textContent = lovePairsCards[idx];
-  lovePairsFlipped++;
+  if(!lovePairsCanFlip || el.classList.contains('matched') || el.classList.contains('flipped')) return;
   
-  const flipped = document.querySelectorAll('.love-pair-card:not(.matched)');
-  if(flipped.length >= 4) {
-    const f = Array.from(flipped).filter(e => e.textContent !== '?');
-    if(f.length === 2 && f[0].textContent === f[1].textContent) {
-      f.forEach(e => e.classList.add('matched'));
-      lovePairsMatched++;
-      document.getElementById('love-pairs-found').textContent = lovePairsMatched;
-      lovePairsFlipped = 0;
-      if(lovePairsMatched === 6) {
-        setTimeout(() => alert('🎉 Parabéns! Encontrou todos os pares de amor!'), 500);
-      }
-    } else {
+  el.textContent = lovePairsCards[idx];
+  el.classList.add('flipped');
+  lovePairsFlipped.push({idx, el});
+  
+  if(lovePairsFlipped.length === 2) {
+    lovePairsCanFlip = false;
+    const [first, second] = lovePairsFlipped;
+    
+    if(lovePairsCards[first.idx] === lovePairsCards[second.idx]) {
+      // Match!
       setTimeout(() => {
-        f.forEach(e => e.textContent = '?');
-        lovePairsFlipped = 0;
-      }, 1500);
+        first.el.classList.add('matched');
+        second.el.classList.add('matched');
+        first.el.classList.remove('flipped');
+        second.el.classList.remove('flipped');
+        lovePairsMatched++;
+        document.getElementById('love-pairs-found').textContent = lovePairsMatched;
+        lovePairsFlipped = [];
+        lovePairsCanFlip = true;
+        if(lovePairsMatched === 6) {
+          setTimeout(() => alert('🎉 Parabéns! Encontrou todos os pares de amor!'), 500);
+        }
+      }, 300);
+    } else {
+      // No match
+      setTimeout(() => {
+        first.el.textContent = '?';
+        second.el.textContent = '?';
+        first.el.classList.remove('flipped');
+        second.el.classList.remove('flipped');
+        lovePairsFlipped = [];
+        lovePairsCanFlip = true;
+      }, 1000);
     }
-  } else {
-    lovePairsFlipped = 0;
   }
 }
 
@@ -1783,8 +1833,8 @@ window.loadChallenge = function() {
   if(challengeIdx < challenges.length) {
     const c = challenges[challengeIdx];
     let html = `<div class="challenge-q">${c.q}</div><div class="challenge-opts">`;
-    c.opts.forEach(opt => {
-      html += `<div class="challenge-opt" onclick="answerChallenge(this)">${opt}</div>`;
+    c.opts.forEach((opt, i) => {
+      html += `<div class="challenge-opt" data-idx="${i}">${opt}</div>`;
     });
     html += '</div>';
     document.getElementById('challenge-wrap').innerHTML = html;
@@ -1803,7 +1853,6 @@ window.loadChallenge = function() {
     challengeIdx = 0;
   }
 };
-window.answerChallenge = loadChallenge;
 
 // Add float-away animation
 const style = document.createElement('style');
@@ -1841,8 +1890,12 @@ const obs=new IntersectionObserver(entries=>{
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
 // === SETUP PHOTOS ===
-document.getElementById('hero-photo').src=PHOTOS[3];
-document.getElementById('music-art').src=PHOTOS[5];
+document.addEventListener('DOMContentLoaded', () => {
+  const heroPhoto = document.getElementById('hero-photo');
+  const musicArt = document.getElementById('music-art');
+  if (heroPhoto) heroPhoto.src = PHOTOS[3];
+  if (musicArt) musicArt.src = PHOTOS[5];
+});
 
 // === EASTER EGGS & SECRETS ===
 const SECRETS = {
@@ -2043,25 +2096,24 @@ const KEYWORDS = {
   'NOSSO AMOR': 'nosso_amor',
 };
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', function(e) {
   // Suporte para letras, números, espaço e caracteres acentuados
   if(e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
     const char = e.key.toUpperCase();
     textBuffer += char;
-    if(textBuffer.length > 35) textBuffer = textBuffer.substring(1);
+    if(textBuffer.length > 20) textBuffer = textBuffer.substring(textBuffer.length - 20);
     
-    console.log('⌨️ Buffer atual:', textBuffer);
-    
+    // Verificar palavras-chave
     for(const [keyword, secretKey] of Object.entries(KEYWORDS)) {
       if(textBuffer.includes(keyword)) {
-        console.log('🎯 Palavra-chave encontrada:', keyword, '→', secretKey);
+        console.log('🎯 Palavra-chave encontrada:', keyword);
         textBuffer = '';
         showSecret(secretKey);
         break;
       }
     }
   }
-  if(e.key === 'Enter') {
+  if(e.key === 'Enter' || e.key === 'Escape') {
     textBuffer = '';
   }
 });
@@ -2847,7 +2899,7 @@ const finalCheckInterval = setInterval(() => {
     clearInterval(finalCheckInterval);
   }
 }, 5000);
-I
+
 // === CONFETTI ===
 function launchConfetti() {
   const colors=['#e8647a','#c9956e','#9b7ccd','#7ab3e8','#f09aaa','#e8c4a0','#c4a8f0'];
