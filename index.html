@@ -1,9 +1,13 @@
 <!DOCTYPE html>
+<!-- Versão aprimorada: acessibilidade, responsividade, performance e polimento visual preservando o conteúdo original. -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="Um site romântico para Kauê & Gyovanna — amor eternizado em código">
+<meta name="description" content="Site romântico interativo para Kauê & Gyovanna, com contador, história, música, céu estrelado, galeria, jogos e mensagens especiais.">
+<meta name="theme-color" content="#030209">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex,nofollow">
 <title>Onde você está, estou 🌍 — Kauê &amp; Gyovanna</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -424,24 +428,129 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   .ach-grid{grid-template-columns:repeat(4,1fr);}
 }
 
+/* === APRIMORAMENTO 2026 — ACESSIBILIDADE, MOBILE E POLIMENTO === */
+:focus-visible{outline:2px solid var(--rose-s);outline-offset:3px;}
+button{-webkit-tap-highlight-color:transparent;}
+img{max-width:100%;}
+.nav-toggle{display:none;width:42px;height:42px;border:1px solid var(--brd2);border-radius:14px;background:rgba(255,255,255,.045);align-items:center;justify-content:center;flex-direction:column;gap:5px;cursor:pointer;transition:background .25s,border-color .25s,transform .25s;}
+.nav-toggle span{width:18px;height:2px;border-radius:999px;background:var(--cream);transition:transform .25s,opacity .25s;}
+.nav-toggle:hover{background:rgba(255,255,255,.09);border-color:rgba(232,100,122,.45);}
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-toggle.open span:nth-child(2){opacity:0;}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+body.menu-open{overflow:hidden;}
+.music-embed iframe{border:0;}
+.gpanel[aria-hidden="true"]{display:none!important;}
+.gtab[aria-selected="true"]{color:var(--rose);border-bottom-color:var(--rose);}
+.loading-safety #loading{opacity:0;visibility:hidden;pointer-events:none;}
+@keyframes float-away{0%{opacity:1;transform:translateY(0) scale(1) rotate(0deg);}100%{opacity:0;transform:translateY(-120px) scale(.65) rotate(18deg);}}
+@supports (height:100dvh){#hero{height:100dvh;}}
+@media(max-width:640px){
+  #nav{padding:.75rem 1rem;}
+  .nav-toggle{display:flex;}
+  .nav-links{position:fixed;top:66px;left:1rem;right:1rem;display:flex;flex-direction:column;gap:.35rem;padding:.75rem;background:rgba(3,2,9,.94);backdrop-filter:blur(22px);border:1px solid var(--brd2);border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.35);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s,visibility .25s,transform .25s;}
+  .nav-links.open{opacity:1;visibility:visible;transform:translateY(0);}
+  .nav-links a{display:block;padding:.85rem 1rem;border-radius:12px;font-size:.72rem;}
+  .nav-links a:hover{background:rgba(232,100,122,.08);}
+  .hero-title{font-size:clamp(2.2rem,13vw,3.4rem);}
+  .hero-since{line-height:1.6;}
+  .game-wrap{padding:1.4rem .8rem;border-radius:22px;}
+  .gallery-scroll{scroll-padding-left:1rem;}
+  .g-card{width:74vw;max-width:280px;}
+}
+@media(max-width:380px){
+  .w-tile{width:42px;height:42px;}
+  .w-key{min-width:22px;padding:0 .22rem;}
+  .love-pairs-board{grid-template-columns:repeat(4,1fr);gap:.45rem;}
+  .love-pair-card{width:56px;height:56px;}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+  #hero-canvas,#footer-canvas{display:none;}
+}
+
+
+
+/* === EXPANSÃO COMPLETA — WINDOWS, CELULAR E NOVAS SEÇÕES === */
+:root{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation;}
+body{min-height:100dvh;overscroll-behavior-y:none;padding-bottom:var(--safe-bottom);}
+button,a,.g-card,.mem-card,.heart-btn,.w-key,.gtab{touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+input,button,textarea,select{font:inherit;}
+#nav{padding-top:calc(.9rem + var(--safe-top));}
+.compat-strip{position:fixed;left:50%;bottom:calc(1rem + var(--safe-bottom));transform:translateX(-50%);z-index:900;background:rgba(10,7,26,.82);border:1px solid var(--brd2);border-radius:999px;padding:.55rem .9rem;backdrop-filter:blur(18px);font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:.5rem;box-shadow:0 14px 40px rgba(0,0,0,.28);opacity:.88;}
+.compat-strip strong{color:var(--rose-s);font-weight:700;}
+.extras-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;}
+.extra-card{background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.02));border:1px solid var(--brd);border-radius:22px;padding:1.15rem;min-height:145px;transition:transform .3s,border-color .3s,background .3s;position:relative;overflow:hidden;}
+.extra-card::after{content:'';position:absolute;inset:auto -30% -55% -30%;height:80px;background:radial-gradient(circle,rgba(232,100,122,.14),transparent 65%);pointer-events:none;}
+.extra-card:hover{transform:translateY(-4px);border-color:rgba(232,100,122,.35);background:rgba(232,100,122,.045);}
+.extra-ic{font-size:1.7rem;margin-bottom:.55rem;display:block;}
+.extra-card h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:1.25rem;margin-bottom:.35rem;color:var(--cream);}
+.extra-card p{font-size:.82rem;line-height:1.65;color:var(--muted);}
+.reasons-list{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;counter-reset:reason;}
+.reason{counter-increment:reason;background:var(--card);border:1px solid var(--brd);border-radius:18px;padding:1rem 1rem 1rem 3.2rem;position:relative;color:var(--muted);font-size:.86rem;line-height:1.6;}
+.reason::before{content:counter(reason);position:absolute;left:1rem;top:1rem;width:1.55rem;height:1.55rem;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(232,100,122,.14);color:var(--rose-s);font-size:.72rem;font-weight:800;}
+.promise-board{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+.promise{background:linear-gradient(145deg,#12081d,#080414);border:1px solid var(--brd);border-radius:22px;padding:1.25rem;}
+.promise b{display:block;color:var(--rose-s);font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;margin-bottom:.4rem;}
+.promise span{font-size:.86rem;color:var(--muted);line-height:1.7;}
+.vault{background:linear-gradient(135deg,rgba(232,100,122,.12),rgba(155,124,205,.1));border:1px solid rgba(232,100,122,.22);border-radius:28px;padding:1.6rem;text-align:center;}
+.vault-lock{font-size:2.6rem;margin-bottom:.8rem;filter:drop-shadow(0 0 14px rgba(232,100,122,.35));}
+.vault-text{font-family:'Cormorant Garamond',serif;font-size:1.35rem;line-height:1.65;color:var(--cream);margin-bottom:1.2rem;}
+.vault-actions{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;}
+.soft-btn{background:rgba(255,255,255,.08);border:1px solid var(--brd2);color:var(--cream);padding:.72rem 1.05rem;border-radius:999px;cursor:pointer;font-size:.8rem;font-weight:700;transition:.25s;}
+.soft-btn:hover{background:rgba(232,100,122,.16);border-color:rgba(232,100,122,.35);transform:translateY(-2px);}
+.mood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;}
+.mood{background:var(--card);border:1px solid var(--brd);border-radius:18px;padding:1rem .75rem;text-align:center;cursor:pointer;transition:.25s;}
+.mood:hover,.mood.active{border-color:rgba(232,100,122,.4);background:rgba(232,100,122,.08);transform:translateY(-3px);}
+.mood span{display:block;font-size:1.7rem;margin-bottom:.35rem;}
+.mood b{font-size:.72rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+.mood-output{margin-top:1rem;background:rgba(0,0,0,.22);border:1px solid var(--brd);border-radius:18px;padding:1rem;color:var(--rose-s);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;line-height:1.7;min-height:74px;}
+.future-road{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;}
+.future-step{background:var(--card);border:1px solid var(--brd);border-radius:22px;padding:1rem;min-height:132px;}
+.future-step small{display:block;color:var(--rose);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin-bottom:.45rem;}
+.future-step h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:1.25rem;margin-bottom:.35rem;}
+.future-step p{color:var(--muted);font-size:.82rem;line-height:1.65;}
+.install-note{display:flex;gap:.8rem;align-items:flex-start;background:rgba(106,176,232,.06);border:1px solid rgba(106,176,232,.18);border-radius:22px;padding:1rem;margin-top:1rem;color:var(--muted);font-size:.84rem;line-height:1.65;}
+.install-note b{color:#b8ddff;}
+.games-tabs{scrollbar-width:none;}
+.games-tabs::-webkit-scrollbar{display:none;}
+.gtab{min-height:44px;}
+@media(hover:none){.extra-card:hover,.soft-btn:hover,.mood:hover{transform:none;}}
+@media(max-width:820px){.extras-grid,.future-road{grid-template-columns:1fr 1fr}.mood-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){
+  .compat-strip{left:1rem;right:1rem;transform:none;justify-content:center;border-radius:18px;text-align:center;}
+  .extras-grid,.reasons-list,.promise-board,.future-road{grid-template-columns:1fr;}
+  .section{padding-left:max(1rem,env(safe-area-inset-left));padding-right:max(1rem,env(safe-area-inset-right));}
+  .counter{gap:.45rem}.c-cell{padding:.72rem .35rem}.c-num{font-size:1.7rem}
+  .games-tabs{display:flex;gap:.45rem;border-bottom:0;padding-bottom:.3rem}.gtab{flex:0 0 auto;border:1px solid var(--brd);border-radius:999px;padding:.72rem .95rem;margin-bottom:0;background:rgba(255,255,255,.035)}.gtab.active{background:rgba(232,100,122,.14);border-color:rgba(232,100,122,.4)}
+  .heart-btn{font-size:4rem}.hearts-display{font-size:3.2rem}.wheel-btn{width:72px;height:72px;font-size:.88rem}
+}
+@media(max-width:420px){.mood-grid{grid-template-columns:1fr 1fr}.vault{padding:1.15rem}.vault-text{font-size:1.15rem}.compat-strip{font-size:.62rem}.w-key{min-width:24px}}
+
 </style>
 </head>
 <body>
+<div class="compat-strip" aria-live="polite">💻📱 <strong>Otimizado</strong> para Windows, notebook, celular e toque</div>
 
 <!-- LOADING -->
-<div id="loading">
-  <div class="ld-heart">❤️</div>
+<div id="loading" role="status" aria-live="polite">
+  <div class="ld-heart" aria-hidden="true">❤️</div>
   <div class="ld-names">Kauê &amp; Gyovanna</div>
   <div class="ld-bar"><div class="ld-bar-fill"></div></div>
 </div>
 
 <!-- NAV -->
 <nav id="nav">
-  <a class="nav-logo" href="#hero">K <em>&</em> G</a>
-  <ul class="nav-links">
+  <a class="nav-logo" href="#hero" aria-label="Voltar para o início">K <em>&</em> G</a>
+  <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="#story">História</a></li>
     <li><a href="#music">Música</a></li>
     <li><a href="#sky">Estrelas</a></li>
+    <li><a href="#surprises">Surpresas</a></li>
+    <li><a href="#reasons">Motivos</a></li>
     <li><a href="#games">Jogos</a></li>
     <li><a href="#gallery">Fotos</a></li>
   </ul>
@@ -449,10 +558,10 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 
 <!-- HERO -->
 <section id="hero">
-  <canvas id="hero-canvas"></canvas>
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div class="hero-inner">
     <div class="hero-ring">
-      <img class="hero-photo" id="hero-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%236a4c93' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-size='60' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EK %26 G%3C/text%3E%3C/svg%3E" alt="Kauê & Gyovanna">
+      <img class="hero-photo" id="hero-photo" loading="eager" decoding="async" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%236a4c93' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-size='60' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EK %26 G%3C/text%3E%3C/svg%3E" alt="Kauê & Gyovanna">
     </div>
     <div class="hero-eyebrow">Uma surpresa pra você</div>
     <h1 class="hero-title">Onde você está,<br><em>estou</em> 🌍</h1>
@@ -531,7 +640,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
       </div>
     </div>
     <div class="music-embed">
-      <iframe src="https://open.spotify.com/embed/track/68cPbG7hJnwDW9nPX1uQcX?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe title="Player do Spotify da música G + K — Saturno" src="https://open.spotify.com/embed/track/68cPbG7hJnwDW9nPX1uQcX?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -547,8 +656,90 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
       <div class="msg-full" id="msg-full">
         Com você ao meu lado, até os dias complicados ficam mais bonitos. Você tem esse jeito especial de fazer tudo parecer mais importante, mais real, mais vivo. Cada momento com você é um presente que eu não sabia que precisava tanto. Te amo mais do que qualquer palavra consegue expressar, Gyovanna. Você é tudo que eu mais gosto — e muito mais do que isso. Você é perfeita pra mim, e eu não trocaria nosso amor por absolutamente nada nesse universo inteiro. 💕
       </div>
-      <button class="msg-btn" id="msg-btn" onclick="toggleMsg()">Mostrar mensagem completa</button>
+      <button type="button" class="msg-btn" id="msg-btn" onclick="toggleMsg()">Mostrar mensagem completa</button>
     </div>
+  </div>
+
+</section>
+
+<!-- SURPRISES -->
+<section class="section wide reveal" id="surprises">
+  <p class="sec-eye">✨ Surpresas novas</p>
+  <h2 class="sec-h">Mais detalhes<br>feitos com <em>carinho</em></h2>
+  <div class="extras-grid">
+    <article class="extra-card"><span class="extra-ic">💌</span><h3>Carta viva</h3><p>Uma mensagem que muda conforme você interage, feita para parecer uma lembrança guardada só entre vocês dois.</p></article>
+    <article class="extra-card"><span class="extra-ic">📱</span><h3>Feito para celular</h3><p>Botões maiores, abas com toque confortável, menu mobile, safe area e animações mais leves em telas pequenas.</p></article>
+    <article class="extra-card"><span class="extra-ic">💻</span><h3>Feito para Windows</h3><p>Layout largo, hover bonito, teclado nos jogos, lightbox com ESC e visual estável em Chrome, Edge e navegadores desktop.</p></article>
+    <article class="extra-card"><span class="extra-ic">🔐</span><h3>Cofre de amor</h3><p>Uma área especial com mensagens aleatórias, como se cada clique abrisse um bilhetinho secreto.</p></article>
+    <article class="extra-card"><span class="extra-ic">🌙</span><h3>Modo clima</h3><p>Escolha um sentimento e o site responde com uma frase combinando com o momento.</p></article>
+    <article class="extra-card"><span class="extra-ic">🚀</span><h3>Mais leve</h3><p>Menos jogos repetidos, mais conteúdo bonito e melhor experiência em tela pequena.</p></article>
+  </div>
+  <div class="install-note"><span>💡</span><div><b>Dica para celular:</b> no Chrome/Edge, abra o menu do navegador e toque em “Adicionar à tela inicial”. Assim o site fica parecendo um aplicativo.</div></div>
+</section>
+
+<!-- REASONS -->
+<section class="section reveal" id="reasons">
+  <p class="sec-eye">💗 Motivos</p>
+  <h2 class="sec-h">Coisas que eu<br><em>amo em você</em></h2>
+  <div class="reasons-list">
+    <div class="reason">Seu jeito de transformar qualquer momento simples em algo especial.</div>
+    <div class="reason">Seu sorriso, que parece acalmar tudo ao redor.</div>
+    <div class="reason">A forma como você faz o mundo parecer menos pesado.</div>
+    <div class="reason">Seu carinho, sua presença e sua energia única.</div>
+    <div class="reason">O brilho que você deixa nas minhas memórias.</div>
+    <div class="reason">Porque com você eu sinto que encontrei meu lugar.</div>
+    <div class="reason">Porque até o silêncio fica bonito quando é com você.</div>
+    <div class="reason">Porque eu escolheria você de novo, em todos os dias.</div>
+  </div>
+</section>
+
+<!-- LOVE VAULT -->
+<section class="section reveal" id="vault">
+  <p class="sec-eye">🔐 Cofre secreto</p>
+  <h2 class="sec-h">Abra um<br><em>bilhete</em></h2>
+  <div class="vault">
+    <div class="vault-lock" id="vault-lock">🔒</div>
+    <div class="vault-text" id="vault-text">Clique para abrir um bilhete especial.</div>
+    <div class="vault-actions">
+      <button type="button" class="soft-btn" onclick="openLoveVault()">Abrir bilhete 💌</button>
+      <button type="button" class="soft-btn" onclick="copyLovePhrase()">Copiar frase ✨</button>
+    </div>
+  </div>
+</section>
+
+<!-- MOOD -->
+<section class="section reveal" id="mood">
+  <p class="sec-eye">🌙 Clima do momento</p>
+  <h2 class="sec-h">Escolha como<br>você está se <em>sentindo</em></h2>
+  <div class="mood-grid">
+    <button type="button" class="mood" onclick="setMood(this,'Saudade é só o amor pedindo um abraço. E o meu abraço sempre vai ser seu.')"><span>🥺</span><b>Saudade</b></button>
+    <button type="button" class="mood" onclick="setMood(this,'Hoje combina com carinho, conversa boba e aquele sentimento bom de ter você.')"><span>💕</span><b>Carinho</b></button>
+    <button type="button" class="mood" onclick="setMood(this,'Quando o mundo pesa, eu lembro de você e tudo fica mais leve.')"><span>🌧️</span><b>Dia difícil</b></button>
+    <button type="button" class="mood" onclick="setMood(this,'Nosso amor tem brilho de estrela: mesmo longe, continua iluminando.')"><span>⭐</span><b>Brilho</b></button>
+  </div>
+  <div class="mood-output" id="mood-output">Escolha um clima acima para revelar uma frase.</div>
+</section>
+
+<!-- PROMISES -->
+<section class="section wide reveal" id="promises">
+  <p class="sec-eye">🤍 Promessas</p>
+  <h2 class="sec-h">Pequenas promessas<br>para um amor <em>grande</em></h2>
+  <div class="promise-board">
+    <div class="promise"><b>Prometo cuidar</b><span>Não só nos dias fáceis, mas principalmente nos dias em que o coração estiver cansado.</span></div>
+    <div class="promise"><b>Prometo lembrar</b><span>Das nossas datas, das nossas músicas, dos nossos detalhes e de tudo que faz sentido para nós.</span></div>
+    <div class="promise"><b>Prometo escolher</b><span>Escolher você nas atitudes, nas palavras e nas pequenas coisas do dia a dia.</span></div>
+    <div class="promise"><b>Prometo ficar</b><span>Com carinho, paciência, respeito e vontade de construir uma história bonita.</span></div>
+  </div>
+</section>
+
+<!-- FUTURE -->
+<section class="section wide reveal" id="future">
+  <p class="sec-eye">🌅 Futuro</p>
+  <h2 class="sec-h">Coisas que ainda<br>vamos <em>viver</em></h2>
+  <div class="future-road">
+    <div class="future-step"><small>Capítulo 01</small><h3>Mais fotos</h3><p>Guardar mais momentos simples, espontâneos e verdadeiros na nossa galeria.</p></div>
+    <div class="future-step"><small>Capítulo 02</small><h3>Mais histórias</h3><p>Transformar dias normais em lembranças que a gente vai rir depois.</p></div>
+    <div class="future-step"><small>Capítulo 03</small><h3>Mais nós</h3><p>Continuar escolhendo esse amor com calma, cuidado e presença.</p></div>
   </div>
 </section>
 
@@ -776,42 +967,29 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 
 <!-- GAMES -->
 <section class="section reveal" id="games">
-  <p class="sec-eye">🎮 Joguinhos</p>
-  <h2 class="sec-h">Hora de<br><em>brincar</em></h2>
+  <p class="sec-eye">🎮 Joguinhos escolhidos</p>
+  <h2 class="sec-h">Só os melhores<br><em>sem repetição</em></h2>
   <div class="game-wrap">
-    <div class="games-tabs">
-      <button class="gtab active" onclick="switchGame(0,this)">🔤 Palavra</button>
-      <button class="gtab" onclick="switchGame(1,this)">🃏 Memória</button>
-      <button class="gtab" onclick="switchGame(2,this)">📝 Quiz</button>
-      <button class="gtab" onclick="switchGame(3,this)">❌⭕ Velha</button>
-      <button class="gtab" onclick="switchGame(4,this)">🎲 Dado</button>
-      <button class="gtab" onclick="switchGame(5,this)">💕 Corações</button>
-      <button class="gtab" onclick="switchGame(6,this)">⭐ Estrelas</button>
-      <button class="gtab" onclick="switchGame(7,this)">🎡 Roda</button>
-      <button class="gtab" onclick="switchGame(8,this)">💑 Pares</button>
-      <button class="gtab" onclick="switchGame(9,this)">💘 Desafio</button>
+    <div class="games-tabs" role="tablist" aria-label="Jogos do site">
+      <button type="button" class="gtab active" onclick="switchGame(0,this)">🔤 Palavra</button>
+      <button type="button" class="gtab" onclick="switchGame(1,this)">🃏 Memória</button>
+      <button type="button" class="gtab" onclick="switchGame(2,this)">📝 Quiz</button>
+      <button type="button" class="gtab" onclick="switchGame(3,this)">💕 Corações</button>
+      <button type="button" class="gtab" onclick="switchGame(4,this)">🎡 Roda</button>
     </div>
 
-    <!-- WORDLE -->
     <div class="gpanel active" id="gp-0">
       <div class="wordle-wrap">
-        <div class="wordle-hint">O que Kauê mais gosto em você, meu amorrrr?<br><strong>Descubra a palavra de 4 letras ✨</strong></div>
+        <div class="wordle-hint">Descubra a palavra de 4 letras que resume o que Kauê ama na Gyovanna ✨</div>
         <div class="w-board" id="w-board"></div>
         <div class="w-status" id="w-status"></div>
-        <div class="w-win" id="w-win">
-          <h3>🎉 Você acertou!</h3>
-          <p>É isso que eu mais amo em você!<br><strong>TUDINHO PORQUE VOCÊ É PERFEITA!!! 💕</strong></p>
-        </div>
-        <div class="w-lose" id="w-lose">
-          <h3>💕 Quase!</h3>
-          <p>A palavra era: <strong>TUDO</strong><br>Porque eu amo tudo em você, Gyovanna! 💕</p>
-        </div>
-        <button class="w-play-again" id="w-again" onclick="resetWordle()">Jogar novamente ↺</button>
+        <div class="w-win" id="w-win"><h3>🎉 Você acertou!</h3><p>É isso: <strong>TUDO</strong>. Porque tudo em você é especial. 💕</p></div>
+        <div class="w-lose" id="w-lose"><h3>💕 Quase!</h3><p>A palavra era: <strong>TUDO</strong>. Porque eu amo tudo em você!</p></div>
+        <button type="button" class="w-play-again" id="w-again" onclick="resetWordle()">Jogar novamente ↺</button>
         <div class="w-kb" id="w-kb"></div>
       </div>
     </div>
 
-    <!-- MEMORY -->
     <div class="gpanel" id="gp-1">
       <div class="memory-wrap">
         <div class="mem-info">
@@ -820,126 +998,35 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
           <div class="mem-stat"><span class="mem-stat-n" id="mem-pairs">0/8</span><span class="mem-stat-l">Pares</span></div>
         </div>
         <div class="mem-board" id="mem-board"></div>
-        <div class="mem-win" id="mem-win">
-          <h3>🎉 Incrível!</h3>
-          <p id="mem-win-msg">Você encontrou todos os pares!</p>
-          <button class="mem-restart" onclick="resetMemory()">Jogar novamente ↺</button>
-        </div>
+        <div class="mem-win" id="mem-win"><h3>🎉 Incrível!</h3><p id="mem-win-msg">Você encontrou todos os pares!</p><button type="button" class="mem-restart" onclick="resetMemory()">Jogar novamente ↺</button></div>
       </div>
     </div>
 
-    <!-- QUIZ -->
     <div class="gpanel" id="gp-2">
       <div class="quiz-wrap">
         <div class="quiz-progress"><div class="quiz-prog-fill" id="q-prog" style="width:0%"></div></div>
         <div id="quiz-content"></div>
-        <div class="quiz-result" id="quiz-result">
-          <div class="quiz-result-score" id="q-score">0</div>
-          <div class="quiz-result-of" id="q-of">de 5 acertos</div>
-          <div class="quiz-result-msg" id="q-msg"></div>
-          <button class="quiz-restart" onclick="resetQuiz()">Tentar novamente ↺</button>
-        </div>
+        <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="q-score">0</div><div class="quiz-result-of" id="q-of">de 5 acertos</div><div class="quiz-result-msg" id="q-msg"></div><button type="button" class="quiz-restart" onclick="resetQuiz()">Tentar novamente ↺</button></div>
       </div>
     </div>
 
-    <!-- TIC TAC TOE -->
     <div class="gpanel" id="gp-3">
-      <div style="text-align:center;">
-        <p style="margin-bottom:1rem;color:var(--muted);font-size:.9rem;">Jogo da Velha - Você vs IA 🤖</p>
-        <div class="tictactoe-board" id="tictactoe-board">
-          <button class="ttt-cell" onclick="handleTTT(0)"></button>
-          <button class="ttt-cell" onclick="handleTTT(1)"></button>
-          <button class="ttt-cell" onclick="handleTTT(2)"></button>
-          <button class="ttt-cell" onclick="handleTTT(3)"></button>
-          <button class="ttt-cell" onclick="handleTTT(4)"></button>
-          <button class="ttt-cell" onclick="handleTTT(5)"></button>
-          <button class="ttt-cell" onclick="handleTTT(6)"></button>
-          <button class="ttt-cell" onclick="handleTTT(7)"></button>
-          <button class="ttt-cell" onclick="handleTTT(8)"></button>
-        </div>
-        <div class="tictactoe-status" id="tictactoe-status">Seu turno! (X)</div>
-        <button class="tictactoe-reset" onclick="resetTTT()">Nova partida ↺</button>
+      <div class="hearts-container">
+        <div class="hearts-display" id="hearts-display">0</div>
+        <button type="button" class="heart-btn" onclick="clickHeart()" aria-label="Clicar coração">❤️</button>
+        <div class="hearts-combo">Combo: <span id="combo-count">0</span>x</div>
+        <button type="button" class="soft-btn" onclick="resetHearts()">Resetar ↺</button>
       </div>
     </div>
 
-    <!-- DICE GAME -->
     <div class="gpanel" id="gp-4">
-      <div class="dice-container">
-        <p style="color:var(--muted);margin-bottom:1rem;">🎲 Role o Dado da Sorte 🍀</p>
-        <div class="dice" id="dice" onclick="rollDice()">🎲</div>
-        <div class="dice-result" id="dice-result"></div>
-        <div class="dice-stats">
-          <div class="dice-stat">
-            <div class="dice-stat-label">Última jogada</div>
-            <div class="dice-stat-val" id="dice-last">-</div>
-          </div>
-          <div class="dice-stat">
-            <div class="dice-stat-label">Melhor</div>
-            <div class="dice-stat-val" id="dice-best">-</div>
-          </div>
-          <div class="dice-stat">
-            <div class="dice-stat-label">Total</div>
-            <div class="dice-stat-val" id="dice-total">-</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- HEARTS GAME -->
-    <div class="gpanel" id="gp-5">
       <div style="text-align:center;">
-        <p style="color:var(--muted);margin-bottom:1rem;">💕 Clique nos corações! Quanto mais, mais amor! 💕</p>
-        <div class="hearts-container" id="hearts-container">
-          <div class="hearts-display" id="hearts-display">0</div>
-          <button class="heart-btn" id="heart-btn" onclick="clickHeart()">💕</button>
-          <div class="hearts-combo" id="hearts-combo">Combo: <span id="combo-count">0</span></div>
-        </div>
-        <button onclick="resetHearts()" style="margin-top:1rem;">Resetar ↺</button>
-      </div>
-    </div>
-
-    <!-- STARS GAME -->
-    <div class="gpanel" id="gp-6">
-      <div style="text-align:center;">
-        <p style="color:var(--muted);margin-bottom:1rem;">⭐ Toque nas estrelas que brilham! ⭐</p>
-        <div class="stars-field" id="stars-field"></div>
-        <div class="stars-score">
-          <div>Score: <span id="stars-score">0</span></div>
-          <div>Tempo: <span id="stars-time">30</span>s</div>
-        </div>
-        <button onclick="resetStars()" style="margin-top:1rem;">Novo jogo ↺</button>
-      </div>
-    </div>
-
-    <!-- FORTUNE WHEEL -->
-    <div class="gpanel" id="gp-7">
-      <div style="text-align:center;">
-        <p style="color:var(--muted);margin-bottom:1rem;">🎡 Gire a roda do destino! 🎡</p>
-        <div class="wheel-wrapper">
-          <canvas id="wheel-canvas" width="300" height="300"></canvas>
-          <button class="wheel-btn" onclick="spinWheel()" id="spin-btn">GIRAR</button>
-        </div>
+        <p style="margin-bottom:1rem;color:var(--muted);font-size:.9rem;">Gire a roda e receba uma missão romântica.</p>
+        <div class="wheel-wrapper"><canvas id="wheel-canvas" width="300" height="300"></canvas><button type="button" class="wheel-btn" id="wheel-btn" onclick="spinWheel()">Girar</button></div>
         <div class="wheel-result" id="wheel-result"></div>
       </div>
     </div>
-
-    <!-- LOVE PAIRS -->
-    <div class="gpanel" id="gp-8">
-      <div style="text-align:center;">
-        <p style="color:var(--muted);margin-bottom:1rem;">💑 Encontre os pares de amor! 💑</p>
-        <div class="love-pairs-board" id="love-pairs-board"></div>
-        <div style="margin-top:1rem;color:var(--muted);">Pares: <span id="love-pairs-found">0</span>/6</div>
-        <button onclick="resetLovePairs()" style="margin-top:1rem;">Novo jogo ↺</button>
-      </div>
-    </div>
-
-    <!-- LOVE CHALLENGE -->
-    <div class="gpanel" id="gp-9">
-      <div style="text-align:center;">
-        <p style="color:var(--muted);margin-bottom:1rem;">💘 Desafio do amor - responda sobre nosso amor! 💘</p>
-        <div class="challenge-wrap" id="challenge-wrap"></div>
-      </div>
-    </div>
+    <div id="challenge-wrap" hidden></div>
   </div>
 </section>
 
@@ -980,7 +1067,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 
 <!-- FOOTER -->
 <footer id="footer">
-  <canvas id="footer-canvas"></canvas>
+  <canvas id="footer-canvas" aria-hidden="true"></canvas>
   <div class="footer-in">
     <div class="footer-hearts"><span class="fh">💗</span><span class="fh">❤️</span><span class="fh">💗</span></div>
     <div class="footer-names"><em>Kauê</em> &amp; <em>Gyovanna</em></div>
@@ -990,7 +1077,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
 
 <!-- LIGHTBOX -->
 <div id="lightbox">
-  <button id="lb-close" onclick="closeLb()">✕</button>
+  <button id="lb-close" type="button" aria-label="Fechar foto" onclick="closeLb()">✕</button>
   <img id="lb-img" src="" alt="">
 </div>
 
@@ -999,7 +1086,7 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   <div class="secret-hearts" id="secret-hearts"></div>
   <div class="secret-title" id="secret-title">❤️</div>
   <div class="secret-msg" id="secret-msg"></div>
-  <button id="secret-close" onclick="closeSecret()">Fechar ✕</button>
+  <button id="secret-close" type="button" onclick="closeSecret()">Fechar ✕</button>
 </div>
 
 <!-- KONAMI HINT -->
@@ -1460,7 +1547,7 @@ function showQuizQ(idx) {
     <div class="quiz-question">${q.q}</div>
     <div class="quiz-opts">
       ${q.opts.map((o,i)=>`
-        <button class="quiz-opt" onclick="answerQuiz(${i},${q.c},this)">
+        <button type="button" class="quiz-opt" onclick="answerQuiz(${i},${q.c},this)">
           <span class="quiz-opt-letter">${letters[i]}</span>${o}
         </button>`).join('')}
     </div>
@@ -2914,6 +3001,183 @@ function launchConfetti() {
   }
 }
 
+
+/* === APRIMORAMENTO 2026 — CAMADA DE SEGURANÇA E UX === */
+(function enhanceUX(){
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  // Evita loader preso caso algum recurso externo demore.
+  window.setTimeout(() => document.body.classList.add('loading-safety'), 3800);
+
+  // Melhora acessibilidade dos botões e abas.
+  $$('button').forEach(btn => {
+    if (!btn.hasAttribute('type')) btn.setAttribute('type','button');
+  });
+  const tabs = $$('.gtab');
+  const panels = $$('.gpanel');
+  if (tabs.length && panels.length) {
+    tabs.forEach((tab, i) => {
+      tab.setAttribute('role','tab');
+      tab.setAttribute('aria-controls', `gp-${i}`);
+      tab.setAttribute('aria-selected', tab.classList.contains('active') ? 'true' : 'false');
+    });
+    panels.forEach((panel, i) => {
+      panel.setAttribute('role','tabpanel');
+      panel.setAttribute('aria-hidden', panel.classList.contains('active') ? 'false' : 'true');
+      panel.setAttribute('tabindex','0');
+    });
+  }
+
+  // Menu mobile.
+  const navToggle = $('.nav-toggle');
+  const navLinks = $('#nav-links');
+  if (navToggle && navLinks) {
+    const closeMenu = () => {
+      navToggle.classList.remove('open');
+      navLinks.classList.remove('open');
+      document.body.classList.remove('menu-open');
+      navToggle.setAttribute('aria-expanded','false');
+      navToggle.setAttribute('aria-label','Abrir menu');
+    };
+    navToggle.addEventListener('click', () => {
+      const open = !navLinks.classList.contains('open');
+      navToggle.classList.toggle('open', open);
+      navLinks.classList.toggle('open', open);
+      document.body.classList.toggle('menu-open', open);
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    });
+    $$('.nav-links a').forEach(a => a.addEventListener('click', closeMenu));
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  }
+
+  // Reforça a troca de abas com ARIA sem quebrar a função original.
+  const originalSwitchGame = window.switchGame;
+  if (typeof originalSwitchGame === 'function') {
+    window.switchGame = function(idx, btn) {
+      originalSwitchGame(idx, btn);
+      $$('.gtab').forEach((tab, i) => tab.setAttribute('aria-selected', i === idx ? 'true' : 'false'));
+      $$('.gpanel').forEach((panel, i) => panel.setAttribute('aria-hidden', i === idx ? 'false' : 'true'));
+    };
+  }
+
+  // Lightbox com teclado.
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const lb = $('#lightbox');
+      const secret = $('#secret-overlay');
+      if (lb && lb.classList.contains('open') && typeof window.closeLb === 'function') window.closeLb();
+      if (secret && secret.classList.contains('show') && typeof window.closeSecret === 'function') window.closeSecret();
+    }
+  });
+
+  // Otimiza imagens geradas/carregadas.
+  $$('img').forEach(img => {
+    if (!img.hasAttribute('decoding')) img.setAttribute('decoding','async');
+    if (!img.hasAttribute('loading') && !img.classList.contains('hero-photo')) img.setAttribute('loading','lazy');
+  });
+
+  // Pausa efeitos visuais quando a aba está escondida para economizar CPU.
+  document.addEventListener('visibilitychange', () => {
+    document.body.classList.toggle('page-hidden', document.hidden);
+  });
+})();
+
+
+
+/* === EXPANSÃO COMPLETA — FUNÇÕES NOVAS E COMPATIBILIDADE === */
+(function finalCompatibilityLayer(){
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  // Corrige abas depois da limpeza dos jogos e evita erro caso um painel antigo não exista.
+  window.switchGame = function(idx, btn){
+    $$('.gtab').forEach((tab,i)=>{
+      tab.classList.toggle('active', i===idx);
+      tab.setAttribute('aria-selected', i===idx ? 'true' : 'false');
+    });
+    $$('.gpanel').forEach((panel,i)=>{
+      panel.classList.toggle('active', i===idx);
+      panel.setAttribute('aria-hidden', i===idx ? 'false' : 'true');
+    });
+    if(btn) btn.classList.add('active');
+    if(idx===0 && typeof window.resetWordle === 'function') window.resetWordle();
+    if(idx===1 && typeof initMemory === 'function' && !window.__memOpened){ window.__memOpened=true; initMemory(); }
+    if(idx===2 && typeof initQuiz === 'function' && !window.__quizOpened){ window.__quizOpened=true; initQuiz(); }
+    if(idx===3 && $('#hearts-display')) $('#hearts-display').textContent = window.heartsCount || 0;
+    if(idx===4 && $('#wheel-canvas') && typeof drawWheel === 'function') drawWheel($('#wheel-canvas').getContext('2d'),0);
+  };
+
+  // Melhora compatibilidade de altura no mobile e rolagem horizontal das abas por arraste.
+  function setVh(){ document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`); }
+  setVh(); window.addEventListener('resize', setVh, {passive:true}); window.addEventListener('orientationchange', setVh, {passive:true});
+  const tabs = $('.games-tabs');
+  if(tabs){
+    let down=false,startX=0,scrollLeft=0;
+    tabs.addEventListener('pointerdown',e=>{down=true;startX=e.clientX;scrollLeft=tabs.scrollLeft;tabs.setPointerCapture?.(e.pointerId);});
+    tabs.addEventListener('pointermove',e=>{if(!down)return;tabs.scrollLeft=scrollLeft-(e.clientX-startX);});
+    tabs.addEventListener('pointerup',()=>down=false); tabs.addEventListener('pointercancel',()=>down=false);
+  }
+
+  // Atalhos seguros no desktop: 1-5 troca jogos, ESC fecha overlays.
+  window.addEventListener('keydown', e=>{
+    if(e.altKey||e.ctrlKey||e.metaKey) return;
+    const n = Number(e.key);
+    if(n>=1 && n<=5 && document.activeElement?.tagName !== 'INPUT'){
+      const btn = $$('.gtab')[n-1]; if(btn){ e.preventDefault(); window.switchGame(n-1, btn); btn.scrollIntoView({inline:'center',block:'nearest'}); }
+    }
+  });
+
+  // Evita zoom por duplo toque em botões no iOS/Android antigos.
+  let lastTouch=0;
+  document.addEventListener('touchend',e=>{ const now=Date.now(); if(now-lastTouch<280 && e.target.closest('button')) e.preventDefault(); lastTouch=now; }, {passive:false});
+})();
+
+const LOVE_BILLETS = [
+  'Você é meu detalhe favorito em qualquer dia comum.',
+  'Onde você está, meu coração sempre encontra casa.',
+  'Te amar é como olhar para o céu e reconhecer uma estrela só nossa.',
+  'Eu escolheria você até nos universos em que eu nem sei meu nome.',
+  'Seu sorriso tem um jeito injusto de vencer qualquer tristeza minha.',
+  'Entre todas as possibilidades do mundo, a minha favorita continua sendo nós.',
+  'Você é calma, bagunça, sonho e realidade no mesmo abraço.',
+  'Eu não preciso de muito quando tenho a certeza de você.'
+];
+let currentLovePhrase = '';
+window.openLoveVault = function(){
+  const lock = document.getElementById('vault-lock');
+  const text = document.getElementById('vault-text');
+  if(!text) return;
+  currentLovePhrase = LOVE_BILLETS[Math.floor(Math.random()*LOVE_BILLETS.length)];
+  if(lock){ lock.textContent='💌'; lock.style.transform='scale(1.08)'; setTimeout(()=>lock.style.transform='',220); }
+  text.textContent = currentLovePhrase;
+  if(typeof launchConfetti === 'function' && Math.random() > .65) launchConfetti();
+};
+window.copyLovePhrase = async function(){
+  const phrase = currentLovePhrase || document.getElementById('vault-text')?.textContent || '';
+  try{
+    await navigator.clipboard.writeText(phrase);
+    if(typeof notify === 'function') notify('Frase copiada!', '✨');
+  }catch(err){
+    if(typeof notify === 'function') notify('Não consegui copiar automaticamente.', '💌');
+  }
+};
+window.setMood = function(btn, phrase){
+  document.querySelectorAll('.mood').forEach(m=>m.classList.remove('active'));
+  btn?.classList.add('active');
+  const out=document.getElementById('mood-output');
+  if(out) out.textContent=phrase;
+};
+
+// Ajusta o texto de compatibilidade conforme dispositivo.
+(function deviceLabel(){
+  const el=document.querySelector('.compat-strip'); if(!el) return;
+  const isTouch = matchMedia('(pointer:coarse)').matches;
+  const isWin = navigator.platform?.toLowerCase().includes('win');
+  if(isTouch) el.innerHTML='📱 <strong>Modo celular</strong> ativado: toque, menu e jogos otimizados';
+  else if(isWin) el.innerHTML='💻 <strong>Modo Windows</strong> ativado: teclado, mouse e tela grande otimizados';
+})();
 </script>
 </body>
 </html>
