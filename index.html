@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<!-- Versão aprimorada: acessibilidade, responsividade, performance e polimento visual preservando o conteúdo original. -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="Site romântico interativo para Kauê & Gyovanna, com contador, história, música, céu estrelado, galeria, jogos e mensagens especiais.">
-<meta name="theme-color" content="#030209">
-<meta name="color-scheme" content="dark">
-<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Um site romântico para Kauê & Gyovanna — amor eternizado em código">
 <title>Onde você está, estou 🌍 — Kauê &amp; Gyovanna</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +11,7 @@
 <style>
 .game-wrap{background:var(--bg3);border:1px solid var(--brd);border-radius:28px;padding:2.5rem 1.5rem;}
 
-:root{a
+:root{
   --bg:#030209;--bg2:#06030f;--bg3:#0a071a;
   --rose:#e8647a;--rose-d:#b84060;--rose-s:#f0a0b0;
   --gold:#c9956e;--gold-s:#e8c4a0;
@@ -428,64 +424,21 @@ body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans
   .ach-grid{grid-template-columns:repeat(4,1fr);}
 }
 
-/* === APRIMORAMENTO 2026 — ACESSIBILIDADE, MOBILE E POLIMENTO === */
-:focus-visible{outline:2px solid var(--rose-s);outline-offset:3px;}
-button{-webkit-tap-highlight-color:transparent;}
-img{max-width:100%;}
-.nav-toggle{display:none;width:42px;height:42px;border:1px solid var(--brd2);border-radius:14px;background:rgba(255,255,255,.045);align-items:center;justify-content:center;flex-direction:column;gap:5px;cursor:pointer;transition:background .25s,border-color .25s,transform .25s;}
-.nav-toggle span{width:18px;height:2px;border-radius:999px;background:var(--cream);transition:transform .25s,opacity .25s;}
-.nav-toggle:hover{background:rgba(255,255,255,.09);border-color:rgba(232,100,122,.45);}
-.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-.nav-toggle.open span:nth-child(2){opacity:0;}
-.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-body.menu-open{overflow:hidden;}
-.music-embed iframe{border:0;}
-.gpanel[aria-hidden="true"]{display:none!important;}
-.gtab[aria-selected="true"]{color:var(--rose);border-bottom-color:var(--rose);}
-.loading-safety #loading{opacity:0;visibility:hidden;pointer-events:none;}
-@keyframes float-away{0%{opacity:1;transform:translateY(0) scale(1) rotate(0deg);}100%{opacity:0;transform:translateY(-120px) scale(.65) rotate(18deg);}}
-@supports (height:100dvh){#hero{height:100dvh;}}
-@media(max-width:640px){
-  #nav{padding:.75rem 1rem;}
-  .nav-toggle{display:flex;}
-  .nav-links{position:fixed;top:66px;left:1rem;right:1rem;display:flex;flex-direction:column;gap:.35rem;padding:.75rem;background:rgba(3,2,9,.94);backdrop-filter:blur(22px);border:1px solid var(--brd2);border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.35);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s,visibility .25s,transform .25s;}
-  .nav-links.open{opacity:1;visibility:visible;transform:translateY(0);}
-  .nav-links a{display:block;padding:.85rem 1rem;border-radius:12px;font-size:.72rem;}
-  .nav-links a:hover{background:rgba(232,100,122,.08);}
-  .hero-title{font-size:clamp(2.2rem,13vw,3.4rem);}
-  .hero-since{line-height:1.6;}
-  .game-wrap{padding:1.4rem .8rem;border-radius:22px;}
-  .gallery-scroll{scroll-padding-left:1rem;}
-  .g-card{width:74vw;max-width:280px;}
-}
-@media(max-width:380px){
-  .w-tile{width:42px;height:42px;}
-  .w-key{min-width:22px;padding:0 .22rem;}
-  .love-pairs-board{grid-template-columns:repeat(4,1fr);gap:.45rem;}
-  .love-pair-card{width:56px;height:56px;}
-}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto;}
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
-  #hero-canvas,#footer-canvas{display:none;}
-}
-
 </style>
 </head>
 <body>
 
 <!-- LOADING -->
-<div id="loading" role="status" aria-live="polite">
-  <div class="ld-heart" aria-hidden="true">❤️</div>
+<div id="loading">
+  <div class="ld-heart">❤️</div>
   <div class="ld-names">Kauê &amp; Gyovanna</div>
   <div class="ld-bar"><div class="ld-bar-fill"></div></div>
 </div>
 
 <!-- NAV -->
 <nav id="nav">
-  <a class="nav-logo" href="#hero" aria-label="Voltar para o início">K <em>&</em> G</a>
-  <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
-  <ul class="nav-links" id="nav-links">
+  <a class="nav-logo" href="#hero">K <em>&</em> G</a>
+  <ul class="nav-links">
     <li><a href="#story">História</a></li>
     <li><a href="#music">Música</a></li>
     <li><a href="#sky">Estrelas</a></li>
@@ -496,10 +449,10 @@ body.menu-open{overflow:hidden;}
 
 <!-- HERO -->
 <section id="hero">
-  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <canvas id="hero-canvas"></canvas>
   <div class="hero-inner">
     <div class="hero-ring">
-      <img class="hero-photo" id="hero-photo" loading="eager" decoding="async" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%236a4c93' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-size='60' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EK %26 G%3C/text%3E%3C/svg%3E" alt="Kauê & Gyovanna">
+      <img class="hero-photo" id="hero-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%236a4c93' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-size='60' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EK %26 G%3C/text%3E%3C/svg%3E" alt="Kauê & Gyovanna">
     </div>
     <div class="hero-eyebrow">Uma surpresa pra você</div>
     <h1 class="hero-title">Onde você está,<br><em>estou</em> 🌍</h1>
@@ -578,7 +531,7 @@ body.menu-open{overflow:hidden;}
       </div>
     </div>
     <div class="music-embed">
-      <iframe title="Player do Spotify da música G + K — Saturno" src="https://open.spotify.com/embed/track/68cPbG7hJnwDW9nPX1uQcX?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe src="https://open.spotify.com/embed/track/68cPbG7hJnwDW9nPX1uQcX?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -594,7 +547,7 @@ body.menu-open{overflow:hidden;}
       <div class="msg-full" id="msg-full">
         Com você ao meu lado, até os dias complicados ficam mais bonitos. Você tem esse jeito especial de fazer tudo parecer mais importante, mais real, mais vivo. Cada momento com você é um presente que eu não sabia que precisava tanto. Te amo mais do que qualquer palavra consegue expressar, Gyovanna. Você é tudo que eu mais gosto — e muito mais do que isso. Você é perfeita pra mim, e eu não trocaria nosso amor por absolutamente nada nesse universo inteiro. 💕
       </div>
-      <button type="button" class="msg-btn" id="msg-btn" onclick="toggleMsg()">Mostrar mensagem completa</button>
+      <button class="msg-btn" id="msg-btn" onclick="toggleMsg()">Mostrar mensagem completa</button>
     </div>
   </div>
 </section>
@@ -827,16 +780,16 @@ body.menu-open{overflow:hidden;}
   <h2 class="sec-h">Hora de<br><em>brincar</em></h2>
   <div class="game-wrap">
     <div class="games-tabs">
-      <button type="button" class="gtab active" onclick="switchGame(0,this)">🔤 Palavra</button>
-      <button type="button" class="gtab" onclick="switchGame(1,this)">🃏 Memória</button>
-      <button type="button" class="gtab" onclick="switchGame(2,this)">📝 Quiz</button>
-      <button type="button" class="gtab" onclick="switchGame(3,this)">❌⭕ Velha</button>
-      <button type="button" class="gtab" onclick="switchGame(4,this)">🎲 Dado</button>
-      <button type="button" class="gtab" onclick="switchGame(5,this)">💕 Corações</button>
-      <button type="button" class="gtab" onclick="switchGame(6,this)">⭐ Estrelas</button>
-      <button type="button" class="gtab" onclick="switchGame(7,this)">🎡 Roda</button>
-      <button type="button" class="gtab" onclick="switchGame(8,this)">💑 Pares</button>
-      <button type="button" class="gtab" onclick="switchGame(9,this)">💘 Desafio</button>
+      <button class="gtab active" onclick="switchGame(0,this)">🔤 Palavra</button>
+      <button class="gtab" onclick="switchGame(1,this)">🃏 Memória</button>
+      <button class="gtab" onclick="switchGame(2,this)">📝 Quiz</button>
+      <button class="gtab" onclick="switchGame(3,this)">❌⭕ Velha</button>
+      <button class="gtab" onclick="switchGame(4,this)">🎲 Dado</button>
+      <button class="gtab" onclick="switchGame(5,this)">💕 Corações</button>
+      <button class="gtab" onclick="switchGame(6,this)">⭐ Estrelas</button>
+      <button class="gtab" onclick="switchGame(7,this)">🎡 Roda</button>
+      <button class="gtab" onclick="switchGame(8,this)">💑 Pares</button>
+      <button class="gtab" onclick="switchGame(9,this)">💘 Desafio</button>
     </div>
 
     <!-- WORDLE -->
@@ -853,7 +806,7 @@ body.menu-open{overflow:hidden;}
           <h3>💕 Quase!</h3>
           <p>A palavra era: <strong>TUDO</strong><br>Porque eu amo tudo em você, Gyovanna! 💕</p>
         </div>
-        <button type="button" class="w-play-again" id="w-again" onclick="resetWordle()">Jogar novamente ↺</button>
+        <button class="w-play-again" id="w-again" onclick="resetWordle()">Jogar novamente ↺</button>
         <div class="w-kb" id="w-kb"></div>
       </div>
     </div>
@@ -870,7 +823,7 @@ body.menu-open{overflow:hidden;}
         <div class="mem-win" id="mem-win">
           <h3>🎉 Incrível!</h3>
           <p id="mem-win-msg">Você encontrou todos os pares!</p>
-          <button type="button" class="mem-restart" onclick="resetMemory()">Jogar novamente ↺</button>
+          <button class="mem-restart" onclick="resetMemory()">Jogar novamente ↺</button>
         </div>
       </div>
     </div>
@@ -884,7 +837,7 @@ body.menu-open{overflow:hidden;}
           <div class="quiz-result-score" id="q-score">0</div>
           <div class="quiz-result-of" id="q-of">de 5 acertos</div>
           <div class="quiz-result-msg" id="q-msg"></div>
-          <button type="button" class="quiz-restart" onclick="resetQuiz()">Tentar novamente ↺</button>
+          <button class="quiz-restart" onclick="resetQuiz()">Tentar novamente ↺</button>
         </div>
       </div>
     </div>
@@ -894,18 +847,18 @@ body.menu-open{overflow:hidden;}
       <div style="text-align:center;">
         <p style="margin-bottom:1rem;color:var(--muted);font-size:.9rem;">Jogo da Velha - Você vs IA 🤖</p>
         <div class="tictactoe-board" id="tictactoe-board">
-          <button type="button" class="ttt-cell" onclick="handleTTT(0)"></button>
-          <button type="button" class="ttt-cell" onclick="handleTTT(1)"></button>
-          <button type="button" class="ttt-cell" onclick="handleTTT(2)"></button>
-          <button type="button" class="ttt-cell" onclick="handleTTT(3)"></button>
-          <button type="button" class="ttt-cell" onclick="handleTTT(4)"></button>
-          <button type="button" class="ttt-cell" onclick="handleTTT(5)"></button>
-          <button type="button" class="ttt-cell" onclick="handleTTT(6)"></button>
-          <button type="button" class="ttt-cell" onclick="handleTTT(7)"></button>
-          <button type="button" class="ttt-cell" onclick="handleTTT(8)"></button>
+          <button class="ttt-cell" onclick="handleTTT(0)"></button>
+          <button class="ttt-cell" onclick="handleTTT(1)"></button>
+          <button class="ttt-cell" onclick="handleTTT(2)"></button>
+          <button class="ttt-cell" onclick="handleTTT(3)"></button>
+          <button class="ttt-cell" onclick="handleTTT(4)"></button>
+          <button class="ttt-cell" onclick="handleTTT(5)"></button>
+          <button class="ttt-cell" onclick="handleTTT(6)"></button>
+          <button class="ttt-cell" onclick="handleTTT(7)"></button>
+          <button class="ttt-cell" onclick="handleTTT(8)"></button>
         </div>
         <div class="tictactoe-status" id="tictactoe-status">Seu turno! (X)</div>
-        <button type="button" class="tictactoe-reset" onclick="resetTTT()">Nova partida ↺</button>
+        <button class="tictactoe-reset" onclick="resetTTT()">Nova partida ↺</button>
       </div>
     </div>
 
@@ -938,10 +891,10 @@ body.menu-open{overflow:hidden;}
         <p style="color:var(--muted);margin-bottom:1rem;">💕 Clique nos corações! Quanto mais, mais amor! 💕</p>
         <div class="hearts-container" id="hearts-container">
           <div class="hearts-display" id="hearts-display">0</div>
-          <button type="button" class="heart-btn" id="heart-btn" onclick="clickHeart()">💕</button>
+          <button class="heart-btn" id="heart-btn" onclick="clickHeart()">💕</button>
           <div class="hearts-combo" id="hearts-combo">Combo: <span id="combo-count">0</span></div>
         </div>
-        <button type="button" onclick="resetHearts()" style="margin-top:1rem;">Resetar ↺</button>
+        <button onclick="resetHearts()" style="margin-top:1rem;">Resetar ↺</button>
       </div>
     </div>
 
@@ -954,7 +907,7 @@ body.menu-open{overflow:hidden;}
           <div>Score: <span id="stars-score">0</span></div>
           <div>Tempo: <span id="stars-time">30</span>s</div>
         </div>
-        <button type="button" onclick="resetStars()" style="margin-top:1rem;">Novo jogo ↺</button>
+        <button onclick="resetStars()" style="margin-top:1rem;">Novo jogo ↺</button>
       </div>
     </div>
 
@@ -964,7 +917,7 @@ body.menu-open{overflow:hidden;}
         <p style="color:var(--muted);margin-bottom:1rem;">🎡 Gire a roda do destino! 🎡</p>
         <div class="wheel-wrapper">
           <canvas id="wheel-canvas" width="300" height="300"></canvas>
-          <button type="button" class="wheel-btn" onclick="spinWheel()" id="spin-btn">GIRAR</button>
+          <button class="wheel-btn" onclick="spinWheel()" id="spin-btn">GIRAR</button>
         </div>
         <div class="wheel-result" id="wheel-result"></div>
       </div>
@@ -976,7 +929,7 @@ body.menu-open{overflow:hidden;}
         <p style="color:var(--muted);margin-bottom:1rem;">💑 Encontre os pares de amor! 💑</p>
         <div class="love-pairs-board" id="love-pairs-board"></div>
         <div style="margin-top:1rem;color:var(--muted);">Pares: <span id="love-pairs-found">0</span>/6</div>
-        <button type="button" onclick="resetLovePairs()" style="margin-top:1rem;">Novo jogo ↺</button>
+        <button onclick="resetLovePairs()" style="margin-top:1rem;">Novo jogo ↺</button>
       </div>
     </div>
 
@@ -1027,7 +980,7 @@ body.menu-open{overflow:hidden;}
 
 <!-- FOOTER -->
 <footer id="footer">
-  <canvas id="footer-canvas" aria-hidden="true"></canvas>
+  <canvas id="footer-canvas"></canvas>
   <div class="footer-in">
     <div class="footer-hearts"><span class="fh">💗</span><span class="fh">❤️</span><span class="fh">💗</span></div>
     <div class="footer-names"><em>Kauê</em> &amp; <em>Gyovanna</em></div>
@@ -1037,7 +990,7 @@ body.menu-open{overflow:hidden;}
 
 <!-- LIGHTBOX -->
 <div id="lightbox">
-  <button id="lb-close" type="button" aria-label="Fechar foto" onclick="closeLb()">✕</button>
+  <button id="lb-close" onclick="closeLb()">✕</button>
   <img id="lb-img" src="" alt="">
 </div>
 
@@ -1046,7 +999,7 @@ body.menu-open{overflow:hidden;}
   <div class="secret-hearts" id="secret-hearts"></div>
   <div class="secret-title" id="secret-title">❤️</div>
   <div class="secret-msg" id="secret-msg"></div>
-  <button id="secret-close" type="button" onclick="closeSecret()">Fechar ✕</button>
+  <button id="secret-close" onclick="closeSecret()">Fechar ✕</button>
 </div>
 
 <!-- KONAMI HINT -->
@@ -1507,7 +1460,7 @@ function showQuizQ(idx) {
     <div class="quiz-question">${q.q}</div>
     <div class="quiz-opts">
       ${q.opts.map((o,i)=>`
-        <button type="button" class="quiz-opt" onclick="answerQuiz(${i},${q.c},this)">
+        <button class="quiz-opt" onclick="answerQuiz(${i},${q.c},this)">
           <span class="quiz-opt-letter">${letters[i]}</span>${o}
         </button>`).join('')}
     </div>
@@ -2960,89 +2913,6 @@ function launchConfetti() {
     }, i*30);
   }
 }
-
-
-/* === APRIMORAMENTO 2026 — CAMADA DE SEGURANÇA E UX === */
-(function enhanceUX(){
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-  // Evita loader preso caso algum recurso externo demore.
-  window.setTimeout(() => document.body.classList.add('loading-safety'), 3800);
-
-  // Melhora acessibilidade dos botões e abas.
-  $$('button').forEach(btn => {
-    if (!btn.hasAttribute('type')) btn.setAttribute('type','button');
-  });
-  const tabs = $$('.gtab');
-  const panels = $$('.gpanel');
-  if (tabs.length && panels.length) {
-    tabs.forEach((tab, i) => {
-      tab.setAttribute('role','tab');
-      tab.setAttribute('aria-controls', `gp-${i}`);
-      tab.setAttribute('aria-selected', tab.classList.contains('active') ? 'true' : 'false');
-    });
-    panels.forEach((panel, i) => {
-      panel.setAttribute('role','tabpanel');
-      panel.setAttribute('aria-hidden', panel.classList.contains('active') ? 'false' : 'true');
-      panel.setAttribute('tabindex','0');
-    });
-  }
-
-  // Menu mobile.
-  const navToggle = $('.nav-toggle');
-  const navLinks = $('#nav-links');
-  if (navToggle && navLinks) {
-    const closeMenu = () => {
-      navToggle.classList.remove('open');
-      navLinks.classList.remove('open');
-      document.body.classList.remove('menu-open');
-      navToggle.setAttribute('aria-expanded','false');
-      navToggle.setAttribute('aria-label','Abrir menu');
-    };
-    navToggle.addEventListener('click', () => {
-      const open = !navLinks.classList.contains('open');
-      navToggle.classList.toggle('open', open);
-      navLinks.classList.toggle('open', open);
-      document.body.classList.toggle('menu-open', open);
-      navToggle.setAttribute('aria-expanded', String(open));
-      navToggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-    });
-    $$('.nav-links a').forEach(a => a.addEventListener('click', closeMenu));
-    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-  }
-
-  // Reforça a troca de abas com ARIA sem quebrar a função original.
-  const originalSwitchGame = window.switchGame;
-  if (typeof originalSwitchGame === 'function') {
-    window.switchGame = function(idx, btn) {
-      originalSwitchGame(idx, btn);
-      $$('.gtab').forEach((tab, i) => tab.setAttribute('aria-selected', i === idx ? 'true' : 'false'));
-      $$('.gpanel').forEach((panel, i) => panel.setAttribute('aria-hidden', i === idx ? 'false' : 'true'));
-    };
-  }
-
-  // Lightbox com teclado.
-  window.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      const lb = $('#lightbox');
-      const secret = $('#secret-overlay');
-      if (lb && lb.classList.contains('open') && typeof window.closeLb === 'function') window.closeLb();
-      if (secret && secret.classList.contains('show') && typeof window.closeSecret === 'function') window.closeSecret();
-    }
-  });
-
-  // Otimiza imagens geradas/carregadas.
-  $$('img').forEach(img => {
-    if (!img.hasAttribute('decoding')) img.setAttribute('decoding','async');
-    if (!img.hasAttribute('loading') && !img.classList.contains('hero-photo')) img.setAttribute('loading','lazy');
-  });
-
-  // Pausa efeitos visuais quando a aba está escondida para economizar CPU.
-  document.addEventListener('visibilitychange', () => {
-    document.body.classList.toggle('page-hidden', document.hidden);
-  });
-})();
 
 </script>
 </body>
