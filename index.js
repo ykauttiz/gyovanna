@@ -1,300 +1,293 @@
 /* ============================================================
-   KAUÊ & GYOVANNA — app.js
+   KAUÊ & GYOVANNA — index.js  (reescrito do zero)
    ============================================================ */
 
-/* ---- CONSTANTS ---- */
-const START_DATE = new Date('2025-06-20T20:30:00-03:00');
-const INSTAGRAM = {
-    kaue: { handle: '@ykauttiz', url: 'https://instagram.com/ykauttiz', name: 'Kauê', emoji: '👦🏻' },
-    gyovanna: { handle: '@ymoraisxz_', url: 'https://instagram.com/ymoraisxz_', name: 'Gyovanna', emoji: '👧🏻' }
-};
+'use strict';
 
-/* ---- STATE ---- */
-let achievements = JSON.parse(localStorage.getItem('kg_ach') || '[]');
-let msgLoves = parseInt(localStorage.getItem('kg_loves') || '0');
-let totalHearts = parseInt(localStorage.getItem('kg_hearts') || '0');
-let highScoreStars = parseInt(localStorage.getItem('kg_stars_hi') || '0');
-let snakeHi = parseInt(localStorage.getItem('kg_snake_hi') || '0');
-let typingBest = parseInt(localStorage.getItem('kg_typing_best') || '0');
+/* ── CONSTANTES ──────────────────────────────────────────── */
+const START = new Date('2025-06-20T20:30:00-03:00');
+const CHEAT_CODE = 'KAUEAMAGYOVANNA';
 
-/* ---- UTILS ---- */
+/* ── ESTADO GLOBAL ───────────────────────────────────────── */
+let ACH = JSON.parse(localStorage.getItem('kg_ach') || '[]');
+let LOVES = +localStorage.getItem('kg_loves') || 0;
+let TOT_HRT = +localStorage.getItem('kg_hearts') || 0;
+let HI_STARS = +localStorage.getItem('kg_stars_hi') || 0;
+let HI_SNAKE = +localStorage.getItem('kg_snake_hi') || 0;
+let HI_TYPE = +localStorage.getItem('kg_typing_best') || 0;
+
+/* ── UTILITÁRIOS ─────────────────────────────────────────── */
 const $ = id => document.getElementById(id);
-const $$ = sel => document.querySelectorAll(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
 const rnd = (a, b) => Math.random() * (b - a) + a;
-const rndInt = (a, b) => Math.floor(rnd(a, b + 1));
-const pick = arr => arr[rndInt(0, arr.length - 1)];
+const rni = (a, b) => Math.floor(rnd(a, b + 1));
+const pick = arr => arr[rni(0, arr.length - 1)];
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-function saveAch() { localStorage.setItem('kg_ach', JSON.stringify(achievements)); }
+/* ── CONQUISTAS ──────────────────────────────────────────── */
+const ACH_DEF = [
+    { id: 'visitor', ic: '👀', nm: 'Primeira visita' },
+    { id: 'sky', ic: '⭐', nm: 'Explorador estelar' },
+    { id: 'gallery', ic: '📸', nm: 'Amante de fotos' },
+    { id: 'message', ic: '💌', nm: 'Leu a carta' },
+    { id: 'wordle', ic: '🔤', nm: 'Palavra certa' },
+    { id: 'memory', ic: '🃏', nm: 'Memória perfeita' },
+    { id: 'quiz', ic: '📝', nm: 'Quiz mestre' },
+    { id: 'ttt', ic: '❌', nm: 'Velha campeão' },
+    { id: 'dice6', ic: '🎲', nm: 'Tiro certeiro' },
+    { id: 'love10', ic: '💕', nm: '10 corações' },
+    { id: 'love50', ic: '💖', nm: '50 corações' },
+    { id: 'stars50', ic: '⭐', nm: '50 estrelas' },
+    { id: 'snake20', ic: '🐍', nm: 'Cobra veloz' },
+    { id: 'type60', ic: '⌨️', nm: 'Digitador' },
+    { id: 'wheel', ic: '🎡', nm: 'Girou a roda' },
+    { id: 'pairs', ic: '💑', nm: 'Pares do amor' },
+    { id: 'challenge', ic: '💘', nm: 'Desafio aceito' },
+    { id: 'konami', ic: '🕹️', nm: 'Konami code' },
+    { id: 'secret', ic: '🔮', nm: 'Segredo revelado' },
+    { id: 'all', ic: '👑', nm: 'Completou tudo' },
+];
+
+function saveAch() { localStorage.setItem('kg_ach', JSON.stringify(ACH)); }
 
 function unlockAch(id) {
-    if (achievements.includes(id)) return;
-    achievements.push(id);
-    saveAch();
+    if (ACH.includes(id)) return;
+    ACH.push(id); saveAch();
     const card = document.querySelector(`.ach-card[data-id="${id}"]`);
-    if (card) {
-        card.classList.add('on');
-        const nm = card.querySelector('.ach-nm')?.textContent || '';
-        showToast(`🏆 Conquista: ${nm}`);
-    }
+    if (card) { card.classList.add('on'); }
+    const def = ACH_DEF.find(a => a.id === id);
+    toast(`🏆 ${def ? def.nm : id}`);
+    confetti(16);
     updateAchCount();
-    spawnConfetti(16);
+    if (ACH.length === ACH_DEF.length) unlockAch('all');
 }
 
-function unlockAllAch() {
-    $$('.ach-card').forEach(c => {
-        const id = c.dataset.id;
-        if (!achievements.includes(id)) unlockAch(id);
-    });
+function unlockAll() {
+    ACH_DEF.forEach(a => unlockAch(a.id));
 }
 
 function updateAchCount() {
-    const total = $$('.ach-card').length;
-    const done = achievements.length;
     const el = $('ach-count');
-    if (el) el.textContent = done;
     const sub = $('ach-sub-txt');
-    if (sub) sub.textContent = `de ${total} conquistas desbloqueadas`;
+    if (el) el.textContent = ACH.length;
+    if (sub) sub.textContent = `de ${ACH_DEF.length} conquistas desbloqueadas`;
 }
 
-function showToast(msg) {
+function initAch() {
+    const grid = $('ach-grid');
+    if (!grid) return;
+    grid.innerHTML = ACH_DEF.map(a => `
+    <div class="ach-card${ACH.includes(a.id) ? ' on' : ''}" data-id="${a.id}" title="${a.nm}">
+      <span class="ach-ic">${a.ic}</span>
+      <div class="ach-nm">${a.nm}</div>
+    </div>`).join('');
+    unlockAch('visitor');
+}
+
+/* ── TOAST ───────────────────────────────────────────────── */
+function toast(msg) {
     const t = document.createElement('div');
     t.className = 'ach-unlock-toast';
-    t.textContent = msg;
+    t.innerHTML = msg;
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 3000);
 }
 
-/* ---- CONFETTI ---- */
-function spawnConfetti(n = 30) {
-    const colors = ['#e8647a', '#f0a0b0', '#c9956e', '#9b7ccd', '#6ab0e8', '#e8c4a0'];
+/* ── CONFETTI ────────────────────────────────────────────── */
+function confetti(n = 24) {
+    const cols = ['#e8647a', '#f0a0b0', '#c9956e', '#9b7ccd', '#6ab0e8', '#e8c4a0', '#fff'];
     for (let i = 0; i < n; i++) {
         setTimeout(() => {
             const el = document.createElement('div');
             el.className = 'confetti';
-            const size = rnd(6, 14);
-            el.style.cssText = `
-        left:${rnd(10, 90)}vw; top:-20px;
-        width:${size}px; height:${size}px;
-        background:${pick(colors)};
-        --dur:${rnd(1.5, 3)}s;
-        --sy:-${rnd(50, 150)}px;
-        border-radius:${Math.random() > .5 ? '50%' : '2px'};
-      `;
+            const s = rnd(6, 14);
+            el.style.cssText = `left:${rnd(5, 95)}vw;top:-20px;width:${s}px;height:${s}px;` +
+                `background:${pick(cols)};--dur:${rnd(1.4, 2.8)}s;--sy:-${rni(40, 120)}px;` +
+                `border-radius:${Math.random() > .5 ? '50%' : '3px'};`;
             document.body.appendChild(el);
-            setTimeout(() => el.remove(), 3500);
-        }, i * 60);
+            setTimeout(() => el.remove(), 3200);
+        }, i * 55);
     }
 }
 
-/* ---- LOADING ---- */
+/* ── LOADING ─────────────────────────────────────────────── */
 window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        const ld = $('loading');
-        if (ld) ld.classList.add('done');
-    }, 2000);
-    init();
+    setTimeout(() => { const ld = $('loading'); if (ld) ld.classList.add('done'); }, 2200);
+    setup();
 });
 
-function init() {
+function setup() {
     initCounter();
     initNav();
     initHeroCanvas();
     initReveal();
-    initQuotesTicker();
+    initTicker();
     initGallery();
-    initSkyStars();
+    initStars();
     initFooterCanvas();
     initGames();
-    initAchievements();
+    initAch();
     updateAchCount();
-    const loveEl = $('msg-love-count');
-    if (loveEl) loveEl.textContent = msgLoves;
-    document.addEventListener('keydown', handleKeyInput);
-    // typing input event (safe, DOM ready)
-    const typingInp = $('typing-input');
-    if (typingInp) typingInp.addEventListener('input', handleTypingInput);
-    // snake canvas click (safe, DOM ready)
-    const sc = $('snake-canvas');
-    if (sc) sc.addEventListener('click', () => {
-        if (snakeGame && !snakeGame.running) {
-            snakeGame.running = true;
-            snakeGame.interval = setInterval(stepSnake, 130);
-            $('snake-msg').textContent = '';
+    // restore love count
+    const lc = $('msg-love-count');
+    if (lc) lc.textContent = LOVES;
+    // cheat listener
+    let cheatBuf = '';
+    document.addEventListener('keydown', e => {
+        // konami
+        konamiHandler(e);
+        // cheat text
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            const active = document.activeElement;
+            const isInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+            if (!isInput) {
+                cheatBuf = (cheatBuf + e.key.toUpperCase()).slice(-CHEAT_CODE.length);
+                if (cheatBuf === CHEAT_CODE) openCheat();
+            }
         }
     });
 }
 
-/* ---- COUNTER ---- */
+/* ── COUNTER ─────────────────────────────────────────────── */
 function initCounter() {
-    function update() {
+    function tick() {
         const now = new Date();
-        let y = 0, mo = 0, d = 0, h, m, s;
-        let from = new Date(START_DATE);
-        y = now.getFullYear() - from.getFullYear();
-        mo = now.getMonth() - from.getMonth();
-        if (mo < 0) { y--; mo += 12; }
-        let tmp = new Date(from);
-        tmp.setFullYear(from.getFullYear() + y);
-        tmp.setMonth(from.getMonth() + mo);
-        d = Math.floor((now - tmp) / 86400000);
-        const total_s = Math.floor((now - START_DATE) / 1000);
-        h = Math.floor((total_s % 86400) / 3600);
-        m = Math.floor((total_s % 3600) / 60);
-        s = total_s % 60;
-        $('c-y').textContent = y;
-        $('c-mo').textContent = mo;
-        $('c-d').textContent = d;
-        $('c-h').textContent = String(h).padStart(2, '0');
-        $('c-m').textContent = String(m).padStart(2, '0');
-        $('c-s').textContent = String(s).padStart(2, '0');
-        updateRetro(y, mo, d, total_s);
+        const s = Math.floor((now - START) / 1000);
+        let yr = 0, mo = 0;
+        let tmp = new Date(START);
+        while (true) { let nx = new Date(tmp); nx.setFullYear(nx.getFullYear() + 1); if (nx > now) break; tmp = nx; yr++; }
+        while (true) { let nx = new Date(tmp); nx.setMonth(nx.getMonth() + 1); if (nx > now) break; tmp = nx; mo++; }
+        const d = Math.floor((now - tmp) / 86400000);
+        const h = Math.floor((s % 86400) / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        const sc = s % 60;
+        setText('c-y', yr);
+        setText('c-mo', mo);
+        setText('c-d', d);
+        setText('c-h', pad(h));
+        setText('c-m', pad(m));
+        setText('c-s', pad(sc));
+        updateRetro(Math.floor(s / 86400), Math.floor(s / 3600), Math.floor(s / 86400) * 47 + 312);
     }
-    update();
-    setInterval(update, 1000);
+    tick();
+    setInterval(tick, 1000);
 }
 
-function updateRetro(y, mo, d, total_s) {
-    const days = Math.floor(total_s / 86400);
-    const el = {
-        days: $('retro-days'),
-        hours: $('retro-hours'),
-        msgs: $('retro-msgs'),
-        update: $('retro-update-time')
-    };
-    if (el.days) el.days.textContent = days;
-    if (el.hours) el.hours.textContent = (Math.floor(total_s / 3600)).toLocaleString('pt-BR');
-    if (el.msgs) el.msgs.textContent = (days * 47 + 312).toLocaleString('pt-BR');
-    if (el.update) el.update.textContent = 'Atualizado agora mesmo ✨';
+function setText(id, v) { const el = $(id); if (el) el.textContent = v; }
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function updateRetro(days, hours, msgs) {
+    setText('retro-days', days);
+    setText('retro-hours', hours.toLocaleString('pt-BR'));
+    setText('retro-msgs', msgs.toLocaleString('pt-BR'));
+    setText('retro-update-time', 'Atualizado agora ✨');
 }
 
-/* ---- NAV ---- */
+/* ── NAV ─────────────────────────────────────────────────── */
 function initNav() {
     const nav = $('nav');
     window.addEventListener('scroll', () => {
         nav.classList.toggle('scrolled', window.scrollY > 30);
     });
-
-    // active link on scroll
-    const sections = ['hero', 'story', 'music', 'sky', 'games', 'gallery', 'achievements', 'retro'];
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(e => {
+    // active section highlight
+    const secs = ['hero', 'story', 'instagram', 'music', 'sky', 'games', 'gallery', 'achievements', 'retro'];
+    const obs = new IntersectionObserver(en => {
+        en.forEach(e => {
             if (e.isIntersecting) {
                 $$('.nav-links a').forEach(a => {
                     a.classList.toggle('active-link', a.getAttribute('href') === '#' + e.target.id);
                 });
             }
         });
-    }, { threshold: .35 });
-    sections.forEach(id => { const el = $(id); if (el) observer.observe(el); });
-
-    // mobile
-    const toggle = $('nav-toggle');
-    const mobile = $('nav-mobile');
-    if (toggle && mobile) {
-        toggle.addEventListener('click', () => mobile.classList.toggle('open'));
-        $$('.nav-mobile a').forEach(a => a.addEventListener('click', () => mobile.classList.remove('open')));
-    }
+    }, { threshold: .3 });
+    secs.forEach(id => { const el = $(id); if (el) obs.observe(el); });
+    // mobile close
+    $$('.nav-mobile a').forEach(a => a.addEventListener('click', () => {
+        const nm = $('nav-mobile'); if (nm) nm.classList.remove('open');
+    }));
 }
 
-/* ---- HERO CANVAS (particles + hearts) ---- */
+/* ── HERO CANVAS ─────────────────────────────────────────── */
 function initHeroCanvas() {
-    const canvas = $('hero-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const particles = [];
+    const cv = $('hero-canvas'); if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const pts = [];
+    const floats = [];
 
-    function resize() {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-    }
+    function resize() { cv.width = cv.offsetWidth; cv.height = cv.offsetHeight; }
     resize();
     window.addEventListener('resize', resize);
 
-    // spawn particles
-    for (let i = 0; i < 80; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 1.8 + .4,
-            vx: (Math.random() - .5) * .25,
-            vy: (Math.random() - .5) * .25,
-            alpha: Math.random() * .8 + .2,
-            color: pick(['#e8647a', '#f0a0b0', '#c4a8f0', '#6ab0e8', '#e8c4a0'])
-        });
-    }
+    for (let i = 0; i < 90; i++) pts.push({
+        x: rnd(0, 1), y: rnd(0, 1),
+        vx: (rnd(0, 1) - .5) * .3, vy: (rnd(0, 1) - .5) * .3,
+        r: rnd(.4, 2), al: rnd(.2, .9),
+        col: pick(['#e8647a', '#f0a0b0', '#c4a8f0', '#6ab0e8', '#fffacd'])
+    });
 
-    // floating hearts
-    const hearts = [];
     setInterval(() => {
-        if (hearts.length < 12) hearts.push({
-            x: rnd(.1, .9) * canvas.width, y: canvas.height + 20,
-            vy: rnd(.4, .9), size: rnd(12, 22),
-            alpha: 1, symbol: pick(['♡', '❤', '💕', '✨'])
+        if (floats.length < 14) floats.push({
+            x: rnd(.05, .95), y: 1.05, vy: rnd(.003, .007),
+            sz: rni(14, 26), al: 1, sym: pick(['♡', '❤', '💕', '✨', '★'])
         });
-    }, 1200);
+    }, 900);
 
     function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.x += p.vx; p.y += p.vy;
-            if (p.x < 0) p.x = canvas.width;
-            if (p.x > canvas.width) p.x = 0;
-            if (p.y < 0) p.y = canvas.height;
-            if (p.y > canvas.height) p.y = 0;
-            ctx.save();
-            ctx.globalAlpha = p.alpha * .6;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.fill();
-            ctx.restore();
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        // particles
+        pts.forEach(p => {
+            p.x += p.vx / cv.width; p.y += p.vy / cv.height;
+            if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
+            if (p.y < 0) p.y = 1; if (p.y > 1) p.y = 0;
+            ctx.save(); ctx.globalAlpha = p.al * .55;
+            ctx.beginPath(); ctx.arc(p.x * cv.width, p.y * cv.height, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.col; ctx.fill(); ctx.restore();
         });
-        hearts.forEach((h, i) => {
-            h.y -= h.vy;
-            h.alpha -= .003;
-            if (h.alpha <= 0) { hearts.splice(i, 1); return; }
-            ctx.save();
-            ctx.globalAlpha = h.alpha * .4;
+        // floating hearts
+        for (let i = floats.length - 1; i >= 0; i--) {
+            const h = floats[i];
+            h.y -= h.vy; h.al -= .002;
+            if (h.al <= 0) { floats.splice(i, 1); continue; }
+            ctx.save(); ctx.globalAlpha = h.al * .45;
+            ctx.font = `${h.sz}px serif`;
             ctx.fillStyle = '#e8647a';
-            ctx.font = `${h.size}px serif`;
-            ctx.fillText(h.symbol, h.x, h.y);
+            ctx.fillText(h.sym, h.x * cv.width, h.y * cv.height);
             ctx.restore();
-        });
+        }
         requestAnimationFrame(draw);
     }
     draw();
 
-    // click to burst hearts
-    canvas.addEventListener('click', e => {
-        const rect = canvas.getBoundingClientRect();
-        for (let i = 0; i < 6; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.textContent = pick(['💕', '❤️', '✨', '💖', '🌸']);
-            heart.style.left = (e.clientX - rect.left + rnd(-30, 30)) + 'px';
-            heart.style.top = (e.clientY - rect.top) + 'px';
-            heart.style.position = 'absolute';
-            canvas.parentElement.appendChild(heart);
-            setTimeout(() => heart.remove(), 2600);
+    // click burst
+    cv.addEventListener('click', e => {
+        const r = cv.getBoundingClientRect();
+        for (let i = 0; i < 8; i++) {
+            const el = document.createElement('div');
+            el.className = 'floating-heart';
+            el.textContent = pick(['💕', '❤️', '✨', '💖', '🌸', '⭐']);
+            el.style.cssText = `position:absolute;left:${e.clientX - r.left + rnd(-40, 40)}px;` +
+                `top:${e.clientY - r.top - 10}px;font-size:${rni(14, 22)}px;pointer-events:none;` +
+                `animation:rise ${rnd(1.5, 2.5)}s ease-in forwards;`;
+            cv.parentElement.appendChild(el);
+            setTimeout(() => el.remove(), 2600);
         }
     });
 }
 
-/* ---- FOOTER CANVAS ---- */
+/* ── FOOTER CANVAS ───────────────────────────────────────── */
 function initFooterCanvas() {
-    const canvas = $('footer-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+    const cv = $('footer-canvas'); if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const pts = [];
+    function resize() { cv.width = cv.offsetWidth; cv.height = cv.offsetHeight; }
     resize();
     window.addEventListener('resize', resize);
-    const pts = [];
-    for (let i = 0; i < 40; i++) pts.push({ x: Math.random(), y: Math.random(), r: Math.random() * 1.5 + .3, a: Math.random() * .5 + .1 });
+    for (let i = 0; i < 50; i++) pts.push({ x: rnd(0, 1), y: rnd(0, 1), r: rnd(.3, 1.8), a: rnd(.1, .5) });
     function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, cv.width, cv.height);
         pts.forEach(p => {
-            ctx.save(); ctx.globalAlpha = p.a * .4;
-            ctx.beginPath(); ctx.arc(p.x * canvas.width, p.y * canvas.height, p.r, 0, Math.PI * 2);
+            ctx.save(); ctx.globalAlpha = p.a * .35;
+            ctx.beginPath(); ctx.arc(p.x * cv.width, p.y * cv.height, p.r, 0, Math.PI * 2);
             ctx.fillStyle = '#e8647a'; ctx.fill(); ctx.restore();
         });
         requestAnimationFrame(draw);
@@ -302,289 +295,227 @@ function initFooterCanvas() {
     draw();
 }
 
-/* ---- REVEAL ON SCROLL ---- */
+/* ── REVEAL ──────────────────────────────────────────────── */
 function initReveal() {
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: .12 });
+    const obs = new IntersectionObserver(en => {
+        en.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: .1 });
     $$('.reveal').forEach(el => obs.observe(el));
 }
 
-/* ---- QUOTES TICKER ---- */
+/* ── TICKER ──────────────────────────────────────────────── */
 const QUOTES = [
-    { text: 'Você é meu lar preferido', icon: '🏠' },
-    { text: 'Escorpião nos assistiu se apaixonar', icon: '🦂' },
-    { text: 'G + K — Saturno', icon: '🪐' },
-    { text: '20 de junho de 2025', icon: '📅' },
-    { text: 'Anápolis, Goiás', icon: '📍' },
-    { text: 'Eu te amo, Gyovanna', icon: '❤️' },
-    { text: 'Cada segundo com você é presente', icon: '🎁' },
-    { text: 'O universo conspirou pra nos juntar', icon: '✨' },
-    { text: 'Antares brilhou por nós', icon: '⭐' },
-    { text: 'Para sempre aqui', icon: '♾️' },
-    { text: 'Você é a melhor parte do meu dia', icon: '🌅' },
-    { text: 'Te amo de um jeito que não cabe em texto', icon: '💕' },
+    { t: 'Você é meu lar preferido', i: '🏠' },
+    { t: 'Escorpião nos assistiu se apaixonar', i: '🦂' },
+    { t: 'G + K — Saturno', i: '🪐' },
+    { t: '20 de junho de 2025', i: '📅' },
+    { t: 'Anápolis, Goiás', i: '📍' },
+    { t: 'Eu te amo, Gyovanna', i: '❤️' },
+    { t: 'Cada segundo com você é presente', i: '🎁' },
+    { t: 'O universo conspirou pra nos juntar', i: '✨' },
+    { t: 'Antares brilhou por nós', i: '⭐' },
+    { t: 'Para sempre aqui', i: '♾️' },
+    { t: 'Você é a melhor parte do meu dia', i: '🌅' },
+    { t: 'Te amo de um jeito que não cabe em texto', i: '💕' },
 ];
 
-function initQuotesTicker() {
-    const inner = $('quotes-inner');
-    if (!inner) return;
-    const doubled = [...QUOTES, ...QUOTES];
-    inner.innerHTML = doubled.map(q =>
-        `<span class="quote-item"><span class="q-icon">${q.icon}</span>${q.text}</span>`
+function initTicker() {
+    const el = $('quotes-inner'); if (!el) return;
+    const list = [...QUOTES, ...QUOTES];
+    el.innerHTML = list.map(q =>
+        `<span class="quote-item"><span class="q-icon">${q.i}</span>${q.t}</span>`
     ).join('');
 }
 
-/* ---- GALLERY ---- */
-const GALLERY_LABELS = [
-    'Nosso primeiro sorriso juntos 🌸',
-    'O dia mais especial ❤️',
-    'Meu amor eterno 💕',
-    'Você, simplesmente você ✨',
-];
-let lbIndex = 0;
-let galleryImgs = [];
+/* ── GALLERY ─────────────────────────────────────────────── */
+let lbIndex = 0, galleryImgs = [];
 
 function initGallery() {
-    const scroll = $('gallery-scroll');
-    if (!scroll) return;
-
-    // drag scroll
-    let isDown = false, startX, sl;
+    const scroll = $('gallery-scroll'); if (!scroll) return;
+    let isDown = false, startX = 0, sl = 0;
     scroll.addEventListener('mousedown', e => { isDown = true; scroll.classList.add('dragging'); startX = e.pageX - scroll.offsetLeft; sl = scroll.scrollLeft; });
-    scroll.addEventListener('mouseleave', () => { isDown = false; scroll.classList.remove('dragging'); });
-    scroll.addEventListener('mouseup', () => { isDown = false; scroll.classList.remove('dragging'); });
+    window.addEventListener('mouseup', () => { isDown = false; scroll.classList.remove('dragging'); });
     scroll.addEventListener('mousemove', e => {
         if (!isDown) return; e.preventDefault();
-        const x = e.pageX - scroll.offsetLeft;
-        scroll.scrollLeft = sl - (x - startX) * 1.2;
+        scroll.scrollLeft = sl - (e.pageX - scroll.offsetLeft - startX) * 1.2;
     });
+    galleryImgs = $$('.g-card img').map(i => i.src);
+    buildDots();
+    scroll.addEventListener('scroll', syncDots);
+}
 
-    // gather images
-    galleryImgs = Array.from($$('.g-card img')).map(i => i.src);
-    // dots
-    const dotsEl = $('g-dots');
-    if (dotsEl) {
-        dotsEl.innerHTML = galleryImgs.map((_, i) => `<button class="g-dot${i === 0 ? ' active' : ''}" onclick="scrollGallery(${i})"></button>`).join('');
-    }
-    scroll.addEventListener('scroll', () => {
-        const w = scroll.offsetWidth;
-        const idx = Math.round(scroll.scrollLeft / w);
-        $$('.g-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
-    });
+function buildDots() {
+    const wrap = $('g-dots'); if (!wrap) return;
+    wrap.innerHTML = galleryImgs.map((_, i) =>
+        `<button class="g-dot${i === 0 ? ' active' : ''}" onclick="scrollGallery(${i})"></button>`
+    ).join('');
+}
+
+function syncDots() {
+    const scroll = $('gallery-scroll'); if (!scroll) return;
+    const i = Math.round(scroll.scrollLeft / (scroll.offsetWidth || 1));
+    $$('.g-dot').forEach((d, j) => d.classList.toggle('active', i === j));
 }
 
 function scrollGallery(i) {
-    const scroll = $('gallery-scroll');
-    if (!scroll) return;
-    const card = scroll.querySelectorAll('.g-card')[i];
-    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    const scroll = $('gallery-scroll'); if (!scroll) return;
+    const cards = $$('.g-card');
+    if (cards[i]) cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
 }
 
 function openLb(src, idx) {
-    lbIndex = idx;
-    const lb = $('lightbox');
-    lb.classList.add('open');
+    lbIndex = idx || 0;
+    const lb = $('lightbox'); lb.classList.add('open');
     $('lb-img').src = src;
     unlockAch('gallery');
 }
 
 function closeLb() { $('lightbox').classList.remove('open'); }
+
 function lbNav(dir) {
+    if (!galleryImgs.length) return;
     lbIndex = (lbIndex + dir + galleryImgs.length) % galleryImgs.length;
     $('lb-img').src = galleryImgs[lbIndex];
 }
 
 document.addEventListener('keydown', e => {
-    if ($('lightbox').classList.contains('open')) {
+    const lb = $('lightbox');
+    if (lb && lb.classList.contains('open')) {
         if (e.key === 'ArrowRight') lbNav(1);
         if (e.key === 'ArrowLeft') lbNav(-1);
         if (e.key === 'Escape') closeLb();
     }
 });
 
-/* ---- MESSAGE ---- */
-function toggleMsg() {
-    const full = $('msg-full');
-    const btn = $('msg-btn');
-    const isOpen = full.classList.toggle('open');
-    btn.innerHTML = isOpen
-        ? '💌 Esconder mensagem'
-        : '💌 Mostrar mensagem completa';
-    if (isOpen) { unlockAch('message'); spawnConfetti(12); }
-}
-
-function loveMsg() {
-    msgLoves++;
-    localStorage.setItem('kg_loves', msgLoves);
-    $('msg-love-count').textContent = msgLoves;
-    const btn = $('msg-love-btn');
-    btn.classList.add('loved');
-    setTimeout(() => btn.classList.remove('loved'), 500);
-    spawnFloatingHeart();
-    if (msgLoves >= 10) unlockAch('love10');
-    if (msgLoves >= 50) unlockAch('love50');
-}
-
-function spawnFloatingHeart() {
-    const h = document.createElement('div');
-    h.className = 'floating-heart';
-    h.textContent = pick(['💕', '❤️', '💖', '🌸', '✨']);
-    h.style.cssText = `left:${rnd(20, 80)}vw;bottom:${rnd(20, 40)}vh;z-index:3000;`;
-    document.body.appendChild(h);
-    setTimeout(() => h.remove(), 2500);
-}
-
-/* ---- SKY STARS ---- */
-function initSkyStars() {
-    const svg = $('sky-svg');
-    const tooltip = $('star-tooltip');
-    if (!svg || !tooltip) return;
+/* ── SKY STARS ───────────────────────────────────────────── */
+function initStars() {
+    const svg = $('sky-svg'); const tip = $('star-tooltip'); if (!svg || !tip) return;
     $$('.sky-star').forEach(g => {
-        g.addEventListener('mouseenter', e => {
-            tooltip.innerHTML = `<strong>${g.dataset.name || ''}</strong>${g.dataset.info || ''}<div class="mag">Magnitude: ${g.dataset.mag || '?'}</div>`;
-            tooltip.classList.add('show');
+        g.addEventListener('mouseenter', () => {
+            tip.innerHTML = `<strong>${g.dataset.name || ''}</strong>${g.dataset.info || ''}` +
+                `<div class="mag">Magnitude: ${g.dataset.mag || '?'}</div>`;
+            tip.classList.add('show');
             unlockAch('sky');
         });
         g.addEventListener('mousemove', e => {
-            const rect = svg.closest('.sky-svg-container').getBoundingClientRect();
-            tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
-            tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+            const rc = svg.closest('.sky-svg-container').getBoundingClientRect();
+            tip.style.left = (e.clientX - rc.left + 14) + 'px';
+            tip.style.top = (e.clientY - rc.top - 14) + 'px';
         });
-        g.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
-        g.addEventListener('click', () => {
-            g.classList.toggle('active');
-            spawnConfetti(8);
-        });
+        g.addEventListener('mouseleave', () => tip.classList.remove('show'));
+        g.addEventListener('click', () => { g.classList.toggle('active'); confetti(8); });
     });
 }
 
-/* ---- ACHIEVEMENTS ---- */
-const ACH_DATA = [
-    { id: 'visitor', ic: '👀', nm: 'Primeira visita' },
-    { id: 'sky', ic: '⭐', nm: 'Explorador estelar' },
-    { id: 'gallery', ic: '📸', nm: 'Amante de fotos' },
-    { id: 'message', ic: '💌', nm: 'Leu a carta' },
-    { id: 'wordle', ic: '🔤', nm: 'Mestre das palavras' },
-    { id: 'memory', ic: '🃏', nm: 'Memória perfeita' },
-    { id: 'quiz', ic: '📝', nm: 'Quiz mestre' },
-    { id: 'ttt', ic: '❌', nm: 'Tic Tac Toe' },
-    { id: 'dice6', ic: '🎲', nm: 'Tiro certeiro' },
-    { id: 'love10', ic: '💕', nm: '10 corações' },
-    { id: 'love50', ic: '💖', nm: '50 corações' },
-    { id: 'stars50', ic: '⭐', nm: '50 estrelas' },
-    { id: 'snake20', ic: '🐍', nm: 'Cobra veloz' },
-    { id: 'typing60', ic: '⌨️', nm: 'Digitador' },
-    { id: 'wheel', ic: '🎡', nm: 'Girou a roda' },
-    { id: 'pairs', ic: '💑', nm: 'Pares encontrados' },
-    { id: 'challenge', ic: '💘', nm: 'Desafio aceito' },
-    { id: 'konami', ic: '🕹️', nm: 'Konami code' },
-    { id: 'secret', ic: '🔮', nm: 'Segredo revelado' },
-    { id: 'all', ic: '👑', nm: 'Completou tudo' },
-];
-
-function initAchievements() {
-    const grid = $('ach-grid');
-    if (!grid) return;
-    grid.innerHTML = ACH_DATA.map(a => `
-    <div class="ach-card${achievements.includes(a.id) ? ' on' : ''}" data-id="${a.id}" title="${a.nm}">
-      <span class="ach-ic">${a.ic}</span>
-      <div class="ach-nm">${a.nm}</div>
-    </div>
-  `).join('');
-    unlockAch('visitor');
+/* ── MENSAGEM ────────────────────────────────────────────── */
+function toggleMsg() {
+    const full = $('msg-full'), btn = $('msg-btn');
+    const open = full.classList.toggle('open');
+    btn.innerHTML = open ? '💌 Esconder mensagem' : '💌 Mostrar mensagem completa';
+    if (open) { unlockAch('message'); confetti(12); }
 }
 
-/* ---- KONAMI ---- */
-const KONAMI_SEQ = 'ArrowUp,ArrowUp,ArrowDown,ArrowDown,ArrowLeft,ArrowRight,ArrowLeft,ArrowRight,b,a'.split(',');
-let konamiPos = 0;
-function handleKeyInput(e) {
-    if (e.key === KONAMI_SEQ[konamiPos]) {
-        konamiPos++;
-        if (konamiPos === KONAMI_SEQ.length) {
-            konamiPos = 0;
-            unlockAch('konami');
-            openSecret('konami');
-        }
-    } else { konamiPos = 0; }
+function loveMsg() {
+    LOVES++; localStorage.setItem('kg_loves', LOVES);
+    setText('msg-love-count', LOVES);
+    const btn = $('msg-love-btn');
+    if (btn) { btn.classList.add('loved'); setTimeout(() => btn.classList.remove('loved'), 500); }
+    floatHeart();
+    if (LOVES >= 10) unlockAch('love10');
+    if (LOVES >= 50) unlockAch('love50');
 }
 
-/* ---- SECRET OVERLAY ---- */
-const SECRET_MSGS = {
+function floatHeart() {
+    const h = document.createElement('div');
+    h.className = 'floating-heart';
+    h.textContent = pick(['💕', '❤️', '💖', '🌸', '✨']);
+    h.style.cssText = `position:fixed;left:${rnd(20, 80)}vw;bottom:${rnd(15, 35)}vh;` +
+        `z-index:3000;font-size:${rni(16, 28)}px;pointer-events:none;animation:rise 2.2s ease-in forwards;`;
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 2400);
+}
+
+/* ── SECRET / CHEAT ──────────────────────────────────────── */
+const SECRET = {
     konami: {
         title: '🕹️ Código Secreto!',
-        msg: 'Você descobriu o Konami Code! Como prêmio, aqui vai uma verdade: cada vez que você sorri, eu fico sem fôlego. Te amo demais, Gyovanna. 💕'
+        msg: 'Você descobriu o Konami Code! Aqui vai uma verdade: cada vez que você sorri, eu fico sem fôlego. Te amo demais, Gyovanna. 💕'
     },
     cheat: {
         title: '✨ Cheat Ativado!',
         msg: 'Todas as conquistas desbloqueadas! Mas a maior conquista foi você entrar na minha vida. 👑'
-    }
+    },
 };
 
 function openSecret(type) {
-    const data = SECRET_MSGS[type] || SECRET_MSGS.konami;
-    $('secret-title').textContent = data.title;
-    $('secret-msg').textContent = data.msg;
-    const overlay = $('secret-overlay');
-    overlay.classList.add('show');
-    // spawn hearts
-    const hc = $('secret-hearts');
-    hc.innerHTML = '';
-    for (let i = 0; i < 20; i++) {
+    const d = SECRET[type] || SECRET.konami;
+    setText('secret-title', d.title);
+    setText('secret-msg', d.msg);
+    const o = $('secret-overlay'); o.classList.add('show');
+    const hc = $('secret-hearts'); hc.innerHTML = '';
+    for (let i = 0; i < 24; i++) {
         const h = document.createElement('div');
         h.className = 'secret-heart';
         h.textContent = pick(['❤️', '💕', '💖', '✨', '🌸']);
-        h.style.cssText = `left:${rnd(5, 90)}%;bottom:0;animation-delay:${rnd(0, 2)}s;`;
+        h.style.cssText = `left:${rnd(2, 94)}%;bottom:0;animation-delay:${rnd(0, 2.5)}s;`;
         hc.appendChild(h);
     }
     unlockAch('secret');
-    spawnConfetti(30);
+    confetti(35);
 }
-
 function closeSecret() { $('secret-overlay').classList.remove('show'); }
 
-/* ---- CHEAT CODE OVERLAY ---- */
-const CHEAT_CODE = 'KAUEAMAGYOVANNA';
-let cheatInput = '';
-document.addEventListener('keydown', e => {
-    if (e.key.length === 1) {
-        cheatInput = (cheatInput + e.key.toUpperCase()).slice(-CHEAT_CODE.length);
-        if (cheatInput === CHEAT_CODE) openCheat();
-    }
-});
-
-function openCheat() {
-    $('cheat-overlay').classList.add('show');
-    unlockAch('secret');
-}
+function openCheat() { $('cheat-overlay').classList.add('show'); unlockAch('secret'); }
 function closeCheat() { $('cheat-overlay').classList.remove('show'); }
-function cheatUnlockAll() {
-    unlockAllAch();
-    spawnConfetti(60);
-    showToast('👑 Todas as conquistas desbloqueadas!');
-    closeCheat();
-    openSecret('cheat');
+function cheatUnlockAll() { unlockAll(); confetti(70); toast('👑 Todas as conquistas desbloqueadas!'); closeCheat(); openSecret('cheat'); }
+
+/* ── KONAMI ──────────────────────────────────────────────── */
+const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let kpos = 0;
+function konamiHandler(e) {
+    if (e.key === KONAMI[kpos]) { kpos++; if (kpos === KONAMI.length) { kpos = 0; unlockAch('konami'); openSecret('konami'); } }
+    else kpos = 0;
 }
 
 /* ================================================================
-   GAMES
+   JOGOS
    ================================================================ */
+
 function switchGame(idx, btn) {
     $$('.gtab').forEach(t => t.classList.remove('active'));
     $$('.gpanel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
-    $(`gp-${idx}`).classList.add('active');
+    const panel = $(`gp-${idx}`);
+    if (panel) panel.classList.add('active');
+    // lazy init
+    if (idx === 10 && !snakeReady) initSnake();
+    if (idx === 11 && !typingReady) initTyping();
 }
 
-/* ---- WORDLE ---- */
-const WORDLE_WORDS = ['TUDO', 'AMOR', 'BESO', 'LUNA', 'ROSA', 'ALMA', 'DOCE', 'LUAR', 'FLOR', 'PURO'];
-let wWord, wRow, wCol, wGuesses, wDone, wKeyMap;
+function initGames() {
+    initWordle();
+    initMemory();
+    initQuiz();
+    initTTT();
+    initDice();
+    initHearts();
+    initStarsGame();
+    initWheel();
+    initPairs();
+    initChallenge();
+}
+
+/* ── 1. WORDLE ───────────────────────────────────────────── */
+// A primeira palavra sempre será TUDO
+const W_WORDS = ['TUDO', 'AMOR', 'ALMA', 'ROSA', 'FLOR', 'LUAR', 'DOCE', 'PURA', 'BELO', 'VIDA'];
+let wWord = 'TUDO', wRow = 0, wCol = 0, wDone = false, wGuesses = [], wMap = {};
 
 function initWordle() {
-    wWord = pick(WORDLE_WORDS);
-    wRow = 0; wCol = 0; wDone = false; wGuesses = Array(6).fill('').map(() => Array(4).fill(''));
-    wKeyMap = {};
-    const board = $('w-board');
+    wWord = 'TUDO'; // sempre começa com TUDO
+    wRow = 0; wCol = 0; wDone = false;
+    wGuesses = Array.from({ length: 6 }, () => Array(4).fill(''));
+    wMap = {};
+    const board = $('w-board'); if (!board) return;
     board.innerHTML = '';
     for (let r = 0; r < 6; r++) {
         const row = document.createElement('div'); row.className = 'w-row';
@@ -594,131 +525,159 @@ function initWordle() {
         }
         board.appendChild(row);
     }
-    $('w-status').textContent = '';
-    $('w-win').style.display = 'none';
-    $('w-lose').style.display = 'none';
-    $('w-again').style.display = 'none';
-    buildKeyboard();
+    setText('w-status', '');
+    const win = $('w-win'), lose = $('w-lose'), again = $('w-again');
+    if (win) win.style.display = 'none';
+    if (lose) lose.style.display = 'none';
+    if (again) again.style.display = 'none';
+    buildWKeyboard();
+    // remove old listeners by cloning
+    const oldKb = $('w-kb');
+    if (oldKb) {
+        const fresh = oldKb.cloneNode(true);
+        oldKb.parentNode.replaceChild(fresh, oldKb);
+    }
+    buildWKeyboard();
 }
 
-function buildKeyboard() {
-    const rows = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'], ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'], ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']];
-    const kb = $('w-kb'); kb.innerHTML = '';
+function buildWKeyboard() {
+    const rows = [
+        ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+        ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+        ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']
+    ];
+    const kb = $('w-kb'); if (!kb) return;
+    kb.innerHTML = '';
     rows.forEach(row => {
         const div = document.createElement('div'); div.className = 'w-kb-row';
         row.forEach(k => {
-            const btn = document.createElement('button'); btn.className = 'w-key' + (k.length > 1 ? ' wide' : '');
+            const btn = document.createElement('button');
+            btn.className = 'w-key' + (k.length > 1 ? ' wide' : '');
             btn.textContent = k; btn.dataset.key = k;
             if (k === 'ENTER') btn.classList.add('enter-key');
-            btn.addEventListener('click', () => wHandleKey(k));
+            btn.addEventListener('click', () => wKey(k));
             div.appendChild(btn);
         });
         kb.appendChild(div);
     });
 }
 
+// physical keyboard for wordle
 document.addEventListener('keydown', e => {
-    const panel = $('gp-0');
-    if (!panel || !panel.classList.contains('active')) return;
-    if (e.ctrlKey || e.metaKey) return;
-    if (e.key === 'Enter') wHandleKey('ENTER');
-    else if (e.key === 'Backspace') wHandleKey('⌫');
-    else if (/^[a-zA-Z]$/.test(e.key)) wHandleKey(e.key.toUpperCase());
+    const panel = $('gp-0'); if (!panel || !panel.classList.contains('active')) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'Enter') wKey('ENTER');
+    else if (e.key === 'Backspace') wKey('⌫');
+    else if (/^[a-zA-Z]$/.test(e.key)) wKey(e.key.toUpperCase());
 });
 
-function wHandleKey(k) {
+function wKey(k) {
     if (wDone) return;
     if (k === '⌫') {
-        if (wCol > 0) { wCol--; wGuesses[wRow][wCol] = ''; document.getElementById(`wt-${wRow}-${wCol}`).textContent = ''; document.getElementById(`wt-${wRow}-${wCol}`).classList.remove('filled'); }
+        if (wCol > 0) { wCol--; wGuesses[wRow][wCol] = ''; wTile(wRow, wCol).textContent = ''; wTile(wRow, wCol).classList.remove('filled'); }
     } else if (k === 'ENTER') {
         if (wCol < 4) { wShake(); return; }
         wSubmit();
     } else if (wCol < 4) {
         wGuesses[wRow][wCol] = k;
-        const t = document.getElementById(`wt-${wRow}-${wCol}`);
+        const t = wTile(wRow, wCol);
         t.textContent = k; t.classList.add('filled', 'bounce-in');
+        setTimeout(() => t.classList.remove('bounce-in'), 300);
         wCol++;
     }
 }
 
+function wTile(r, c) { return document.getElementById(`wt-${r}-${c}`); }
+
 function wShake() {
-    for (let c = 0; c < 4; c++) document.getElementById(`wt-${wRow}-${c}`).classList.add('shake');
-    setTimeout(() => { for (let c = 0; c < 4; c++) document.getElementById(`wt-${wRow}-${c}`).classList.remove('shake'); }, 500);
+    for (let c = 0; c < 4; c++) {
+        const t = wTile(wRow, c); t.classList.add('shake');
+        setTimeout(() => t.classList.remove('shake'), 500);
+    }
+    setText('w-status', 'Palavra incompleta!');
 }
 
 function wSubmit() {
     const guess = wGuesses[wRow].join('');
     const target = wWord;
-    const result = Array(4).fill('absent');
+    const res = Array(4).fill('absent');
     const used = Array(4).fill(false);
-    // correct pass
-    for (let i = 0; i < 4; i++) if (guess[i] === target[i]) { result[i] = 'correct'; used[i] = true; }
-    // present pass
+    for (let i = 0; i < 4; i++) if (guess[i] === target[i]) { res[i] = 'correct'; used[i] = true; }
     for (let i = 0; i < 4; i++) {
-        if (result[i] === 'correct') continue;
+        if (res[i] === 'correct') continue;
         for (let j = 0; j < 4; j++) {
-            if (!used[j] && result[j] !== 'correct' && guess[i] === target[j]) { result[i] = 'present'; used[j] = true; break; }
+            if (!used[j] && res[j] !== 'correct' && guess[i] === target[j]) { res[i] = 'present'; used[j] = true; break; }
         }
     }
-    result.forEach((res, c) => {
-        const t = document.getElementById(`wt-${wRow}-${c}`);
+    const DELAY = 120;
+    res.forEach((r, c) => {
         setTimeout(() => {
+            const t = wTile(wRow, c);
             t.classList.remove('filled');
-            t.classList.add(`flip-${res}`);
-            updateWKey(guess[c], res);
-        }, c * 120);
+            t.classList.add(`flip-${r}`);
+            wUpdateKey(guess[c], r);
+        }, c * DELAY);
     });
-    const won = result.every(r => r === 'correct');
+    const won = res.every(r => r === 'correct');
     setTimeout(() => {
         if (won) {
-            $('w-win').style.display = 'block';
-            $('w-again').style.display = 'block';
-            wDone = true;
-            spawnConfetti(40);
-            unlockAch('wordle');
+            const win = $('w-win'); if (win) win.style.display = 'block';
+            const again = $('w-again'); if (again) again.style.display = 'block';
+            wDone = true; confetti(40); unlockAch('wordle');
+            setText('w-status', 'Você acertou! 💕');
         } else if (wRow === 5) {
-            $('w-lose').style.display = 'block';
-            $('w-again').style.display = 'block';
-            $('w-lose').querySelector('p').innerHTML = `A palavra era: <strong>${wWord}</strong><br>Porque eu amo tudo em você, Gyovanna! 💕`;
+            const lose = $('w-lose'); if (lose) {
+                lose.style.display = 'block';
+                const p = lose.querySelector('p');
+                if (p) p.innerHTML = `A palavra era: <strong>${wWord}</strong><br>Mas eu amo tudo em você, Gyovanna! 💕`;
+            }
+            const again = $('w-again'); if (again) again.style.display = 'block';
             wDone = true;
-        } else {
-            wRow++; wCol = 0;
-        }
-    }, 600);
+        } else { wRow++; wCol = 0; setText('w-status', ''); }
+    }, 4 * DELAY + 350);
 }
 
-function updateWKey(letter, status) {
+function wUpdateKey(letter, status) {
     const priority = { correct: 3, present: 2, absent: 1 };
-    const key = document.querySelector(`.w-key[data-key="${letter}"]`);
-    if (!key) return;
-    const cur = priority[wKeyMap[letter]] || 0;
-    if (priority[status] > cur) { key.className = 'w-key' + (letter.length > 1 ? ' wide' : ''); key.classList.add(status); wKeyMap[letter] = status; }
+    const btn = document.querySelector(`.w-key[data-key="${letter}"]`);
+    if (!btn) return;
+    const cur = priority[wMap[letter]] || 0;
+    if ((priority[status] || 0) > cur) {
+        btn.className = 'w-key' + (letter.length > 1 ? ' wide' : '');
+        btn.classList.add(status);
+        wMap[letter] = status;
+    }
 }
 
-function resetWordle() { initWordle(); }
+function resetWordle() {
+    // choose random after first
+    wWord = pick(W_WORDS);
+    initWordle();
+}
 
-/* ---- MEMORY ---- */
-const MEM_EMOJIS = ['💕', '❤️', '🌸', '✨', '🦋', '🎵', '🌙', '🪐'];
-let memCards, memFlipped, memMatched, memMoves, memTimer, memInterval;
+/* ── 2. MEMÓRIA ──────────────────────────────────────────── */
+const MEM_EM = ['💕', '❤️', '🌸', '✨', '🦋', '🎵', '🌙', '🪐'];
+let memFlipped = [], memMatched = 0, memMoves = 0, memSecs = 0, memTimer = null;
 
 function initMemory() {
-    clearInterval(memInterval);
-    const pairs = [...MEM_EMOJIS, ...MEM_EMOJIS].sort(() => Math.random() - .5);
-    memFlipped = []; memMatched = 0; memMoves = 0; memTimer = 0;
-    $('mem-moves').textContent = '0'; $('mem-time').textContent = '0:00'; $('mem-pairs').textContent = '0/8';
-    $('mem-win').style.display = 'none';
-    const board = $('mem-board'); board.innerHTML = '';
-    memCards = pairs.map((emoji, i) => {
+    clearInterval(memTimer);
+    memFlipped = []; memMatched = 0; memMoves = 0; memSecs = 0;
+    setText('mem-moves', '0'); setText('mem-time', '0:00'); setText('mem-pairs', '0/8');
+    const win = $('mem-win'); if (win) win.style.display = 'none';
+    const board = $('mem-board'); if (!board) return;
+    const pairs = [...MEM_EM, ...MEM_EM].sort(() => Math.random() - .5);
+    board.innerHTML = '';
+    pairs.forEach((em, i) => {
         const card = document.createElement('div'); card.className = 'mem-card';
-        card.innerHTML = `<div class="mem-face mem-back"></div><div class="mem-face mem-front">${emoji}</div>`;
-        card.dataset.emoji = emoji; card.dataset.idx = i;
+        card.innerHTML = `<div class="mem-face mem-back"></div><div class="mem-face mem-front">${em}</div>`;
+        card.dataset.em = em;
         card.addEventListener('click', () => memClick(card));
-        board.appendChild(card); return card;
+        board.appendChild(card);
     });
-    memInterval = setInterval(() => {
-        memTimer++;
-        const m = Math.floor(memTimer / 60); const s = memTimer % 60;
-        $('mem-time').textContent = `${m}:${String(s).padStart(2, '0')}`;
+    memTimer = setInterval(() => {
+        memSecs++;
+        const m = Math.floor(memSecs / 60), s = memSecs % 60;
+        setText('mem-time', `${m}:${pad(s)}`);
     }, 1000);
 }
 
@@ -728,18 +687,19 @@ function memClick(card) {
     card.classList.add('flipped');
     memFlipped.push(card);
     if (memFlipped.length === 2) {
-        memMoves++;
-        $('mem-moves').textContent = memMoves;
-        if (memFlipped[0].dataset.emoji === memFlipped[1].dataset.emoji) {
-            memFlipped.forEach(c => c.classList.add('matched'));
-            memMatched++;
-            $('mem-pairs').textContent = `${memMatched}/8`;
+        memMoves++; setText('mem-moves', memMoves);
+        if (memFlipped[0].dataset.em === memFlipped[1].dataset.em) {
+            memFlipped.forEach(c => c.classList.add('matched', 'flipped'));
+            memMatched++; setText('mem-pairs', `${memMatched}/8`);
             memFlipped = [];
             if (memMatched === 8) {
-                clearInterval(memInterval);
-                $('mem-win').style.display = 'block';
-                $('mem-win').querySelector('p').textContent = `${memMoves} jogadas · ${$('mem-time').textContent} ⏱ Incrível! 💕`;
-                spawnConfetti(50); unlockAch('memory');
+                clearInterval(memTimer);
+                const win = $('mem-win'); if (win) {
+                    win.style.display = 'block';
+                    const p = win.querySelector('p');
+                    if (p) p.textContent = `${memMoves} jogadas · ${$('mem-time').textContent} — Incrível! 💕`;
+                }
+                confetti(50); unlockAch('memory');
             }
         } else {
             setTimeout(() => { memFlipped.forEach(c => c.classList.remove('flipped')); memFlipped = []; }, 900);
@@ -749,570 +709,601 @@ function memClick(card) {
 
 function resetMemory() { initMemory(); }
 
-/* ---- QUIZ ---- */
-const QUIZ_QS = [
-    { q: 'Quando Kauê e Gyovanna começaram a namorar?', opts: ['20 de junho de 2025', '14 de fevereiro de 2025', '01 de janeiro de 2025', '20 de março de 2025'], ans: 0 },
-    { q: 'Qual é a nossa música favorita?', opts: ['G + K — Saturno', 'Perfect — Ed Sheeran', 'All of Me — John Legend', 'Lover — Taylor Swift'], ans: 0 },
-    { q: 'Em qual cidade ficamos juntos?', opts: ['Goiânia', 'Brasília', 'Anápolis', 'São Paulo'], ans: 2 },
-    { q: 'Qual constelação nos assistiu se apaixonar?', opts: ['Orion', 'Escorpião', 'Cruzeiro do Sul', 'Gêmeos'], ans: 1 },
-    { q: 'O que Kauê mais ama em Gyovanna?', opts: ['O sorriso dela', 'Os olhos dela', 'O jeito que ela ri', 'Tudo nela'], ans: 3 },
-    { q: 'Qual estrela é o coração de Escorpião?', opts: ['Sirius', 'Antares', 'Acrux', 'Betelgeuse'], ans: 1 },
-    { q: 'Qual é o estado do Brasil onde ficamos?', opts: ['Goiás', 'Minas Gerais', 'São Paulo', 'Bahia'], ans: 0 },
+/* ── 3. QUIZ ─────────────────────────────────────────────── */
+const QUIZ = [
+    {
+        q: 'Quando Kauê e Gyovanna começaram a namorar?',
+        o: ['20 de junho de 2025', '14 de fevereiro de 2025', '01 de janeiro de 2025', '20 de março de 2025'], a: 0
+    },
+    {
+        q: 'Qual é a música favorita do casal?',
+        o: ['G + K — Saturno', 'Perfect — Ed Sheeran', 'All of Me — John Legend', 'Lover — Taylor Swift'], a: 0
+    },
+    {
+        q: 'Em qual cidade ficamos juntos?',
+        o: ['Goiânia', 'Brasília', 'Anápolis', 'São Paulo'], a: 2
+    },
+    {
+        q: 'Qual constelação nos assistiu se apaixonar?',
+        o: ['Orion', 'Escorpião', 'Cruzeiro do Sul', 'Gêmeos'], a: 1
+    },
+    {
+        q: 'O que Kauê mais ama em Gyovanna?',
+        o: ['O sorriso dela', 'Os olhos dela', 'O jeito que ela ri', 'Tudo nela'], a: 3
+    },
+    {
+        q: 'Qual estrela é o coração de Escorpião?',
+        o: ['Sirius', 'Antares', 'Acrux', 'Betelgeuse'], a: 1
+    },
+    {
+        q: 'Em qual estado do Brasil ficamos?',
+        o: ['Goiás', 'Minas Gerais', 'São Paulo', 'Bahia'], a: 0
+    },
 ];
-let quizIdx, quizScore;
+let qIdx = 0, qScore = 0;
 
 function initQuiz() {
-    quizIdx = 0; quizScore = 0;
-    $('quiz-result').style.display = 'none';
-    renderQuizQ();
+    qIdx = 0; qScore = 0;
+    const r = $('quiz-result'); if (r) r.style.display = 'none';
+    renderQ();
 }
 
-function renderQuizQ() {
+function renderQ() {
+    const el = $('q-prog'); if (el) el.style.width = `${(qIdx / QUIZ.length) * 100}%`;
     const content = $('quiz-content');
-    $('q-prog').style.width = `${(quizIdx / QUIZ_QS.length) * 100}%`;
-    if (quizIdx >= QUIZ_QS.length) {
+    if (!content) return;
+    if (qIdx >= QUIZ.length) {
         content.style.display = 'none';
-        const r = $('quiz-result'); r.style.display = 'block';
-        $('q-score').textContent = quizScore;
-        $('q-of').textContent = `de ${QUIZ_QS.length} acertos`;
-        $('q-msg').textContent = quizScore === QUIZ_QS.length ? 'Perfeito! Você nos conhece de cor! 💕' :
-            quizScore >= 4 ? 'Muito bem! Quase perfeito! ❤️' :
-                quizScore >= 2 ? 'Bom esforço! Tente novamente! 🌸' : 'Continue tentando! A gente acredita em você! ✨';
+        const r = $('quiz-result'); if (r) r.style.display = 'block';
+        setText('q-score', qScore);
+        setText('q-of', `de ${QUIZ.length} acertos`);
+        setText('q-msg',
+            qScore === QUIZ.length ? 'Perfeito! Você nos conhece de cor! 💕' :
+                qScore >= 5 ? 'Muito bem! Quase perfeito! ❤️' :
+                    qScore >= 3 ? 'Bom esforço! Tente novamente! 🌸' :
+                        'Continue tentando! A gente acredita em você! ✨');
         unlockAch('quiz');
-        if (quizScore === QUIZ_QS.length) spawnConfetti(50);
+        if (qScore === QUIZ.length) confetti(60);
         return;
     }
-    const q = QUIZ_QS[quizIdx];
-    const letters = ['A', 'B', 'C', 'D'];
     content.style.display = 'block';
+    const q = QUIZ[qIdx];
+    const letters = ['A', 'B', 'C', 'D'];
     content.innerHTML = `
-    <div class="quiz-q-num">Pergunta ${quizIdx + 1} de ${QUIZ_QS.length}</div>
+    <div class="quiz-q-num">Pergunta ${qIdx + 1} de ${QUIZ.length}</div>
     <div class="quiz-question">${q.q}</div>
     <div class="quiz-opts">
-      ${q.opts.map((o, i) => `
+      ${q.o.map((o, i) => `
         <button class="quiz-opt" onclick="quizAnswer(${i})">
           <span class="quiz-opt-letter">${letters[i]}</span>${o}
-        </button>
-      `).join('')}
-    </div>
-  `;
+        </button>`).join('')}
+    </div>`;
 }
 
 function quizAnswer(idx) {
-    const q = QUIZ_QS[quizIdx];
-    const opts = $$('.quiz-opt');
-    opts.forEach(o => o.disabled = true);
-    opts[idx].classList.add(idx === q.ans ? 'correct' : 'wrong');
-    if (idx === q.ans) { quizScore++; spawnConfetti(10); }
-    else opts[q.ans].classList.add('correct');
-    setTimeout(() => { quizIdx++; renderQuizQ(); }, 1200);
+    const q = QUIZ[qIdx];
+    $$('.quiz-opt').forEach(o => o.disabled = true);
+    $$('.quiz-opt')[idx].classList.add(idx === q.a ? 'correct' : 'wrong');
+    if (idx !== q.a) $$('.quiz-opt')[q.a].classList.add('correct');
+    if (idx === q.a) { qScore++; confetti(10); }
+    setTimeout(() => { qIdx++; renderQ(); }, 1300);
 }
 
 function resetQuiz() { initQuiz(); }
 
-/* ---- TIC TAC TOE ---- */
-let tttBoard, tttTurn, tttDone, tttScoreX = 0, tttScoreO = 0, tttScoreDraw = 0;
-const WINS = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+/* ── 4. VELHA (minimax) ──────────────────────────────────── */
+let tttB, tttDone, tttSX = 0, tttSO = 0, tttSD = 0;
+const WINS3 = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
 function initTTT() {
-    tttBoard = Array(9).fill(''); tttTurn = 'X'; tttDone = false;
-    $$('.ttt-cell').forEach((c, i) => { c.textContent = ''; c.className = 'ttt-cell'; c.onclick = () => handleTTT(i); });
-    $('tictactoe-status').textContent = 'Seu turno! (X 💕)';
+    tttB = Array(9).fill(''); tttDone = false;
+    $$('.ttt-cell').forEach((c, i) => { c.textContent = ''; c.className = 'ttt-cell'; c.onclick = () => tttClick(i); });
+    setText('tictactoe-status', 'Seu turno! 💕');
     updateTTTScore();
-}
-
-function handleTTT(i) {
-    if (tttDone || tttBoard[i]) return;
-    tttBoard[i] = 'X';
-    const cell = $$('.ttt-cell')[i]; cell.textContent = 'X'; cell.classList.add('x-cell');
-    const w = checkWin('X');
-    if (w) { endTTT('X', w); return; }
-    if (tttBoard.every(c => c)) { endTTT('draw'); return; }
-    tttTurn = 'O';
-    $('tictactoe-status').textContent = 'IA pensando... 🤔';
-    setTimeout(() => tttAI(), 500);
-}
-
-function tttAI() {
-    // minimax
-    const best = minimax(tttBoard, 'O');
-    tttBoard[best.idx] = 'O';
-    const cell = $$('.ttt-cell')[best.idx]; cell.textContent = 'O'; cell.classList.add('o-cell');
-    const w = checkWin('O');
-    if (w) { endTTT('O', w); return; }
-    if (tttBoard.every(c => c)) { endTTT('draw'); return; }
-    tttTurn = 'X';
-    $('tictactoe-status').textContent = 'Seu turno! (X 💕)';
-}
-
-function minimax(board, player) {
-    const opp = player === 'O' ? 'X' : 'O';
-    const w = checkWin('O', board); if (w) return { score: 10 };
-    const lw = checkWin('X', board); if (lw) return { score: -10 };
-    if (board.every(c => c)) return { score: 0 };
-    const moves = [];
-    board.forEach((_, i) => {
-        if (board[i]) return;
-        const nb = [...board]; nb[i] = player;
-        const res = minimax(nb, opp);
-        moves.push({ idx: i, score: res.score });
-    });
-    return player === 'O'
-        ? moves.reduce((a, b) => b.score > a.score ? b : a)
-        : moves.reduce((a, b) => b.score < a.score ? b : a);
-}
-
-function checkWin(p, board = tttBoard) {
-    return WINS.find(combo => combo.every(i => board[i] === p)) || null;
-}
-
-function endTTT(winner, combo) {
-    tttDone = true;
-    if (winner === 'draw') {
-        $('tictactoe-status').textContent = "Empate! 🤝";
-        tttScoreDraw++;
-    } else {
-        combo.forEach(i => $$('.ttt-cell')[i].classList.add('win-cell'));
-        $('tictactoe-status').textContent = winner === 'X' ? 'Você ganhou! 🎉 Mais esperta que a IA!' : 'A IA ganhou! 🤖 Tente de novo!';
-        if (winner === 'X') { tttScoreX++; spawnConfetti(20); unlockAch('ttt'); }
-        else tttScoreO++;
-    }
-    updateTTTScore();
-    setTimeout(() => resetTTT(), 2500);
 }
 
 function updateTTTScore() {
     const el = $('ttt-score');
-    if (el) el.innerHTML = `Você: <span>${tttScoreX}</span> · IA: <span>${tttScoreO}</span> · Empates: <span>${tttScoreDraw}</span>`;
+    if (el) el.innerHTML = `Você: <span>${tttSX}</span> · IA: <span>${tttSO}</span> · Empates: <span>${tttSD}</span>`;
+}
+
+function tttClick(i) {
+    if (tttDone || tttB[i]) return;
+    tttB[i] = 'X';
+    const cell = $$('.ttt-cell')[i]; cell.textContent = 'X'; cell.classList.add('x-cell');
+    const w = tttWin('X'); if (w) { tttEnd('X', w); return; }
+    if (tttFull()) { tttEnd('draw'); return; }
+    setText('tictactoe-status', 'IA pensando... 🤔');
+    setTimeout(tttAI, 500);
+}
+
+function tttAI() {
+    const best = minimax([...tttB], 'O');
+    if (best.idx == null) return;
+    tttB[best.idx] = 'O';
+    const cell = $$('.ttt-cell')[best.idx]; cell.textContent = 'O'; cell.classList.add('o-cell');
+    const w = tttWin('O'); if (w) { tttEnd('O', w); return; }
+    if (tttFull()) { tttEnd('draw'); return; }
+    setText('tictactoe-status', 'Seu turno! 💕');
+}
+
+function minimax(b, p) {
+    if (tttWin('O', b)) return { score: 10 };
+    if (tttWin('X', b)) return { score: -10 };
+    if (b.every(c => c)) return { score: 0 };
+    const op = p === 'O' ? 'X' : 'O';
+    const moves = [];
+    b.forEach((_, i) => {
+        if (b[i]) return;
+        const nb = [...b]; nb[i] = p;
+        moves.push({ idx: i, score: minimax(nb, op).score });
+    });
+    return p === 'O'
+        ? moves.reduce((a, c) => c.score > a.score ? c : a)
+        : moves.reduce((a, c) => c.score < a.score ? c : a);
+}
+
+function tttWin(p, b = tttB) {
+    return WINS3.find(combo => combo.every(i => b[i] === p)) || null;
+}
+function tttFull(b = tttB) { return b.every(c => c); }
+
+function tttEnd(w, combo) {
+    tttDone = true;
+    if (w === 'draw') {
+        setText('tictactoe-status', 'Empate! 🤝'); tttSD++;
+    } else {
+        combo.forEach(i => $$('.ttt-cell')[i].classList.add('win-cell'));
+        if (w === 'X') { setText('tictactoe-status', 'Você ganhou! 🎉'); tttSX++; confetti(24); unlockAch('ttt'); }
+        else { setText('tictactoe-status', 'IA ganhou! 🤖 Tente de novo!'); tttSO++; }
+    }
+    updateTTTScore();
+    setTimeout(resetTTT, 2800);
 }
 
 function resetTTT() { initTTT(); }
 
-/* ---- DICE ---- */
-const DICE_FACES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-const DICE_MSGS = ['Que pena, baixo!', 'Quase!', 'Mediano...', 'Bom resultado!', 'Muito bom!', 'MÁXIMO! 🎉'];
-let diceTotal = 0, diceBest = 0, diceRolls = 0;
+function handleTTT(i) { tttClick(i); }
+
+/* ── 5. DADO ─────────────────────────────────────────────── */
+const D_FACE = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+const D_MSG = ['Baixinho 😅', 'Quase lá...', 'Razoável 😊', 'Bom resultado! 👍', 'Muito bom! 🌟', 'MÁXIMO! 🎉🎊'];
+let dTotal = 0, dBest = 0;
+
+function initDice() { }
 
 function rollDice() {
-    const dice = $('dice');
+    const dice = $('dice'); if (!dice) return;
     dice.classList.add('rolling');
     setTimeout(() => {
         dice.classList.remove('rolling');
-        const val = rndInt(1, 6);
-        dice.textContent = DICE_FACES[val - 1];
-        diceTotal += val; diceRolls++;
-        if (val > diceBest) diceBest = val;
-        $('dice-last').textContent = val;
-        $('dice-best').textContent = diceBest;
-        $('dice-total').textContent = diceTotal;
-        $('dice-result').textContent = DICE_MSGS[val - 1];
-        if (val === 6) { spawnConfetti(20); unlockAch('dice6'); }
-    }, 600);
+        const v = rni(1, 6);
+        dice.textContent = D_FACE[v - 1];
+        dTotal += v; if (v > dBest) dBest = v;
+        setText('dice-last', v);
+        setText('dice-best', dBest);
+        setText('dice-total', dTotal);
+        setText('dice-result', D_MSG[v - 1]);
+        if (v === 6) { confetti(24); unlockAch('dice6'); }
+    }, 650);
 }
 
-/* ---- HEARTS GAME ---- */
-let heartCount = 0, heartCombo = 0, heartTimeout, heartLevel = 0;
-const HEART_LEVELS = ['Aquecendo...', 'Carinhoso', 'Apaixonado', 'Intenso', 'AMOR TOTAL 💕'];
+/* ── 6. CORAÇÕES ─────────────────────────────────────────── */
+const H_LVL = ['Aquecendo...', 'Carinhoso 🥰', 'Apaixonado 😍', 'Intenso 🔥', 'AMOR TOTAL 💕💕'];
+let hCount = 0, hCombo = 0, hTimer = null, hLevel = 0;
+
+function initHearts() { }
 
 function clickHeart() {
-    heartCount++; heartCombo++;
-    totalHearts += 1; localStorage.setItem('kg_hearts', totalHearts);
-    clearTimeout(heartTimeout);
-    heartTimeout = setTimeout(() => heartCombo = 0, 1500);
-    heartLevel = Math.min(4, Math.floor(heartCombo / 5));
-    $('hearts-display').textContent = heartCount;
-    $('combo-count').textContent = heartCombo;
-    const lvl = $('hearts-level'); if (lvl) lvl.textContent = HEART_LEVELS[heartLevel];
-    spawnFloatingHeart();
-    if (heartCombo === 10) showToast('🔥 Combo x10!');
-    if (heartCombo === 25) showToast('💥 Combo INCRÍVEL x25!');
-    if (totalHearts >= 10) unlockAch('love10');
-    if (totalHearts >= 50) unlockAch('love50');
+    hCount++; hCombo++;
+    TOT_HRT++; localStorage.setItem('kg_hearts', TOT_HRT);
+    clearTimeout(hTimer);
+    hTimer = setTimeout(() => hCombo = 0, 1500);
+    hLevel = clamp(Math.floor(hCombo / 5), 0, 4);
+    setText('hearts-display', hCount);
+    setText('combo-count', hCombo);
+    const lvl = $('hearts-level'); if (lvl) lvl.textContent = H_LVL[hLevel];
+    floatHeart();
+    if (hCombo === 10) toast('🔥 Combo x10!');
+    if (hCombo === 25) toast('💥 Combo INCRÍVEL x25!');
+    if (TOT_HRT >= 10) unlockAch('love10');
+    if (TOT_HRT >= 50) unlockAch('love50');
 }
 
-function resetHearts() { heartCount = 0; heartCombo = 0; $('hearts-display').textContent = 0; $('combo-count').textContent = 0; }
+function resetHearts() { hCount = 0; hCombo = 0; setText('hearts-display', 0); setText('combo-count', 0); }
 
-/* ---- STARS GAME ---- */
-let starsScore = 0, starsTime = 30, starsInterval, starsSpawn;
+/* ── 7. ESTRELAS ─────────────────────────────────────────── */
+let stScore = 0, stTime = 30, stInter = null, stSpawn = null;
 
-function initStars() {
-    starsScore = 0; starsTime = 30;
-    clearInterval(starsInterval); clearInterval(starsSpawn);
-    $('stars-score').textContent = 0; $('stars-time').textContent = 30;
-    if ($('stars-hi')) $('stars-hi').textContent = highScoreStars;
-    const field = $('stars-field'); field.innerHTML = '';
-    starsInterval = setInterval(() => {
-        starsTime--; $('stars-time').textContent = starsTime;
-        if (starsTime <= 0) {
-            clearInterval(starsInterval); clearInterval(starsSpawn); field.innerHTML = '<p style="color:var(--muted);padding:2rem;font-size:1.1rem">Tempo esgotado! Score: ' + starsScore + ' ⭐</p>';
-            if (starsScore > highScoreStars) { highScoreStars = starsScore; localStorage.setItem('kg_stars_hi', starsScore); }
-            if (starsScore >= 50) unlockAch('stars50');
+function initStarsGame() {
+    clearInterval(stInter); clearInterval(stSpawn);
+    stScore = 0; stTime = 30;
+    setText('stars-score', 0); setText('stars-time', 30);
+    const hi = $('stars-hi'); if (hi) hi.textContent = HI_STARS;
+    const field = $('stars-field'); if (!field) return;
+    field.innerHTML = '';
+    stInter = setInterval(() => {
+        stTime--; setText('stars-time', stTime);
+        if (stTime <= 0) {
+            clearInterval(stInter); clearInterval(stSpawn);
+            if (field) field.innerHTML = `<p style="color:var(--muted);padding:2rem;font-size:1rem">⏱ Tempo! Score: ${stScore} ⭐</p>`;
+            if (stScore > HI_STARS) { HI_STARS = stScore; localStorage.setItem('kg_stars_hi', HI_STARS); const hi = $('stars-hi'); if (hi) hi.textContent = HI_STARS; }
+            if (stScore >= 50) unlockAch('stars50');
         }
     }, 1000);
-    starsSpawn = setInterval(addStar, 600);
+    stSpawn = setInterval(spawnStar, 650);
 }
 
-function addStar() {
-    const field = $('stars-field');
-    if (field.querySelectorAll('.star-item').length > 14) return;
+function spawnStar() {
+    const field = $('stars-field'); if (!field) return;
+    if (field.querySelectorAll('.star-item').length > 12) return;
     const star = document.createElement('div'); star.className = 'star-item';
-    const icons = ['⭐', '🌟', '💫', '✨', '🌠'];
-    star.textContent = pick(icons);
-    star.style.cssText = `left:${rnd(5, 85)}%;top:${rnd(5, 85)}%;animation-delay:${rnd(0, 1)}s;`;
+    star.textContent = pick(['⭐', '🌟', '💫', '✨', '🌠']);
+    star.style.cssText = `left:${rnd(5, 85)}%;top:${rnd(5, 80)}%;animation-delay:${rnd(0, .8)}s;`;
     star.addEventListener('click', () => {
-        starsScore++; $('stars-score').textContent = starsScore;
-        spawnParticles(star); star.remove();
+        stScore++; setText('stars-score', stScore);
+        sparkle(star); star.remove();
     });
     field.appendChild(star);
-    setTimeout(() => { if (star.parentNode) star.remove(); }, 2500);
+    setTimeout(() => { if (star.parentNode) star.remove(); }, 2800);
 }
 
-function spawnParticles(el) {
-    const rect = el.getBoundingClientRect();
-    const colors = ['#e8647a', '#f0a0b0', '#c4a8f0', '#e8c4a0'];
+function sparkle(el) {
+    const rc = el.getBoundingClientRect();
+    const cols = ['#e8647a', '#f0a0b0', '#c4a8f0', '#e8c4a0', '#fff'];
     for (let i = 0; i < 8; i++) {
         const p = document.createElement('div');
-        p.style.cssText = `position:fixed;left:${rect.left + rect.width / 2}px;top:${rect.top}px;width:6px;height:6px;border-radius:50%;background:${pick(colors)};pointer-events:none;z-index:3000;--tx:${rnd(-40, 40)}px;--ty:${rnd(-60, -20)}px;animation:particle-fly .7s ease forwards;`;
-        document.body.appendChild(p); setTimeout(() => p.remove(), 800);
+        const tx = rnd(-45, 45), ty = rnd(-70, -20);
+        p.style.cssText = `position:fixed;left:${rc.left + rc.width / 2}px;top:${rc.top}px;` +
+            `width:6px;height:6px;border-radius:50%;background:${pick(cols)};` +
+            `pointer-events:none;z-index:3001;` +
+            `animation:particle-fly .65s ease forwards;--tx:${tx}px;--ty:${ty}px;`;
+        document.body.appendChild(p); setTimeout(() => p.remove(), 750);
     }
 }
 
-function resetStars() { initStars(); }
+function resetStars() { initStarsGame(); }
 
-/* ---- FORTUNE WHEEL ---- */
-const WHEEL_ITEMS = ['Beijo 💋', 'Abraço 🤗', 'Eu te amo ❤️', 'Surpreenda-me ✨', 'Música juntos 🎵', 'Dança comigo 💃', 'Cozinhar juntos 🍳', 'Passeio 🌅', 'Mensagem fofa 💌', 'Contar histórias 📖'];
-let wheelSpinning = false;
+/* ── 8. RODA DA FORTUNA ──────────────────────────────────── */
+const WHEEL_OPTS = [
+    'Beijo 💋', 'Abraço 🤗', 'Eu te amo ❤️', 'Surpreenda-me ✨',
+    'Música juntos 🎵', 'Dança comigo 💃', 'Cozinhar juntos 🍳',
+    'Passeio 🌅', 'Mensagem fofa 💌', 'Contar histórias 📖'
+];
+let wSpin = false, wAngle = 0;
 
 function initWheel() {
-    const canvas = $('wheel-canvas');
-    if (!canvas) return;
-    canvas.width = 300; canvas.height = 300;
+    const cv = $('wheel-canvas'); if (!cv) return;
+    cv.width = 300; cv.height = 300;
     drawWheel(0);
 }
 
-function drawWheel(rotation) {
-    const canvas = $('wheel-canvas'); if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const cx = 150, cy = 150, r = 130;
-    const n = WHEEL_ITEMS.length;
-    const arc = (2 * Math.PI) / n;
-    const colors = ['#e8647a', '#9b7ccd', '#c9956e', '#6ab0e8', '#f0a0b0', '#c4a8f0', '#e8c4a0', '#b84060', '#7a7090', '#5a3890'];
+function drawWheel(rot) {
+    const cv = $('wheel-canvas'); if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const cx = 150, cy = 150, r = 128;
+    const arc = (2 * Math.PI) / WHEEL_OPTS.length;
+    const cols = ['#e8647a', '#9b7ccd', '#c9956e', '#6ab0e8', '#f0a0b0', '#c4a8f0', '#e8c4a0', '#b84060', '#7a7090', '#5a3890'];
     ctx.clearRect(0, 0, 300, 300);
-    WHEEL_ITEMS.forEach((item, i) => {
-        const start = rotation + i * arc;
-        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, start, start + arc);
-        ctx.fillStyle = colors[i % colors.length]; ctx.fill();
-        ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 2; ctx.stroke();
-        ctx.save(); ctx.translate(cx, cy); ctx.rotate(start + arc / 2);
-        ctx.textAlign = 'right'; ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Plus Jakarta Sans';
-        ctx.fillText(item.split(' ')[0], r - 8, 4); ctx.restore();
+    WHEEL_OPTS.forEach((item, i) => {
+        const s = rot + i * arc;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, s, s + arc);
+        ctx.fillStyle = cols[i % cols.length]; ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.save(); ctx.translate(cx, cy); ctx.rotate(s + arc / 2);
+        ctx.textAlign = 'right'; ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Plus Jakarta Sans';
+        ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 3;
+        ctx.fillText(item.split(' ')[0], r - 8, 4);
+        ctx.restore();
     });
-    // center
-    ctx.beginPath(); ctx.arc(cx, cy, 30, 0, Math.PI * 2); ctx.fillStyle = '#030209'; ctx.fill();
-    ctx.strokeStyle = 'rgba(232,100,122,.5)'; ctx.lineWidth = 2; ctx.stroke();
-    // pointer
-    ctx.beginPath(); ctx.moveTo(cx + r + 10, cy); ctx.lineTo(cx + r - 10, cy - 10); ctx.lineTo(cx + r - 10, cy + 10);
-    ctx.fillStyle = 'var(--rose,#e8647a)'; ctx.fill();
+    // center circle
+    ctx.beginPath(); ctx.arc(cx, cy, 28, 0, Math.PI * 2); ctx.fillStyle = '#030209'; ctx.fill();
+    ctx.strokeStyle = 'rgba(232,100,122,.6)'; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.fillStyle = '#e8647a'; ctx.font = 'bold 12px Plus Jakarta Sans'; ctx.textAlign = 'center';
+    ctx.fillText('K&G', cx, cy + 4);
+    // pointer triangle on right
+    ctx.beginPath(); ctx.moveTo(cx + r + 14, cy); ctx.lineTo(cx + r - 2, cy - 10); ctx.lineTo(cx + r - 2, cy + 10);
+    ctx.fillStyle = '#e8647a'; ctx.fill();
 }
 
 function spinWheel() {
-    if (wheelSpinning) return;
-    wheelSpinning = true;
-    $('wheel-btn').disabled = true;
-    const total = rnd(4, 8) * Math.PI * 2 + rnd(0, Math.PI * 2);
-    let start = null, cur = 0;
-    function animate(ts) {
+    if (wSpin) return;
+    wSpin = true;
+    const btn = $('wheel-btn'); if (btn) btn.disabled = true;
+    const extra = rnd(4, 8) * Math.PI * 2 + rnd(0, Math.PI * 2);
+    const total = wAngle + extra;
+    let start = null;
+    function frame(ts) {
         if (!start) start = ts;
-        const progress = (ts - start) / 4000;
-        if (progress < 1) {
-            const ease = 1 - Math.pow(1 - progress, 4);
-            cur = total * ease;
+        const pct = (ts - start) / 4200;
+        if (pct < 1) {
+            const ease = 1 - Math.pow(1 - pct, 4);
+            const cur = wAngle + extra * ease;
             drawWheel(cur);
-            requestAnimationFrame(animate);
+            requestAnimationFrame(frame);
         } else {
-            cur = total; drawWheel(cur);
-            wheelSpinning = false;
-            $('wheel-btn').disabled = false;
-            const arc = (2 * Math.PI) / WHEEL_ITEMS.length;
-            const normalized = (-(cur % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-            const idx = Math.floor(normalized / arc) % WHEEL_ITEMS.length;
-            const result = WHEEL_ITEMS[idx];
-            $('wheel-result').textContent = '🎉 ' + result;
-            addWheelHistory(result);
-            spawnConfetti(20); unlockAch('wheel');
+            wAngle = total % (Math.PI * 2);
+            drawWheel(wAngle);
+            wSpin = false;
+            if (btn) btn.disabled = false;
+            const arc = (2 * Math.PI) / WHEEL_OPTS.length;
+            const norm = (-(wAngle % (Math.PI * 2)) + Math.PI * 4) % (Math.PI * 2);
+            const idx = Math.floor(norm / arc) % WHEEL_OPTS.length;
+            const result = WHEEL_OPTS[idx];
+            setText('wheel-result', '🎉 ' + result);
+            addWheelHist(result);
+            confetti(20); unlockAch('wheel');
         }
     }
-    requestAnimationFrame(animate);
+    requestAnimationFrame(frame);
 }
 
-function addWheelHistory(item) {
-    const hist = $('wheel-history'); if (!hist) return;
+function addWheelHist(item) {
+    const h = $('wheel-history'); if (!h) return;
     const el = document.createElement('div'); el.className = 'wheel-hist-item'; el.textContent = item;
-    hist.prepend(el); if (hist.children.length > 6) hist.lastChild.remove();
+    h.prepend(el); while (h.children.length > 6) h.lastChild.remove();
 }
 
-/* ---- LOVE PAIRS ---- */
-const PAIR_EMOJIS = ['💕', '❤️', '🌸', '✨', '🦋', '🎵', '🌙', '🪐'];
-let pairsBoard, pairsFlipped, pairsMatched;
+/* ── 9. PARES ────────────────────────────────────────────── */
+const PAIR_EM = ['💕', '❤️', '🌸', '✨', '🦋', '🎵', '🌙', '🪐'];
+let pFlipped = [], pMatched = 0;
 
 function initPairs() {
-    const items = [...PAIR_EMOJIS, ...PAIR_EMOJIS].sort(() => Math.random() - .5);
-    pairsFlipped = []; pairsMatched = 0;
-    const board = $('love-pairs-board'); board.innerHTML = '';
-    pairsBoard = items.map((emoji, i) => {
+    pFlipped = []; pMatched = 0;
+    const board = $('love-pairs-board'); if (!board) return;
+    board.innerHTML = '';
+    const items = [...PAIR_EM, ...PAIR_EM].sort(() => Math.random() - .5);
+    items.forEach(em => {
         const card = document.createElement('div'); card.className = 'love-pair-card';
-        card.textContent = '💗'; card.dataset.emoji = emoji; card.dataset.revealed = 'false';
+        card.textContent = '💗'; card.dataset.em = em; card.dataset.open = '0';
         card.addEventListener('click', () => pairClick(card));
-        board.appendChild(card); return card;
+        board.appendChild(card);
     });
-    $('love-pairs-status').textContent = 'Encontre os pares! 💕';
-    $('love-pairs-score').textContent = '0 / ' + PAIR_EMOJIS.length;
+    setText('love-pairs-status', 'Encontre os pares! 💕');
+    setText('love-pairs-score', `0 / ${PAIR_EM.length}`);
 }
 
 function pairClick(card) {
-    if (card.dataset.revealed === 'true' || pairsFlipped.length === 2) return;
-    card.dataset.revealed = 'true'; card.textContent = card.dataset.emoji;
-    card.classList.add('matched');// temp
-    pairsFlipped.push(card);
-    if (pairsFlipped.length === 2) {
-        if (pairsFlipped[0].dataset.emoji === pairsFlipped[1].dataset.emoji) {
-            pairsMatched++;
-            $('love-pairs-score').textContent = `${pairsMatched} / ${PAIR_EMOJIS.length}`;
-            pairsFlipped = [];
-            if (pairsMatched === PAIR_EMOJIS.length) {
-                $('love-pairs-status').textContent = 'Parabéns! Você encontrou todos os pares! 💕';
-                spawnConfetti(40); unlockAch('pairs');
+    if (card.dataset.open === '1' || card.classList.contains('matched') || pFlipped.length === 2) return;
+    card.dataset.open = '1'; card.textContent = card.dataset.em; card.classList.add('matched');
+    pFlipped.push(card);
+    if (pFlipped.length === 2) {
+        if (pFlipped[0].dataset.em === pFlipped[1].dataset.em) {
+            pMatched++; setText('love-pairs-score', `${pMatched} / ${PAIR_EM.length}`);
+            pFlipped = [];
+            if (pMatched === PAIR_EM.length) {
+                setText('love-pairs-status', 'Parabéns! Todos os pares! 💕');
+                confetti(40); unlockAch('pairs');
             }
         } else {
             setTimeout(() => {
-                pairsFlipped.forEach(c => { c.dataset.revealed = 'false'; c.textContent = '💗'; c.classList.remove('matched'); });
-                pairsFlipped = [];
-            }, 800);
+                pFlipped.forEach(c => { c.dataset.open = '0'; c.textContent = '💗'; c.classList.remove('matched'); });
+                pFlipped = [];
+            }, 850);
         }
     }
 }
 
-/* ---- LOVE CHALLENGE ---- */
-const CHALLENGES = [
-    { q: 'O que você mais gosta no Kauê?', opts: ['Sorriso dele', 'Forma como ele te olha', 'Jeito carinhoso', 'Tudo nele 💕'], ans: 3 },
-    { q: 'Qual seria o encontro perfeito pra vocês?', opts: ['Cinema e jantar', 'Passeio ao ar livre', 'Ficar em casa juntos', 'Qualquer lugar com você'], ans: 3 },
-    { q: 'Se vocês fossem uma música, seria:', opts: ['Saturno', 'Perfect', 'All of Me', 'Nossa própria música'], ans: 3 },
-    { q: 'O que mais define esse amor?', opts: ['Parceria', 'Intensidade', 'Cumplicidade', 'Todos os três 💕'], ans: 3 },
-    { q: 'Como você descreveria o Kauê?', opts: ['Carinhoso', 'Engraçado', 'Protetor', 'Perfeito do jeito que é 💖'], ans: 3 },
+/* ── 10. DESAFIO ─────────────────────────────────────────── */
+const CHAL = [
+    {
+        q: 'O que você mais gosta no Kauê?',
+        o: ['Sorriso dele', 'Como ele te olha', 'Jeito carinhoso', 'Tudo nele 💕'], a: 3
+    },
+    {
+        q: 'Encontro perfeito pra vocês?',
+        o: ['Cinema e jantar', 'Passeio ao ar livre', 'Ficar em casa juntos', 'Qualquer lugar com você'], a: 3
+    },
+    {
+        q: 'Se vocês fossem uma música, seria:',
+        o: ['Saturno', 'Perfect', 'All of Me', 'Nossa própria música'], a: 3
+    },
+    {
+        q: 'O que define esse amor?',
+        o: ['Parceria', 'Intensidade', 'Cumplicidade', 'Todos os três 💕'], a: 3
+    },
+    {
+        q: 'Como você descreveria o Kauê?',
+        o: ['Carinhoso', 'Engraçado', 'Protetor', 'Perfeito do jeito que é 💖'], a: 3
+    },
 ];
-let chalIdx = 0, chalScore = 0;
+let cIdx = 0, cScore = 0;
 
-function initChallenge() {
-    chalIdx = 0; chalScore = 0; renderChallenge();
-}
+function initChallenge() { cIdx = 0; cScore = 0; renderChal(); }
 
-function renderChallenge() {
+function renderChal() {
     const wrap = $('challenge-wrap'); if (!wrap) return;
-    if (chalIdx >= CHALLENGES.length) {
-        wrap.innerHTML = `<div class="challenge-score">${chalScore}/${CHALLENGES.length} 💕</div>
-      <p style="color:var(--muted);text-align:center;margin-top:.5rem;">Vocês são perfeitos juntos!</p>
-      <button onclick="initChallenge()" style="margin:1rem auto;display:block;background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.6rem 1.4rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;">Jogar novamente ↺</button>`;
+    if (cIdx >= CHAL.length) {
+        wrap.innerHTML = `
+      <div class="challenge-score">${cScore}/${CHAL.length} 💕</div>
+      <p style="color:var(--muted);text-align:center;margin-top:.5rem">Vocês são perfeitos juntos! 💕</p>
+      <button onclick="initChallenge()" style="margin:1rem auto;display:block;background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.55rem 1.3rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;">Jogar novamente ↺</button>`;
         unlockAch('challenge'); return;
     }
-    const c = CHALLENGES[chalIdx];
+    const c = CHAL[cIdx];
     wrap.innerHTML = `
-    <div class="challenge-q">Desafio ${chalIdx + 1}: ${c.q}</div>
+    <div class="challenge-q">Desafio ${cIdx + 1}: ${c.q}</div>
     <div class="challenge-opts">
-      ${c.opts.map((o, i) => `<button class="challenge-opt" onclick="chalAnswer(${i})">${o}</button>`).join('')}
+      ${c.o.map((o, i) => `<button class="challenge-opt" onclick="chalAnswer(${i})">${o}</button>`).join('')}
     </div>
-    <div class="challenge-score">${chalScore} pts</div>
-  `;
+    <div class="challenge-score">${cScore} pts</div>`;
 }
 
 function chalAnswer(idx) {
-    const c = CHALLENGES[chalIdx];
+    const c = CHAL[cIdx];
     $$('.challenge-opt').forEach(o => o.disabled = true);
     const opts = $$('.challenge-opt');
-    opts[idx].classList.add(idx === c.ans ? 'correct' : 'wrong');
-    opts[c.ans].classList.add('correct');
-    if (idx === c.ans) { chalScore++; spawnConfetti(10); }
-    setTimeout(() => { chalIdx++; renderChallenge(); }, 1200);
+    opts[idx].classList.add(idx === c.a ? 'correct' : 'wrong');
+    opts[c.a].classList.add('correct');
+    if (idx === c.a) { cScore++; confetti(10); }
+    setTimeout(() => { cIdx++; renderChal(); }, 1300);
 }
 
-/* ---- SNAKE GAME ---- */
-let snakeCanvas, snakeCtx, snakeGame;
+/* ── 11. SNAKE ───────────────────────────────────────────── */
+let snakeReady = false, snakeCV = null, snakeCTX = null, snakeG = null;
 
 function initSnake() {
-    snakeCanvas = $('snake-canvas'); if (!snakeCanvas) return;
-    snakeCtx = snakeCanvas.getContext('2d');
-    const size = Math.min(360, window.innerWidth - 60);
-    snakeCanvas.width = size; snakeCanvas.height = size;
+    snakeReady = true;
+    snakeCV = $('snake-canvas'); if (!snakeCV) return;
+    snakeCTX = snakeCV.getContext('2d');
+    const sz = Math.min(360, window.innerWidth - 64);
+    snakeCV.width = sz; snakeCV.height = sz;
+    snakeCV.onclick = snakeTap;
     resetSnake();
 }
 
-function resetSnake() {
-    if (snakeGame) clearInterval(snakeGame.interval); const size = snakeCanvas.width; const cell = 20;
-    const grid = size / cell;
-    snakeGame = {
-        snake: [{ x: Math.floor(grid / 2), y: Math.floor(grid / 2) }],
-        dir: { x: 1, y: 0 }, nextDir: { x: 1, y: 0 },
-        food: { x: rndInt(0, grid - 1), y: rndInt(0, grid - 1) },
-        score: 0, cell, grid, running: false,
-        interval: null
-    };
-    drawSnake();
-    $('snake-score-val').textContent = 0;
-    $('snake-hi-val').textContent = snakeHi;
-    $('snake-msg').textContent = 'Clique no campo para iniciar! 🐍';
-    // re-attach click to start
-    snakeCanvas.onclick = () => {
-        if (!snakeGame.running) {
-            snakeGame.running = true;
-            snakeGame.interval = setInterval(stepSnake, 130);
-            $('snake-msg').textContent = '';
-        }
-    };
+function snakeTap() {
+    if (!snakeG) return;
+    if (!snakeG.running) {
+        snakeG.running = true;
+        snakeG.iv = setInterval(snakeStep, 130);
+        setText('snake-msg', '');
+    }
 }
 
-// snake click is registered in init() after DOM is ready
+function resetSnake() {
+    if (snakeG) clearInterval(snakeG.iv);
+    const sz = snakeCV.width, cell = 20, grid = Math.floor(sz / cell);
+    snakeG = {
+        snake: [{ x: Math.floor(grid / 2), y: Math.floor(grid / 2) }],
+        dir: { x: 1, y: 0 }, next: { x: 1, y: 0 },
+        food: { x: rni(0, grid - 1), y: rni(0, grid - 1) },
+        score: 0, cell, grid, running: false, iv: null
+    };
+    snakeDraw();
+    setText('snake-score-val', 0);
+    setText('snake-hi-val', HI_SNAKE);
+    setText('snake-msg', 'Clique no campo para iniciar! 🐍');
+    if (snakeCV) snakeCV.onclick = snakeTap;
+}
 
 document.addEventListener('keydown', e => {
-    if (!$('gp-10') || !$('gp-10').classList.contains('active')) return;
-    const d = snakeGame?.nextDir; if (!d) return;
-    if (e.key === 'ArrowUp' && snakeGame.dir.y !== 1) snakeGame.nextDir = { x: 0, y: -1 };
-    if (e.key === 'ArrowDown' && snakeGame.dir.y !== -1) snakeGame.nextDir = { x: 0, y: 1 };
-    if (e.key === 'ArrowLeft' && snakeGame.dir.x !== 1) snakeGame.nextDir = { x: -1, y: 0 };
-    if (e.key === 'ArrowRight' && snakeGame.dir.x !== -1) snakeGame.nextDir = { x: 1, y: 0 };
+    if (!snakeG || !snakeG.running) return;
+    const panel = $('gp-10');
+    if (!panel || !panel.classList.contains('active')) return;
+    const d = snakeG.next;
+    if (e.key === 'ArrowUp' && snakeG.dir.y !== 1) snakeG.next = { x: 0, y: -1 };
+    if (e.key === 'ArrowDown' && snakeG.dir.y !== -1) snakeG.next = { x: 0, y: 1 };
+    if (e.key === 'ArrowLeft' && snakeG.dir.x !== 1) snakeG.next = { x: -1, y: 0 };
+    if (e.key === 'ArrowRight' && snakeG.dir.x !== -1) snakeG.next = { x: 1, y: 0 };
     e.preventDefault();
 });
 
 function snakeDir(dx, dy) {
-    if (!snakeGame) return;
-    if (dx === 1 && snakeGame.dir.x !== -1) snakeGame.nextDir = { x: 1, y: 0 };
-    if (dx === -1 && snakeGame.dir.x !== 1) snakeGame.nextDir = { x: -1, y: 0 };
-    if (dy === -1 && snakeGame.dir.y !== 1) snakeGame.nextDir = { x: 0, y: -1 };
-    if (dy === 1 && snakeGame.dir.y !== -1) snakeGame.nextDir = { x: 0, y: 1 };
+    if (!snakeG) return;
+    if (dx === 1 && snakeG.dir.x !== -1) snakeG.next = { x: 1, y: 0 };
+    if (dx === -1 && snakeG.dir.x !== 1) snakeG.next = { x: -1, y: 0 };
+    if (dy === -1 && snakeG.dir.y !== 1) snakeG.next = { x: 0, y: -1 };
+    if (dy === 1 && snakeG.dir.y !== -1) snakeG.next = { x: 0, y: 1 };
 }
 
-function stepSnake() {
-    const g = snakeGame; if (!g.running) return;
-    g.dir = { ...g.nextDir };
+function snakeStep() {
+    const g = snakeG; if (!g.running) return;
+    g.dir = { ...g.next };
     const head = { x: g.snake[0].x + g.dir.x, y: g.snake[0].y + g.dir.y };
-    if (head.x < 0 || head.x >= g.grid || head.y < 0 || head.y >= g.grid || g.snake.some(s => s.x === head.x && s.y === head.y)) {
-        g.running = false; clearInterval(g.interval);
-        $('snake-msg').textContent = `Game over! Score: ${g.score} 💔 Clique para reiniciar`;
-        if (g.score > snakeHi) { snakeHi = g.score; localStorage.setItem('kg_snake_hi', snakeHi); $('snake-hi-val').textContent = snakeHi; }
+    const dead = head.x < 0 || head.x >= g.grid || head.y < 0 || head.y >= g.grid
+        || g.snake.some(s => s.x === head.x && s.y === head.y);
+    if (dead) {
+        g.running = false; clearInterval(g.iv);
+        setText('snake-msg', `Game Over! Score: ${g.score} 💔 Clique para reiniciar`);
+        if (g.score > HI_SNAKE) { HI_SNAKE = g.score; localStorage.setItem('kg_snake_hi', HI_SNAKE); setText('snake-hi-val', HI_SNAKE); }
         if (g.score >= 20) unlockAch('snake20');
-        snakeCanvas.onclick = () => resetSnake();
+        if (snakeCV) snakeCV.onclick = () => { snakeCV.onclick = snakeTap; resetSnake(); };
         return;
     }
     g.snake.unshift(head);
     if (head.x === g.food.x && head.y === g.food.y) {
-        g.score++; $('snake-score-val').textContent = g.score;
-        g.food = { x: rndInt(0, g.grid - 1), y: rndInt(0, g.grid - 1) };
+        g.score++; setText('snake-score-val', g.score);
+        g.food = { x: rni(0, g.grid - 1), y: rni(0, g.grid - 1) };
     } else g.snake.pop();
-    drawSnake();
+    snakeDraw();
 }
 
-function drawSnake() {
-    const g = snakeGame; const ctx = snakeCtx; const c = g.cell;
-    ctx.fillStyle = '#030209'; ctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+function snakeDraw() {
+    const g = snakeG; if (!g || !snakeCTX) return;
+    const ctx = snakeCTX, c = g.cell, W = snakeCV.width;
+    ctx.fillStyle = '#030209'; ctx.fillRect(0, 0, W, W);
     // grid
-    ctx.strokeStyle = 'rgba(255,255,255,.03)'; ctx.lineWidth = .5;
+    ctx.strokeStyle = 'rgba(255,255,255,.025)'; ctx.lineWidth = .5;
     for (let i = 0; i < g.grid; i++) {
-        ctx.beginPath(); ctx.moveTo(i * c, 0); ctx.lineTo(i * c, snakeCanvas.height); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, i * c); ctx.lineTo(snakeCanvas.width, i * c); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(i * c, 0); ctx.lineTo(i * c, W); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i * c); ctx.lineTo(W, i * c); ctx.stroke();
     }
     // food
-    ctx.font = `${c - 2}px serif`; ctx.fillText('🍎', g.food.x * c, g.food.y * c + c - 2);
+    ctx.font = `${c - 2}px serif`;
+    ctx.fillText('🍎', g.food.x * c + 1, g.food.y * c + c - 2);
     // snake
     g.snake.forEach((s, i) => {
-        ctx.fillStyle = i === 0 ? '#e8647a' : `hsl(${340 - i * 5},70%,${50 + i * 2}%)`;
-        ctx.beginPath(); ctx.roundRect(s.x * c + 1, s.y * c + 1, c - 2, c - 2, 4); ctx.fill();
+        ctx.fillStyle = i === 0 ? '#e8647a' : `hsl(${345 - i * 4},65%,${52 + i}%)`;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(s.x * c + 1, s.y * c + 1, c - 2, c - 2, 4);
+        else ctx.rect(s.x * c + 1, s.y * c + 1, c - 2, c - 2);
+        ctx.fill();
     });
 }
 
-/* ---- TYPING GAME ---- */
-const TYPING_PHRASES = [
+/* ── 12. DIGITAÇÃO ───────────────────────────────────────── */
+let typingReady = false;
+const TYPE_PHRASES = [
     'Eu te amo, Gyovanna, do fundo do meu coração.',
     'Cada dia ao seu lado é o melhor da minha vida.',
-    'Você é minha constelação favorita.',
-    'Nosso amor é de outro mundo, Saturno.',
+    'Você é minha constelação favorita no universo.',
+    'Nosso amor é de outro mundo mesmo, tipo Saturno.',
     'Desde 20 de junho de 2025 tudo faz mais sentido.',
 ];
-let typingPhrase, typingIdx, typingStarted, typingStart, typingTimer2;
+let tPhrase = '', tStarted = false, tStart = 0;
 
 function initTyping() {
-    typingPhrase = pick(TYPING_PHRASES); typingIdx = 0; typingStarted = false;
-    clearInterval(typingTimer2);
-    renderTypingText();
+    typingReady = true;
+    tPhrase = pick(TYPE_PHRASES); tStarted = false;
+    renderTyping();
     const inp = $('typing-input');
-    if (inp) { inp.value = ''; inp.disabled = false; inp.focus(); }
-    resetTypingStats();
+    if (inp) {
+        inp.value = ''; inp.disabled = false;
+        // remove and re-add listener to avoid duplicates
+        inp.oninput = handleTyping;
+        setTimeout(() => inp.focus(), 100);
+    }
+    setText('typing-wpm', '0');
+    setText('typing-acc', '100%');
+    setText('typing-time', '0s');
 }
 
-function renderTypingText() {
+function renderTyping() {
     const el = $('typing-text'); if (!el) return;
-    el.innerHTML = typingPhrase.split('').map((c, i) => `<span class="char${i === 0 ? ' current' : ''}">${c}</span>`).join('');
+    el.innerHTML = tPhrase.split('').map((ch, i) =>
+        `<span class="char${i === 0 ? ' current' : ''}">${ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch}</span>`
+    ).join('');
 }
 
-function resetTypingStats() {
-    $('typing-wpm') && ($('typing-wpm').textContent = '0');
-    $('typing-acc') && ($('typing-acc').textContent = '100%');
-    $('typing-time') && ($('typing-time').textContent = '0s');
-}
-
-$('typing-input') && $('typing-input').addEventListener('input', e => {
+function handleTyping(e) {
     const val = e.target.value;
-    if (!typingStarted && val.length > 0) { typingStarted = true; typingStart = Date.now(); }
-    typingIdx = val.length;
-    const chars = $$('.char');
-    let correct = 0;
+    if (!tStarted && val.length > 0) { tStarted = true; tStart = Date.now(); }
+    const chars = $$('.char'); let correct = 0;
     chars.forEach((c, i) => {
         c.classList.remove('correct', 'wrong', 'current');
         if (i < val.length) {
-            if (val[i] === typingPhrase[i]) { c.classList.add('correct'); correct++; }
+            if (val[i] === tPhrase[i]) { c.classList.add('correct'); correct++; }
             else c.classList.add('wrong');
         } else if (i === val.length) c.classList.add('current');
     });
-    const elapsed = (Date.now() - typingStart) / 1000 || 1;
-    const wpm = Math.round((val.length / 5) / (elapsed / 60));
+    const secs = tStarted ? Math.max(1, (Date.now() - tStart) / 1000) : 1;
+    const wpm = Math.round((val.length / 5) / (secs / 60));
     const acc = val.length ? Math.round(correct / val.length * 100) : 100;
-    $('typing-wpm') && ($('typing-wpm').textContent = wpm);
-    $('typing-acc') && ($('typing-acc').textContent = acc + '%');
-    $('typing-time') && ($('typing-time').textContent = Math.floor(elapsed) + 's');
-    if (val === typingPhrase) {
-        $('typing-input').disabled = true;
-        showToast('⌨️ Frase completa! ' + wpm + ' WPM!');
-        spawnConfetti(30);
-        if (wpm >= 60) unlockAch('typing60');
-        if (wpm > typingBest) { typingBest = wpm; localStorage.setItem('kg_typing_best', wpm); }
-        setTimeout(() => initTyping(), 2000);
+    setText('typing-wpm', wpm);
+    setText('typing-acc', acc + '%');
+    setText('typing-time', Math.floor(secs) + 's');
+    if (val === tPhrase) {
+        e.target.disabled = true;
+        toast(`⌨️ Frase completa! ${wpm} WPM! 🎉`);
+        confetti(32);
+        if (wpm >= 60) unlockAch('type60');
+        if (wpm > HI_TYPE) { HI_TYPE = wpm; localStorage.setItem('kg_typing_best', HI_TYPE); }
+        setTimeout(initTyping, 2000);
     }
-});
-
-/* ---- INIT GAMES ---- */
-function initGames() {
-    initWordle();
-    initMemory();
-    initQuiz();
-    initTTT();
-    initWheel();
-    initPairs();
-    initChallenge();
-    initStars();
-    // snake and typing init on tab switch
 }
 
-// lazy init for heavier games
-function switchGame(idx, btn) {
-    const tabs = document.querySelectorAll('.gtab');
-    const panels = document.querySelectorAll('.gpanel');
-    tabs.forEach(t => t.classList.remove('active'));
-    panels.forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    const panel = document.getElementById(`gp-${idx}`);
-    if (panel) panel.classList.add('active');
-    if (idx === 10) initSnake();
-    if (idx === 11) { initTyping(); }
-}
-
-/* ---- GLOBAL EXPOSE ---- */
+/* ── EXPOSE GLOBAL ───────────────────────────────────────── */
 window.switchGame = switchGame;
 window.toggleMsg = toggleMsg;
 window.loveMsg = loveMsg;
