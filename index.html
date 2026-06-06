@@ -16,7 +16,7 @@
 
 <body>
 
-  <!-- LOADING -->
+  <!-- ── LOADING ── -->
   <div id="loading">
     <div class="ld-heart">💕</div>
     <div class="ld-names">Kauê &amp; Gyovanna</div>
@@ -25,76 +25,65 @@
     </div>
   </div>
 
-  <!-- NAV -->
+  <!-- ── NAV ── -->
   <nav id="nav">
     <a class="nav-logo" href="#hero">K <em>&amp;</em> G <span class="logo-heart">💕</span></a>
     <ul class="nav-links">
-      <li><a href="#story">
-          <svg class="nav-icon" viewBox="0 0 24 24">
+      <li><a href="#story"><svg class="nav-icon" viewBox="0 0 24 24">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-          </svg>
-          História</a></li>
-      <li><a href="#instagram">
-          <svg class="nav-icon" viewBox="0 0 24 24">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+          </svg>História</a></li>
+      <li><a href="#instagram"><svg class="nav-icon" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-          </svg>
-          Instagram</a></li>
-      <li><a href="#music">
-          <svg class="nav-icon" viewBox="0 0 24 24">
+          </svg>Instagram</a></li>
+      <li><a href="#music"><svg class="nav-icon" viewBox="0 0 24 24">
             <path d="M9 18V5l12-2v13" />
             <circle cx="6" cy="18" r="3" />
             <circle cx="18" cy="16" r="3" />
-          </svg>
-          Música</a></li>
-      <li><a href="#sky">
-          <svg class="nav-icon" viewBox="0 0 24 24">
+          </svg>Música</a></li>
+      <li><a href="#sky"><svg class="nav-icon" viewBox="0 0 24 24">
             <polygon
               points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-          Estrelas</a></li>
-      <li><a href="#games">
-          <svg class="nav-icon" viewBox="0 0 24 24">
+          </svg>Estrelas</a></li>
+      <li><a href="#games"><svg class="nav-icon" viewBox="0 0 24 24">
             <rect x="2" y="6" width="20" height="12" rx="2" />
             <line x1="12" y1="6" x2="12" y2="18" />
             <path d="M6 12h2m1-1v2" />
             <circle cx="17" cy="12" r="1" />
             <circle cx="19" cy="10" r="1" />
-          </svg>
-          Jogos</a></li>
-      <li><a href="#gallery">
-          <svg class="nav-icon" viewBox="0 0 24 24">
+          </svg>Jogos</a></li>
+      <li><a href="#gallery"><svg class="nav-icon" viewBox="0 0 24 24">
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <circle cx="8.5" cy="8.5" r="1.5" />
             <polyline points="21 15 16 10 5 21" />
-          </svg>
-          Fotos</a></li>
+          </svg>Fotos</a></li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" onclick="document.getElementById('nav-mobile').classList.toggle('open')"
       aria-label="Menu">☰</button>
   </nav>
 
-  <!-- MOBILE NAV -->
+  <!-- ── MOBILE NAV ── -->
   <nav class="nav-mobile" id="nav-mobile">
-    <a href="#hero" onclick="this.parentElement.classList.remove('open')">🏠 Início</a>
-    <a href="#story" onclick="this.parentElement.classList.remove('open')">⭐ Nossa História</a>
-    <a href="#instagram" onclick="this.parentElement.classList.remove('open')">📷 Instagram</a>
-    <a href="#music" onclick="this.parentElement.classList.remove('open')">🎵 Música</a>
-    <a href="#sky" onclick="this.parentElement.classList.remove('open')">🌌 Estrelas</a>
-    <a href="#games" onclick="this.parentElement.classList.remove('open')">🎮 Jogos</a>
-    <a href="#gallery" onclick="this.parentElement.classList.remove('open')">📸 Fotos</a>
-    <a href="#achievements" onclick="this.parentElement.classList.remove('open')">🏆 Conquistas</a>
+    <a href="#hero" onclick="this.closest('.nav-mobile').classList.remove('open')">🏠 Início</a>
+    <a href="#story" onclick="this.closest('.nav-mobile').classList.remove('open')">⭐ Nossa História</a>
+    <a href="#instagram" onclick="this.closest('.nav-mobile').classList.remove('open')">📷 Instagram</a>
+    <a href="#music" onclick="this.closest('.nav-mobile').classList.remove('open')">🎵 Música</a>
+    <a href="#sky" onclick="this.closest('.nav-mobile').classList.remove('open')">🌌 Estrelas</a>
+    <a href="#games" onclick="this.closest('.nav-mobile').classList.remove('open')">🎮 Jogos</a>
+    <a href="#gallery" onclick="this.closest('.nav-mobile').classList.remove('open')">📸 Fotos</a>
+    <a href="#achievements" onclick="this.closest('.nav-mobile').classList.remove('open')">🏆 Conquistas</a>
   </nav>
 
-  <!-- HERO -->
+  <!-- ── HERO ── -->
   <section id="hero">
     <canvas id="hero-canvas"></canvas>
     <div class="hero-inner">
       <div class="hero-ring">
+        <!-- Placeholder anime casal enquanto não há foto real -->
         <img class="hero-photo" id="hero-photo"
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect fill='%236a4c93' width='400' height='400'/%3E%3Ctext x='50%25' y='50%25' font-size='60' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EK %26 G%3C/text%3E%3C/svg%3E"
-          alt="Kauê &amp; Gyovanna">
+          src="https://api.dicebear.com/7.x/adventurer/svg?seed=KaueGyovanna&backgroundColor=b6e3f4,c0aede&radius=50"
+          onerror="this.src='images/hero-photo.jpg'" alt="Kauê &amp; Gyovanna">
       </div>
       <div class="hero-eyebrow">💕 Uma surpresa pra você 💕</div>
       <h1 class="hero-title">Onde você está,<br><em>estou</em> 🌍</h1>
@@ -104,9 +93,9 @@
         <div class="c-cell"><span class="c-num" id="c-y">0</span><span class="c-lbl">Anos</span></div>
         <div class="c-cell"><span class="c-num" id="c-mo">0</span><span class="c-lbl">Meses</span></div>
         <div class="c-cell"><span class="c-num" id="c-d">0</span><span class="c-lbl">Dias</span></div>
-        <div class="c-cell"><span class="c-num" id="c-h">0</span><span class="c-lbl">Horas</span></div>
-        <div class="c-cell"><span class="c-num" id="c-m">0</span><span class="c-lbl">Min</span></div>
-        <div class="c-cell"><span class="c-num" id="c-s">0</span><span class="c-lbl">Seg</span></div>
+        <div class="c-cell"><span class="c-num" id="c-h">00</span><span class="c-lbl">Horas</span></div>
+        <div class="c-cell"><span class="c-num" id="c-m">00</span><span class="c-lbl">Min</span></div>
+        <div class="c-cell"><span class="c-num" id="c-s">00</span><span class="c-lbl">Seg</span></div>
       </div>
       <div class="hero-loc">
         <svg
@@ -128,7 +117,6 @@
         <a class="cta-btn cta-btn-secondary" href="#games">
           <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
             <rect x="2" y="6" width="20" height="12" rx="2" />
-            <line x1="12" y1="6" x2="12" y2="18" />
             <path d="M6 12h2m1-1v2" />
           </svg>
           Jogar juntos
@@ -141,12 +129,12 @@
     </div>
   </section>
 
-  <!-- QUOTES TICKER -->
+  <!-- ── QUOTES TICKER ── -->
   <div id="quotes">
     <div class="quotes-inner" id="quotes-inner"></div>
   </div>
 
-  <!-- STORY -->
+  <!-- ── STORY ── -->
   <section class="section reveal" id="story">
     <p class="sec-eye">💕 Nossa história</p>
     <h2 class="sec-h">Tudo começou<br>em <em>Anápolis</em></h2>
@@ -161,7 +149,7 @@
           <div class="tl-card">
             <h3>O começo de tudo ❤️</h3>
             <p>Em Anápolis, GO, às 20h30 do primeiro dia do inverno — o momento exato em que Kauê e Gyovanna começaram a
-              escrever a história mais linda que o universo já viu.</p>
+              escrever a história mais linda que o universo já viu. Pra sempre guardado no coração.</p>
           </div>
         </div>
       </div>
@@ -174,8 +162,8 @@
           <div class="tl-date">Inverno<br>2025</div>
           <div class="tl-card">
             <h3>Escorpião no céu 🦂</h3>
-            <p>Naquela noite, Escorpião brilhava quase no zênite de Anápolis. Antares — o coração do escorpião, 700
-              vezes maior que o Sol — iluminava o nosso primeiro "eu te amo". O universo inteiro assistiu.</p>
+            <p>Naquela noite, Escorpião brilhava quase no zênite de Anápolis. Antares — o coração vermelho do escorpião,
+              700 vezes maior que o Sol — iluminava nosso primeiro "eu te amo". O universo inteiro assistiu.</p>
           </div>
         </div>
       </div>
@@ -196,7 +184,6 @@
       <div class="tl-item">
         <div class="tl-l">
           <div class="tl-dot" style="background:var(--rose-s);box-shadow:0 0 0 2px var(--rose-s)"></div>
-          <div class="tl-line"></div>
         </div>
         <div>
           <div class="tl-date">Hoje<br>∞</div>
@@ -210,15 +197,14 @@
     </div>
   </section>
 
-  <!-- INSTAGRAM -->
+  <!-- ── INSTAGRAM ── -->
   <section class="section wide reveal" id="instagram">
     <p class="sec-eye">📷 Nossas redes</p>
     <h2 class="sec-h">A gente<br>por <em>aí</em></h2>
     <p style="font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:2rem;">Nos siga no Instagram e acompanhe
-      cada momento da nossa história! A gente ama compartilhar os melhores pedaços do nosso dia a dia com quem a gente
-      ama. 💕</p>
+      cada momento da nossa história. A gente ama compartilhar os melhores pedaços do dia a dia. 💕</p>
     <div class="ig-grid">
-      <a class="ig-card" href="https://instagram.com/ykauttiz" target="_blank" rel="noopener" id="ig-kaue">
+      <a class="ig-card" href="https://instagram.com/ykauttiz" target="_blank" rel="noopener">
         <div class="ig-avatar-wrap">
           <div class="ig-avatar-placeholder">👦🏻</div>
           <div class="ig-online"></div>
@@ -231,15 +217,15 @@
           <div class="ig-stat"><span class="ig-stat-n">∞</span><span class="ig-stat-l">Para sempre</span></div>
         </div>
         <div class="ig-btn">
-          <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+          <svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
           </svg>
           Ver perfil
         </div>
       </a>
-      <a class="ig-card" href="https://instagram.com/ymoraisxz_" target="_blank" rel="noopener" id="ig-gyovanna">
+      <a class="ig-card" href="https://instagram.com/ymoraisxz_" target="_blank" rel="noopener">
         <div class="ig-avatar-wrap">
           <div class="ig-avatar-placeholder">👧🏻</div>
           <div class="ig-online"></div>
@@ -252,8 +238,8 @@
           <div class="ig-stat"><span class="ig-stat-n">✨</span><span class="ig-stat-l">Estrela</span></div>
         </div>
         <div class="ig-btn">
-          <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+          <svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" />
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
           </svg>
@@ -261,11 +247,11 @@
         </div>
       </a>
     </div>
-    <p class="ig-note">💡 As informações dos perfis são atualizadas manualmente com muito amor. Para ver os posts mais
-      recentes, clique nos cards acima para ir direto ao Instagram! ✨</p>
+    <p class="ig-note">💡 Clique nos cards para visitar os perfis no Instagram. Para os posts mais recentes basta entrar
+      direto na plataforma! ✨</p>
   </section>
 
-  <!-- MUSIC -->
+  <!-- ── MUSIC ── -->
   <section class="section reveal" id="music">
     <p class="sec-eye">🎵 Nossa trilha sonora</p>
     <h2 class="sec-h"><em>G + K</em> — Saturno</h2>
@@ -273,7 +259,7 @@
       <div class="music-top">
         <div class="music-art">
           <img src="images/album-cover.jpg" alt="G+K Saturno"
-            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 200\'%3E%3Cdefs%3E%3CradialGradient id=\'g\'%3E%3Cstop offset=\'0%25\' stop-color=\'%23e8647a\'/%3E%3Cstop offset=\'100%25\' stop-color=\'%239b7ccd\'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width=\'200\' height=\'200\' fill=\'url(%23g)\'/%3E%3Ctext x=\'100\' y=\'100\' font-size=\'80\' fill=\'white\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3E🎵%3C/text%3E%3C/svg%3E'">
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Cdefs%3E%3CradialGradient id=%22g%22%3E%3Cstop offset=%220%25%22 stop-color=%22%23e8647a%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%239b7ccd%22/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width=%22200%22 height=%22200%22 fill=%22url(%23g)%22/%3E%3Ctext x=%22100%22 y=%22110%22 font-size=%2280%22 fill=%22white%22 text-anchor=%22middle%22%3E🎵%3C/text%3E%3C/svg%3E'">
           <div class="music-disc">
             <svg viewBox="0 0 24 24">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
@@ -294,7 +280,7 @@
     </div>
   </section>
 
-  <!-- MESSAGE -->
+  <!-- ── MESSAGE ── -->
   <section class="section reveal" id="message">
     <p class="sec-eye">💌 Mensagem especial</p>
     <h2 class="sec-h">Do fundo do<br>meu <em>coração</em></h2>
@@ -315,19 +301,15 @@
           <p>Desde o dia 20 de junho de 2025, cada manhã ficou mais bonita e mais cheia de sentido. Você chegou com
             aquele sorriso que desarmou tudo que eu tinha de defesa, e eu percebi: não quero me defender de você. Quero
             te encontrar todos os dias, no mesmo lugar, com o mesmo coração — só que cada vez mais cheio de você.</p>
-          <br>
           <p>Eu te amo de um jeito que não cabe em texto, mas não resisto a tentar. Você é meu lar, minha calmaria,
-            minha aventura favorita. Obrigado por existir, por ser você, por estar aqui.</p>
-          <br>
+            minha aventura favorita. Obrigado por existir, por ser você, por estar aqui comigo.</p>
           <p>Quero ficar com você por muito tempo ainda. Quero te ver crescer, conquistar cada coisa que você merece,
             quero estar do seu lado nos dias fáceis e ainda mais nos difíceis. Você é o tipo de pessoa que faz o mundo
             inteiro parecer mais colorido.</p>
-          <br>
-          <p>Te amo, te amo, te amo. De hoje, de sempre, de tudo. 🌍💕✨</p>
+          <p><strong style="color:rgba(255,255,255,.9)">Te amo, te amo, te amo. De hoje, de sempre, de tudo.
+              🌍💕✨</strong></p>
         </div>
-        <button class="msg-btn" id="msg-btn" onclick="toggleMsg()">
-          💌 Mostrar mensagem completa
-        </button>
+        <button class="msg-btn" id="msg-btn" onclick="toggleMsg()">💌 Mostrar mensagem completa</button>
         <div class="msg-love-counter">
           <button class="msg-love-btn" onclick="loveMsg()" id="msg-love-btn" title="Enviar amor">💕</button>
           <span id="msg-love-count">0</span> corações enviados ❤️
@@ -336,16 +318,15 @@
     </div>
   </section>
 
-  <!-- CONSTELLATION -->
+  <!-- ── CONSTELLATION ── -->
   <section id="sky">
-    <div class="section stars-text reveal" style="padding-bottom:0">
+    <div class="section reveal" style="padding-bottom:0">
       <p class="sec-eye">🌌 O céu de Anápolis</p>
       <h2 class="sec-h">As estrelas que<br>nos <em>assistiram</em></h2>
       <p style="font-size:.9rem;color:var(--muted);line-height:1.75;max-width:560px;margin-bottom:1rem;">No dia <strong
-          style="color:var(--rose-s)">20 de junho de 2025</strong>, primeiro dia do inverno austral, a constelação de
-        <strong style="color:var(--rose-s)">Escorpião</strong> brilhava quase no zênite de Anápolis (16°S). Foi ela que
-        nos assistiu se apaixonar. <em>Clique nas estrelas para explorar! ✨</em>
-      </p>
+          style="color:var(--rose-s)">20 de junho de 2025</strong>, primeiro dia do inverno austral, <strong
+          style="color:var(--rose-s)">Escorpião</strong> brilhava no zênite de Anápolis. Foi ela que nos assistiu se
+        apaixonar. <em>Clique nas estrelas! ✨</em></p>
     </div>
     <div class="section wide reveal" style="padding-top:1.5rem">
       <div class="sky-wrap">
@@ -372,7 +353,6 @@
             </defs>
             <rect width="880" height="500" fill="url(#sky-bg)" />
             <ellipse cx="440" cy="320" rx="650" ry="70" fill="rgba(100,120,200,.04)" transform="rotate(-18,440,320)" />
-            <!-- bg stars -->
             <g opacity=".55">
               <circle cx="30" cy="25" r=".7" fill="#b0c8ff" />
               <circle cx="88" cy="44" r=".5" fill="#fff" />
@@ -390,8 +370,6 @@
               <circle cx="295" cy="82" r=".7" fill="#cce" />
               <circle cx="390" cy="62" r=".6" fill="#fff" />
               <circle cx="475" cy="76" r=".8" fill="#aac8ff" />
-              <circle cx="562" cy="58" r=".5" fill="#fff" />
-              <circle cx="648" cy="84" r=".7" fill="#aac8ff" />
               <circle cx="22" cy="148" r=".7" fill="#fff" />
               <circle cx="100" cy="132" r=".5" fill="#cce" />
               <circle cx="260" cy="142" r=".8" fill="#aac8ff" />
@@ -420,7 +398,7 @@
               data-mag="2.79">
               <circle cx="84" cy="292" r="3.2" fill="#aac0ff" style="cursor:pointer" />
             </g>
-            <text x="138" y="375" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="10"
+            <text x="138" y="375" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="10"
               fill="rgba(100,170,255,.6)" letter-spacing="1.5">CRUZEIRO DO SUL</text>
             <!-- Centaurus -->
             <g filter="url(#glow-m)" class="sky-star" data-name="Alpha Centauri"
@@ -431,7 +409,7 @@
               data-mag="0.61">
               <circle cx="295" cy="320" r="4.5" fill="#d0e8ff" style="cursor:pointer" />
             </g>
-            <text x="280" y="400" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="10"
+            <text x="280" y="400" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="10"
               fill="rgba(160,200,255,.5)" letter-spacing="1.2">CENTAURO</text>
             <!-- SCORPIUS -->
             <g stroke="rgba(255,90,110,.7)" stroke-width="1.5" fill="none">
@@ -451,7 +429,6 @@
               <line x1="398" y1="332" x2="380" y2="318" />
               <line x1="380" y1="318" x2="368" y2="302" />
             </g>
-            <!-- Antares -->
             <circle cx="490" cy="172" r="14" fill="rgba(255,80,50,.12)" filter="url(#glow-l)" />
             <circle cx="490" cy="172" r="8" fill="rgba(255,100,60,.25)" filter="url(#glow-l)" />
             <g filter="url(#glow-l)" class="sky-star" data-name="✨ Antares (α Scorpii)"
@@ -459,7 +436,7 @@
               <circle cx="490" cy="172" r="6.5" fill="#ff7755" style="cursor:pointer" />
               <circle cx="490" cy="172" r="4" fill="#ffaa88" />
             </g>
-            <text x="506" y="162" font-family="'Plus Jakarta Sans',sans-serif" font-size="8.5"
+            <text x="506" y="162" font-family="Plus Jakarta Sans,sans-serif" font-size="8.5"
               fill="rgba(255,150,120,.9)">Antares</text>
             <g filter="url(#glow-s)">
               <circle cx="422" cy="106" r="3.2" fill="#ffddee" class="sky-star" data-name="β Scorpii (Graffias)"
@@ -475,7 +452,7 @@
             </g>
             <rect x="356" y="374" width="216" height="28" rx="14" fill="rgba(232,100,122,.13)"
               stroke="rgba(232,100,122,.4)" stroke-width="1" />
-            <text x="464" y="392" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="10"
+            <text x="464" y="392" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="10"
               fill="rgba(255,160,180,.95)" letter-spacing="1.2">✨ ESCORPIÃO · NOSSA CONSTELAÇÃO</text>
             <!-- Sagittarius -->
             <g filter="url(#glow-s)">
@@ -484,7 +461,7 @@
               <circle cx="645" cy="252" r="3" fill="#ffe8b0" class="sky-star" data-name="Kaus Australis (ε Sgr)"
                 data-info="Mais brilhante de Sagitário" data-mag="1.79" style="cursor:pointer" />
             </g>
-            <text x="672" y="340" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="10"
+            <text x="672" y="340" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="10"
               fill="rgba(255,200,120,.5)" letter-spacing="1.2">SAGITÁRIO</text>
             <!-- Sirius -->
             <g filter="url(#glow-l)" class="sky-star" data-name="Sirius (α CMa)"
@@ -492,10 +469,10 @@
               <circle cx="742" cy="145" r="8" fill="rgba(220,240,255,.25)" style="cursor:pointer" />
               <circle cx="742" cy="145" r="5" fill="#f0f8ff" style="cursor:pointer" />
             </g>
-            <text x="756" y="140" font-family="'Plus Jakarta Sans',sans-serif" font-size="8.5"
+            <text x="756" y="140" font-family="Plus Jakarta Sans,sans-serif" font-size="8.5"
               fill="rgba(200,230,255,.8)">Sirius</text>
             <line x1="0" y1="488" x2="880" y2="488" stroke="rgba(100,130,200,.12)" stroke-width="1" />
-            <text x="440" y="480" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="9"
+            <text x="440" y="480" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="9"
               fill="rgba(140,160,220,.35)" letter-spacing="2">ANÁPOLIS · GOIÁS · 16.33°S · 48.95°W · 20 JUN 2025 ·
               ~21:00</text>
           </svg>
@@ -520,7 +497,7 @@
     </div>
   </section>
 
-  <!-- GAMES -->
+  <!-- ── GAMES ── -->
   <section class="section wide reveal" id="games">
     <p class="sec-eye">🎮 Joguinhos do casal</p>
     <h2 class="sec-h">Hora de<br><em>brincar</em> juntos</h2>
@@ -540,7 +517,7 @@
         <button class="gtab" onclick="switchGame(11,this)">⌨️ Digitação</button>
       </div>
 
-      <!-- WORDLE -->
+      <!-- 0 WORDLE -->
       <div class="gpanel active" id="gp-0">
         <div class="wordle-wrap">
           <div class="wordle-hint">O que Kauê mais ama em você?<br><strong>Descubra a palavra de 4 letras ✨</strong>
@@ -552,15 +529,15 @@
             <p>É isso que eu mais amo em você!<br><strong>TUDINHO PORQUE VOCÊ É PERFEITA!!! 💕</strong></p>
           </div>
           <div class="w-lose" id="w-lose">
-            <h3>💕 Quase!</h3>
-            <p>A palavra era: <strong>TUDO</strong><br>Porque eu amo tudo em você, Gyovanna! 💕</p>
+            <h3>💕 Quase lá!</h3>
+            <p>Eu amo tudo em você, Gyovanna! 💕</p>
           </div>
           <button class="w-play-again" id="w-again" onclick="resetWordle()">Jogar novamente ↺</button>
           <div class="w-kb" id="w-kb"></div>
         </div>
       </div>
 
-      <!-- MEMORY -->
+      <!-- 1 MEMORY -->
       <div class="gpanel" id="gp-1">
         <div class="memory-wrap">
           <div class="mem-info">
@@ -574,13 +551,13 @@
           <div class="mem-board" id="mem-board"></div>
           <div class="mem-win" id="mem-win">
             <h3>🎉 Incrível!</h3>
-            <p id="mem-win-msg">Você encontrou todos os pares!</p>
+            <p id="mem-win-msg">Você encontrou todos os pares! 💕</p>
             <button class="mem-restart" onclick="resetMemory()">Jogar novamente ↺</button>
           </div>
         </div>
       </div>
 
-      <!-- QUIZ -->
+      <!-- 2 QUIZ -->
       <div class="gpanel" id="gp-2">
         <div class="quiz-wrap">
           <div class="quiz-progress">
@@ -596,10 +573,11 @@
         </div>
       </div>
 
-      <!-- TIC TAC TOE -->
+      <!-- 3 TTT -->
       <div class="gpanel" id="gp-3">
         <div style="text-align:center">
-          <p style="margin-bottom:.5rem;color:var(--muted);font-size:.88rem">Jogo da Velha — Você (💕) vs IA (🤖)</p>
+          <p style="margin-bottom:.5rem;color:var(--muted);font-size:.88rem">Jogo da Velha — Você (💕 X) vs IA (🤖 O)
+          </p>
           <div id="ttt-score" class="ttt-score"></div>
           <div class="tictactoe-board" id="tictactoe-board">
             <button class="ttt-cell" onclick="handleTTT(0)"></button>
@@ -612,15 +590,15 @@
             <button class="ttt-cell" onclick="handleTTT(7)"></button>
             <button class="ttt-cell" onclick="handleTTT(8)"></button>
           </div>
-          <div class="tictactoe-status" id="tictactoe-status">Seu turno! (X 💕)</div>
+          <div class="tictactoe-status" id="tictactoe-status">Seu turno! 💕</div>
           <button class="tictactoe-reset" onclick="resetTTT()">Nova partida ↺</button>
         </div>
       </div>
 
-      <!-- DICE -->
+      <!-- 4 DICE -->
       <div class="gpanel" id="gp-4">
         <div class="dice-container">
-          <p style="color:var(--muted);margin-bottom:.5rem">🎲 Role o Dado do Amor — quanto mais alto, melhor! 🍀</p>
+          <p style="color:var(--muted);margin-bottom:.5rem">🎲 Role o Dado do Amor! Quanto mais alto, melhor! 🍀</p>
           <div class="dice-wrap">
             <div class="dice" id="dice" onclick="rollDice()" title="Clique para rolar!">🎲</div>
           </div>
@@ -636,7 +614,7 @@
         </div>
       </div>
 
-      <!-- HEARTS -->
+      <!-- 5 HEARTS -->
       <div class="gpanel" id="gp-5">
         <div style="text-align:center">
           <p style="color:var(--muted);margin-bottom:.5rem">💕 Clique e envie amor! Quanto mais, mais feliz fico! 💕</p>
@@ -647,15 +625,16 @@
             <div class="hearts-combo">Combo: <span id="combo-count">0</span> 🔥</div>
           </div>
           <button onclick="resetHearts()"
-            style="margin-top:.5rem;background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.5rem 1.2rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;">Resetar
+            style="margin-top:.5rem;background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.5rem 1.2rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;">Resetar
             ↺</button>
         </div>
       </div>
 
-      <!-- STARS -->
+      <!-- 6 STARS -->
       <div class="gpanel" id="gp-6">
         <div style="text-align:center">
-          <p style="color:var(--muted);margin-bottom:.5rem">⭐ Toque nas estrelas antes que somam! ⭐</p>
+          <p style="color:var(--muted);margin-bottom:.5rem">⭐ Toque nas estrelas antes que somam! Você tem 30 segundos!
+            ⭐</p>
           <div class="stars-field" id="stars-field"></div>
           <div class="stars-score">
             <div>⭐ Score: <span id="stars-score">0</span></div>
@@ -663,15 +642,15 @@
             <div>🏆 Recorde: <span id="stars-hi">0</span></div>
           </div>
           <button onclick="resetStars()"
-            style="margin-top:1rem;background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.5rem 1.2rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;">Novo
+            style="margin-top:1rem;background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.5rem 1.2rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;">Novo
             jogo ↺</button>
         </div>
       </div>
 
-      <!-- WHEEL -->
+      <!-- 7 WHEEL -->
       <div class="gpanel" id="gp-7">
         <div style="text-align:center">
-          <p style="color:var(--muted);margin-bottom:.5rem">🎡 Gire a roda e descubra o que fazer hoje! 🎡</p>
+          <p style="color:var(--muted);margin-bottom:.5rem">🎡 Gire a roda e descubra o que fazer hoje juntos! 🎡</p>
           <div class="wheel-wrapper">
             <canvas id="wheel-canvas" width="300" height="300"></canvas>
             <button class="wheel-btn" onclick="spinWheel()">GIRAR!</button>
@@ -681,30 +660,30 @@
         </div>
       </div>
 
-      <!-- LOVE PAIRS -->
+      <!-- 8 PAIRS -->
       <div class="gpanel" id="gp-8">
         <div style="text-align:center">
           <p class="love-pairs-status" id="love-pairs-status">Encontre os pares românticos! 💕</p>
           <div class="love-pairs-board" id="love-pairs-board"></div>
           <div class="love-pairs-score" id="love-pairs-score">0 / 8</div>
           <button onclick="initPairs()"
-            style="margin-top:1rem;background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.5rem 1.2rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;">Novo
+            style="margin-top:1rem;background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.5rem 1.2rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;">Novo
             jogo ↺</button>
         </div>
       </div>
 
-      <!-- CHALLENGE -->
+      <!-- 9 CHALLENGE -->
       <div class="gpanel" id="gp-9">
         <div style="text-align:center;margin-bottom:1rem">
-          <p style="color:var(--muted);font-size:.88rem">💘 Desafio do Amor — conheça a vocês dois! 💘</p>
+          <p style="color:var(--muted);font-size:.88rem">💘 Desafio do Amor — se conheçam melhor! 💘</p>
         </div>
         <div class="challenge-wrap" id="challenge-wrap"></div>
       </div>
 
-      <!-- SNAKE -->
+      <!-- 10 SNAKE -->
       <div class="gpanel" id="gp-10">
         <div style="text-align:center">
-          <p style="color:var(--muted);margin-bottom:.5rem">🐍 Snake do Amor — coma as maçãs! 🍎</p>
+          <p style="color:var(--muted);margin-bottom:.5rem">🐍 Snake do Amor — colete as maçãs! 🍎</p>
           <div class="snake-score-board">
             <div>Score: <span id="snake-score-val">0</span></div>
             <div>Recorde: <span id="snake-hi-val">0</span></div>
@@ -712,9 +691,7 @@
           <canvas id="snake-canvas"></canvas>
           <div class="snake-msg" id="snake-msg">Clique no campo para iniciar! 🐍</div>
           <div class="snake-controls">
-            <div class="snake-ctrl-row">
-              <button class="snake-ctrl-btn" onclick="snakeDir(0,-1)">↑</button>
-            </div>
+            <div class="snake-ctrl-row"><button class="snake-ctrl-btn" onclick="snakeDir(0,-1)">↑</button></div>
             <div class="snake-ctrl-row">
               <button class="snake-ctrl-btn" onclick="snakeDir(-1,0)">←</button>
               <button class="snake-ctrl-btn" onclick="snakeDir(0,1)">↓</button>
@@ -724,7 +701,7 @@
         </div>
       </div>
 
-      <!-- TYPING -->
+      <!-- 11 TYPING -->
       <div class="gpanel" id="gp-11">
         <div class="typing-game-wrap">
           <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem;text-align:center">⌨️ Digite a frase de amor
@@ -748,7 +725,7 @@
           </div>
           <div style="text-align:center;margin-top:.5rem">
             <button onclick="initTyping()"
-              style="background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.5rem 1.2rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;">Nova
+              style="background:rgba(232,100,122,.15);border:1px solid rgba(232,100,122,.3);color:var(--rose-s);padding:.5rem 1.2rem;border-radius:50px;cursor:pointer;font-size:.8rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;">Nova
               frase ↺</button>
           </div>
         </div>
@@ -757,32 +734,36 @@
     </div>
   </section>
 
-  <!-- GALLERY -->
+  <!-- ── GALLERY ── -->
   <section class="section wide reveal" id="gallery">
     <p class="sec-eye">📸 Nossas fotos</p>
     <h2 class="sec-h">Momentos que<br><em>atesouro</em></h2>
     <div class="gallery-scroll" id="gallery-scroll">
       <div class="g-card" onclick="openLb(this.querySelector('img').src,0)">
-        <img src="images/gallery-1.jpg" alt="Momento especial 1" loading="lazy">
+        <img src="images/gallery-1.jpg" alt="Momento especial 1" loading="lazy"
+          onerror="this.src='https://api.dicebear.com/7.x/adventurer/svg?seed=couple1&backgroundColor=ffb3c1&radius=0'">
         <div class="g-card-ov"><span class="g-card-lbl">Nosso primeiro sorriso 🌸</span></div>
       </div>
       <div class="g-card" onclick="openLb(this.querySelector('img').src,1)">
-        <img src="images/gallery-2.jpg" alt="Momento especial 2" loading="lazy">
+        <img src="images/gallery-2.jpg" alt="Momento especial 2" loading="lazy"
+          onerror="this.src='https://api.dicebear.com/7.x/adventurer/svg?seed=couple2&backgroundColor=c0aede&radius=0'">
         <div class="g-card-ov"><span class="g-card-lbl">O dia mais especial ❤️</span></div>
       </div>
       <div class="g-card" onclick="openLb(this.querySelector('img').src,2)">
-        <img src="images/gallery-3.jpg" alt="Momento especial 3" loading="lazy">
+        <img src="images/gallery-3.jpg" alt="Momento especial 3" loading="lazy"
+          onerror="this.src='https://api.dicebear.com/7.x/adventurer/svg?seed=couple3&backgroundColor=ffd6e0&radius=0'">
         <div class="g-card-ov"><span class="g-card-lbl">Meu amor eterno 💕</span></div>
       </div>
       <div class="g-card" onclick="openLb(this.querySelector('img').src,3)">
-        <img src="images/gallery-4.jpg" alt="Momento especial 4" loading="lazy">
+        <img src="images/gallery-4.jpg" alt="Momento especial 4" loading="lazy"
+          onerror="this.src='https://api.dicebear.com/7.x/adventurer/svg?seed=couple4&backgroundColor=b6e3f4&radius=0'">
         <div class="g-card-ov"><span class="g-card-lbl">Você, simplesmente você ✨</span></div>
       </div>
     </div>
     <div class="g-dots" id="g-dots"></div>
   </section>
 
-  <!-- ACHIEVEMENTS -->
+  <!-- ── ACHIEVEMENTS ── -->
   <section class="section reveal" id="achievements">
     <p class="sec-eye">🏆 Conquistas</p>
     <h2 class="sec-h">Cada momento<br><em>conta</em></h2>
@@ -793,7 +774,7 @@
     <div class="ach-grid" id="ach-grid"></div>
   </section>
 
-  <!-- RETROSPECTIVE -->
+  <!-- ── RETROSPECTIVE ── -->
   <section class="section reveal" id="retro">
     <p class="sec-eye">✨ Retrospectiva</p>
     <h2 class="sec-h">Nossa história<br>em <em>números</em></h2>
@@ -801,17 +782,14 @@
       <div class="retro-t">K &amp; G</div>
       <div class="retro-s">Desde 20 de junho de 2025 · Anápolis, GO</div>
       <div class="retro-stats">
-        <div>
-          <span class="rstat-n" id="retro-days">0</span>
+        <div><span class="rstat-n" id="retro-days">0</span>
           <div class="rstat-l">Dias juntos</div>
         </div>
-        <div>
-          <span class="rstat-n" id="retro-hours">0</span>
+        <div><span class="rstat-n" id="retro-hours">0</span>
           <div class="rstat-l">Horas de amor</div>
         </div>
-        <div>
-          <span class="rstat-n" id="retro-msgs">0</span>
-          <div class="rstat-l">Mensagens (estimativa) 💬</div>
+        <div><span class="rstat-n" id="retro-msgs">0</span>
+          <div class="rstat-l">Mensagens 💬</div>
         </div>
       </div>
       <div class="retro-mood">
@@ -821,28 +799,24 @@
         <div class="retro-mood-item">🌙 Anápolis</div>
         <div class="retro-mood-item">✨ Para sempre</div>
       </div>
-      <div class="retro-q">
-        "Cada dia ao seu lado me lembra que o universo sabe o que está fazendo. Você foi a melhor coisa que me
-        aconteceu." 💕
-      </div>
+      <div class="retro-q">"Cada dia ao seu lado me lembra que o universo sabe o que está fazendo. Você foi a melhor
+        coisa que me aconteceu." 💕</div>
       <div class="retro-update" id="retro-update-time">Atualizado ao vivo ✨</div>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ── FOOTER ── -->
   <footer id="footer">
     <canvas id="footer-canvas"></canvas>
     <div class="footer-in">
       <div class="footer-hearts">
-        <span class="fh">💕</span>
-        <span class="fh">❤️</span>
-        <span class="fh">💕</span>
+        <span class="fh">💕</span><span class="fh">❤️</span><span class="fh">💕</span>
       </div>
       <div class="footer-names">Kauê <em>&amp;</em> Gyovanna</div>
       <div class="footer-since">Juntos desde 20 de junho de 2025 · Anápolis, GO</div>
       <div class="footer-ig-links">
         <a class="footer-ig-link" href="https://instagram.com/ykauttiz" target="_blank" rel="noopener">
-          <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
+          <svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
             <rect x="2" y="2" width="20" height="20" rx="5" />
             <circle cx="12" cy="12" r="4" />
             <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
@@ -850,7 +824,7 @@
           @ykauttiz
         </a>
         <a class="footer-ig-link" href="https://instagram.com/ymoraisxz_" target="_blank" rel="noopener">
-          <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
+          <svg style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2" viewBox="0 0 24 24">
             <rect x="2" y="2" width="20" height="20" rx="5" />
             <circle cx="12" cy="12" r="4" />
             <circle cx="17.5" cy="6.5" r="1" fill="currentColor" />
@@ -862,7 +836,7 @@
     </div>
   </footer>
 
-  <!-- LIGHTBOX -->
+  <!-- ── LIGHTBOX ── -->
   <div id="lightbox">
     <button id="lb-close" onclick="closeLb()">✕</button>
     <button id="lb-prev" onclick="lbNav(-1)">‹</button>
@@ -870,7 +844,7 @@
     <img id="lb-img" src="" alt="">
   </div>
 
-  <!-- SECRET OVERLAY -->
+  <!-- ── SECRET ── -->
   <div id="secret-overlay">
     <div class="secret-hearts" id="secret-hearts"></div>
     <div class="secret-title" id="secret-title">❤️</div>
@@ -878,38 +852,31 @@
     <button id="secret-close" onclick="closeSecret()">Fechar ✕</button>
   </div>
 
-  <!-- CHEAT OVERLAY -->
+  <!-- ── CHEAT ── -->
   <div id="cheat-overlay">
-    <div class="cheat-title">👑 Modo Cheat Ativado!</div>
-    <div class="cheat-subtitle">Bem-vindo ao painel secreto 🔮</div>
+    <div class="cheat-title">👑 Painel Secreto</div>
+    <div class="cheat-subtitle">Bem-vindo, sortudo! 🔮</div>
     <div class="cheat-body">
       <div class="cheat-item">
         <div class="cheat-ic">⌨️</div>
-        <div class="cheat-text">
-          <strong>Código Konami</strong>
-          ↑ ↑ ↓ ↓ ← → ← → B A — Ativa overlay especial
-        </div>
+        <div class="cheat-text"><strong>Konami Code</strong>↑ ↑ ↓ ↓ ← → ← → B A — overlay especial</div>
       </div>
       <div class="cheat-item">
         <div class="cheat-ic">🔑</div>
-        <div class="cheat-text">
-          <strong>Código Secreto de Texto</strong>
-          Digite <em>KAUEAMAGYOVANNA</em> em qualquer parte do site (sem clicar em campo de texto)
-        </div>
+        <div class="cheat-text"><strong>Código de Texto</strong>Digite <em>KAUEAMAGYOVANNA</em> sem clicar em campos de
+          texto</div>
       </div>
       <div class="cheat-item">
         <div class="cheat-ic">🏆</div>
-        <div class="cheat-text">
-          <strong>Desbloquear todas as conquistas</strong>
-          Clique no botão abaixo para resgatar todas de uma vez
-        </div>
+        <div class="cheat-text"><strong>Desbloquear tudo</strong>Clique no botão abaixo para resgatar todas as 20
+          conquistas de uma vez!</div>
       </div>
     </div>
     <button class="cheat-unlock-all" onclick="cheatUnlockAll()">👑 Desbloquear todas as conquistas!</button>
     <button id="cheat-close" onclick="closeCheat()">Fechar</button>
   </div>
 
-  <!-- KONAMI HINT -->
+  <!-- ── KONAMI HINT ── -->
   <div id="konami-hint">↑↑↓↓←→←→BA</div>
 
   <script src="index.js"></script>
