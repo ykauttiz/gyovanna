@@ -104,12 +104,24 @@ function init() {
     initGallery();
     initSkyStars();
     initFooterCanvas();
-    initKonami();
     initGames();
     initAchievements();
     updateAchCount();
-    $('msg-love-count').textContent = msgLoves;
+    const loveEl = $('msg-love-count');
+    if (loveEl) loveEl.textContent = msgLoves;
     document.addEventListener('keydown', handleKeyInput);
+    // typing input event (safe, DOM ready)
+    const typingInp = $('typing-input');
+    if (typingInp) typingInp.addEventListener('input', handleTypingInput);
+    // snake canvas click (safe, DOM ready)
+    const sc = $('snake-canvas');
+    if (sc) sc.addEventListener('click', () => {
+        if (snakeGame && !snakeGame.running) {
+            snakeGame.running = true;
+            snakeGame.interval = setInterval(stepSnake, 130);
+            $('snake-msg').textContent = '';
+        }
+    });
 }
 
 /* ---- COUNTER ---- */
@@ -1134,8 +1146,7 @@ function initSnake() {
 }
 
 function resetSnake() {
-    if (snakeGame) clearInterval(snakeGame.interval);
-    const size = snakeCanvas.width; const cell = 20;
+    if (snakeGame) clearInterval(snakeGame.interval); const size = snakeCanvas.width; const cell = 20;
     const grid = size / cell;
     snakeGame = {
         snake: [{ x: Math.floor(grid / 2), y: Math.floor(grid / 2) }],
@@ -1148,11 +1159,17 @@ function resetSnake() {
     $('snake-score-val').textContent = 0;
     $('snake-hi-val').textContent = snakeHi;
     $('snake-msg').textContent = 'Clique no campo para iniciar! 🐍';
+    // re-attach click to start
+    snakeCanvas.onclick = () => {
+        if (!snakeGame.running) {
+            snakeGame.running = true;
+            snakeGame.interval = setInterval(stepSnake, 130);
+            $('snake-msg').textContent = '';
+        }
+    };
 }
 
-snakeCanvas && snakeCanvas.addEventListener('click', () => {
-    if (!snakeGame.running) { snakeGame.running = true; snakeGame.interval = setInterval(stepSnake, 130); $('snake-msg').textContent = ''; }
-});
+// snake click is registered in init() after DOM is ready
 
 document.addEventListener('keydown', e => {
     if (!$('gp-10') || !$('gp-10').classList.contains('active')) return;
@@ -1283,7 +1300,7 @@ function initGames() {
 }
 
 // lazy init for heavier games
-const _baseSwitch = function (idx, btn) {
+function switchGame(idx, btn) {
     const tabs = document.querySelectorAll('.gtab');
     const panels = document.querySelectorAll('.gpanel');
     tabs.forEach(t => t.classList.remove('active'));
@@ -1292,10 +1309,11 @@ const _baseSwitch = function (idx, btn) {
     const panel = document.getElementById(`gp-${idx}`);
     if (panel) panel.classList.add('active');
     if (idx === 10) initSnake();
-    if (idx === 11) initTyping();
-};
+    if (idx === 11) { initTyping(); }
+}
 
 /* ---- GLOBAL EXPOSE ---- */
+window.switchGame = switchGame;
 window.toggleMsg = toggleMsg;
 window.loveMsg = loveMsg;
 window.openSecret = openSecret;
@@ -1323,4 +1341,3 @@ window.resetTTT = resetTTT;
 window.handleTTT = handleTTT;
 window.snakeDir = snakeDir;
 window.initTyping = initTyping;
-window.switchGame = window.switchGame;
